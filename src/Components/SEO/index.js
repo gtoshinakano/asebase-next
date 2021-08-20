@@ -1,8 +1,8 @@
-import React from "react";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import siteMetadata from "@Settings/siteMetadata";
-import types from "prop-types";
+import React from 'react';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import siteMetadata from '@Settings/siteMetadata';
+import types from 'prop-types';
 
 const CommonSEO = ({ title, description, ogType, ogImage, twImage }) => {
   const router = useRouter();
@@ -19,7 +19,7 @@ const CommonSEO = ({ title, description, ogType, ogImage, twImage }) => {
       <meta property="og:site_name" content={siteMetadata.title} />
       <meta property="og:description" content={description} />
       <meta property="og:title" content={title} />
-      {ogImage.constructor.name === "Array" ? (
+      {ogImage.constructor.name === 'Array' ? (
         ogImage.map(({ url }) => (
           <meta property="og:image" content={url} key={url} />
         ))
@@ -107,13 +107,13 @@ export const BlogSEO = ({
   let imagesArr =
     images.length === 0
       ? [siteMetadata.socialBanner]
-      : typeof images === "string"
+      : typeof images === 'string'
       ? [images]
       : images;
 
   const featuredImages = imagesArr.map((img) => {
     return {
-      "@type": "ImageObject",
+      '@type': 'ImageObject',
       url: `${siteMetadata.siteUrl}${img}`,
     };
   });
@@ -122,23 +122,23 @@ export const BlogSEO = ({
   if (authorDetails) {
     authorList = authorDetails.map((author) => {
       return {
-        "@type": "Person",
+        '@type': 'Person',
         name: author.name,
       };
     });
   } else {
     authorList = {
-      "@type": "Person",
+      '@type': 'Person',
       name: siteMetadata.author,
     };
   }
 
   const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Article",
+    '@context': 'https://schema.org',
+    '@type': 'Article',
     mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": url,
+      '@type': 'WebPage',
+      '@id': url,
     },
     headline: title,
     image: featuredImages,
@@ -146,10 +146,10 @@ export const BlogSEO = ({
     dateModified: modifiedAt,
     author: authorList,
     publisher: {
-      "@type": "Organization",
+      '@type': 'Organization',
       name: siteMetadata.author,
       logo: {
-        "@type": "ImageObject",
+        '@type': 'ImageObject',
         url: `${siteMetadata.siteUrl}${siteMetadata.siteLogo}`,
       },
     },
