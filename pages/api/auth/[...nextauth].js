@@ -1,9 +1,9 @@
-import NextAuth from "next-auth"
-import Providers from "next-auth/providers"
-import { FirebaseAdapter } from "@next-auth/firebase-adapter"
+import NextAuth from 'next-auth';
+import Providers from 'next-auth/providers';
+import { FirebaseAdapter } from '@next-auth/firebase-adapter';
 
-import firebase from "firebase/app"
-import "firebase/firestore"
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 const clientCredentials = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -15,7 +15,7 @@ const clientCredentials = {
 
 const firestore = (
   firebase.apps[0] ?? firebase.initializeApp(clientCredentials)
-).firestore()
+).firestore();
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
@@ -52,7 +52,7 @@ export default NextAuth({
     Providers.Google({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
-    })
+    }),
     // Providers.Twitter({
     //   clientId: process.env.TWITTER_ID,
     //   clientSecret: process.env.TWITTER_SECRET,
@@ -139,4 +139,4 @@ export default NextAuth({
 
   // Enable debug messages in the console if you are having problems
   debug: false,
-})
+});
