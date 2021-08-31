@@ -13,9 +13,9 @@ export default function Header() {
     <header className="w-full p-3 bg-rose-500 flex">
       <nav className="text-white text-sm">
         <h4 className="flex-grow">
-          <i class="ri-earth-fill"></i>{
-          session ? t("greeting-msg", session.user.name) : t("greeting-msg", {name: "visitante"})}</h4>
-        
+          <i className="ri-earth-fill mr-3"></i>{
+          session ? t("greeting-msg", session.user.name) : t("greeting-msg", {name: "visitante"})}
+        </h4>
       </nav>
     </header>
   );
