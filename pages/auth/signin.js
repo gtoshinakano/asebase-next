@@ -1,4 +1,4 @@
-import Layout from '@Components/Layout';
+import Layout from '@Components/Layouts/NotSigned';
 
 export default function Page() {
   return (

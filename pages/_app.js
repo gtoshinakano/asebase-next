@@ -1,5 +1,6 @@
 import { Provider } from 'next-auth/client';
 import '../styles/tailwind.css';
+import '../styles/global.css';
 
 export default function App({ Component, pageProps }) {
   return (

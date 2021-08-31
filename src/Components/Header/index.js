@@ -9,7 +9,7 @@ export default function Header() {
 
   return (
     <header>
-      <nav>oi</nav>
+      <nav className="text-red-500 text-sm">Use in Next.js Version 3.*</nav>
     </header>
   );
 }
