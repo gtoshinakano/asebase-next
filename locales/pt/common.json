@@ -1,4 +1,5 @@
 {
   "title": "Olá mundo",
-  "variable-example": "Utilizando uma variável {{count}}"
+  "variable-example": "Utilizando uma variável {{count}}",
+  "greeting-msg": "Seja bem vindo, {{name}}!"
 }
