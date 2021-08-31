@@ -8,6 +8,7 @@
       "@Utils/*": ["src/Utils/*"],
       "@Contexts/*": ["src/Contexts/*"],
       "@Credentials/*": ["src/Credentials/*"],
+      "@Styled/*": ["src/Components/Styled/*"],
       "@Settings/*": ["src/Settings/*"]
     }
   }
