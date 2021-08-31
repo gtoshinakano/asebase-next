@@ -1,7 +1,5 @@
-
-
-export const IconButton = ({children, rest}) => {
-  const {} = props
+export const IconButton = ({ children, rest }) => {
+  const {} = props;
 
   return (
     <button
@@ -10,6 +8,5 @@ export const IconButton = ({children, rest}) => {
     >
       {children}
     </button>
-
-  )
-}
+  );
+};
