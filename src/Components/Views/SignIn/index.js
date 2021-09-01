@@ -34,7 +34,7 @@ const Screen = ({ csrfToken, providers }) => {
         <hr className="mt-3 mb-4" />
         <div className="flex flex-col">
           <button
-            type="submit"
+            type="button"
             className="transition duration-200 bg-white hover:bg-blue-600 hover:text-white focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-black border w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block"
           >
             <i className="ri-google-line"></i>

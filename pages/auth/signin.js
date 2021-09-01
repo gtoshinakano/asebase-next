@@ -1,29 +1,34 @@
+import React from 'react';
 import Layout from '@Components/Layouts/NotSigned';
 import SignIn from '@Views/SignIn';
 import { providers, getSession, csrfToken } from 'next-auth/client';
 
 export default function Page({ providers, csrfToken }) {
-  console.log(providers, csrfToken);
+  // React.useEffect(() => {
+  //   console.log(providers, csrfToken);
+  // }, [])
+
   return (
     <Layout>
       <div className="w-full h-screen flex justify-center items-center bg-gray-100">
-        <SignIn />
+        <SignIn providers={providers} csrfToken={csrfToken} />
       </div>
     </Layout>
   );
 }
 
-SignIn.getInitialProps = async (context) => {
-  const { req, res } = context;
+export async function getServerSideProps(context) {
+  const { req } = context;
   const session = await getSession({ req });
-  if (session && res && session.accessToken) {
-    res.writeHead(302, { Location: '/' });
-    res.end();
-    return;
+  if (session) {
+    return {
+      redirect: { destination: '/' },
+    };
   }
   return {
-    session: undefined,
-    providers: await providers(context),
-    csrfToken: await csrfToken(context),
+    props: {
+      providers: await providers(context),
+      csrfToken: await csrfToken(context),
+    },
   };
-};
+}

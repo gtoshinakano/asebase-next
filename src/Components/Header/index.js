@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/client';
 import useTranslation from 'next-translate/useTranslation';
+import { Button } from '@Styled/Button';
 
 // The approach used in this component shows how to build a sign in and sign out
 // component that works on pages which support both client and server side
@@ -10,14 +11,19 @@ export default function Header() {
   const { t, lang } = useTranslation('common');
 
   return (
-    <header className="w-full p-3 bg-rose-500 flex">
-      <nav className="text-white text-sm">
+    <header className="w-full p-3 bg-rose-500 ">
+      <nav className="text-white text-sm flex">
         <h4 className="flex-grow">
           <i className="ri-earth-fill mr-3"></i>
           {session
-            ? t('greeting-msg', session.user.name)
+            ? t('greeting-msg', { name: session.user.email })
             : t('greeting-msg', { name: 'visitante' })}
         </h4>
+        {session && (
+          <Button onClick={() => signOut()}>
+            <i className="ri-logout-box-r-line mr-2"></i>Sair
+          </Button>
+        )}
       </nav>
     </header>
   );

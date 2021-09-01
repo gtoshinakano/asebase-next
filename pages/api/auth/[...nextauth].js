@@ -23,8 +23,15 @@ export default NextAuth({
   // https://next-auth.js.org/configuration/providers
   providers: [
     Providers.Email({
-      server: process.env.EMAIL_SERVER,
-      from: process.env.EMAIL_FROM,
+      server: {
+        host: process.env.EMAILSV_HOST,
+        port: process.env.EMAILSV_PORT,
+        auth: {
+          user: process.env.EMAILSV_USER,
+          pass: process.env.EMAILSV_PASS,
+        },
+      },
+      from: process.env.EMAILSV_FROM,
     }),
     // Temporarily removing the Apple provider from the demo site as the
     // callback URL for it needs updating due to Vercel changing domains
@@ -63,14 +70,21 @@ export default NextAuth({
     //   domain: process.env.AUTH0_DOMAIN,
     // }),
   ],
-  adapter: FirebaseAdapter(firestore),
+  //adapter: FirebaseAdapter(firestore),
   // Database optional. MySQL, Maria DB, Postgres and MongoDB are supported.
   // https://next-auth.js.org/configuration/databases
   //
   // Notes:
   // * You must install an appropriate node_module for your database
   // * The Email provider requires a database (OAuth providers do not)
-  database: process.env.DATABASE_URL,
+  database: {
+    type: process.env.DB_TYPE,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+  },
 
   // The secret should be set to a reasonably long random string.
   // It is used to sign cookies and to sign and encrypt JSON Web Tokens, unless
