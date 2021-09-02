@@ -47,7 +47,7 @@ const Screen = ({ csrfToken, providers }) => {
           <input type="hidden" name="csrfToken" defaultValue={csrfToken} />
           <button
             type="submit"
-            className="transition duration-200 bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-flex items-center justify-center disabled:bg-blue-300 disabled:text-gray-700 disabled:cursor-not-allowed"
+            className="transition duration-200 bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-flex items-center justify-center disabled:bg-blue-300 disabled:text-gray-700 disabled:cursor-not-allowed each-in-out"
             disabled={disableSubmit}
           >
             <span className="mr-2">Login por Email</span>
@@ -62,7 +62,7 @@ const Screen = ({ csrfToken, providers }) => {
               <button
                 type="button"
                 key={provider.id}
-                className="transition duration-200 bg-white hover:bg-blue-600 hover:text-white focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-black border w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center mb-2 inline-flex items-center justify-center "
+                className="transition duration-200 bg-white hover:bg-yellow-200 hover:text-blue-400 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-black border w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center mb-2 inline-flex items-center justify-center each-in-out"
                 onClick={() => signIn(provider.id)}
                 disabled={disableSubmit}
               >
