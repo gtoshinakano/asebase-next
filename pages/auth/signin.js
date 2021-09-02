@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from '@Components/Layouts/NotSigned';
+import Layout from '@Components/Layouts/NotSignedCommon';
 import SignIn from '@Views/SignIn';
 import { providers, getSession, csrfToken } from 'next-auth/client';
 

@@ -7,7 +7,15 @@ module.exports = {
     colors: {
       ...colors,
     },
-    extend: {},
+    extend: {
+      transitionProperty: {
+        'width': 'width'
+      },
+      width: {
+        '20px': '20px',
+        '150px': '150px'
+      },
+    },
   },
   variants: {
     extend: {
