@@ -6,13 +6,15 @@ export default function Page() {
   return (
     <Layout>
       <div className="w-full h-screen flex justify-center items-center bg-gray-100">
-        <div className="w-full sm:w-10/12 md:w-1/2 lg:w-1/3 p-3">
-          <div className="inline-flex items-center bg-white leading-none text-green-600 rounded-full p-2 shadow text-teal text-sm">
-            <span className="inline-flex bg-green-600 text-white rounded-full h-6 px-3 justify-center items-center">
-              <i class="ri-mail-send-line mr-2"></i>Link Enviado com sucesso</span>
-            <span className="inline-flex px-2">
-            Abra o seu email para acessar o ASEBASE
+        <div className="w-full sm:w-10/12 md:w-1/2 lg:w-1/3 xl:w-1/4 p-3">
+          <div className="bg-white w-full px-4 py-5 flex flex-row justify-center rounded">
+            <span className="bg-teal-400 text-white rounded-full h-16 w-16 p-4 justify-center">
+              <i className="ri-mail-send-line text-3xl"></i>
             </span>
+            <p className="flex-grow px-2">
+              <span className="text-xl font-bold block mb-3">Email de login enviado</span>
+              <span className="font-extralight">Clique no link enviado ao endereço de email fornecido para acessar o ASEBASE</span>
+            </p>
           </div>
         </div>
       </div>
