@@ -10,11 +10,13 @@ const Screen = ({ csrfToken, providers }) => {
   const { error } = router.query;
 
   const [disabled, setDisabled] = React.useState(false)
+  const [loading, setLoading] = React.useState(false)
   const [email, setEmail] = React.useState(process.env.NEXT_PUBLIC_TEST_EMAIL || "")
 
   const onEmailChange = ({target}) => setEmail(target.value)
 
   const onSubmit = (e) => {
+    setLoading(true)
     setDisabled(true)
   }
   
@@ -51,7 +53,7 @@ const Screen = ({ csrfToken, providers }) => {
             disabled={disableSubmit}
           >
             <span className="mr-2">Login por Email</span>
-            <i className="ri-arrow-right-s-fill"></i>
+            {loading ? <i className="ri-loader-5-line mr-3 animate-spin"></i> : <i className="ri-arrow-right-s-fill"></i>}
           </button>
         </form>
         <hr className="mt-3 mb-4" />
@@ -62,7 +64,7 @@ const Screen = ({ csrfToken, providers }) => {
               <button
                 type="button"
                 key={provider.id}
-                className="transition duration-200 bg-white hover:bg-yellow-200 hover:text-blue-400 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-black border w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center mb-2 inline-flex items-center justify-center each-in-out"
+                className="transition duration-200 bg-white hover:bg-yellow-200 hover:text-gray-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-black border w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center mb-2 inline-flex items-center justify-center each-in-out"
                 onClick={() => signIn(provider.id)}
                 disabled={disableSubmit}
               >

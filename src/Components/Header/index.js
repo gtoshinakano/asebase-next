@@ -11,7 +11,7 @@ export default function Header() {
   const { t, lang } = useTranslation('common');
 
   return (
-    <header className="w-full p-3 bg-rose-500 ">
+    <header className="w-full p-3 bg-rose-500 fixed">
       <nav className="text-white text-sm flex">
         <h4 className="flex-grow">
           {loading ? (
