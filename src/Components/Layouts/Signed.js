@@ -5,7 +5,10 @@ export default function Layout({ children }) {
   return (
     <>
       <Header />
-      <main>{children}</main>
+      <div className="min-h-screen w-full flex">
+        <aside className="min-h-screen bg-yellow-400">oi</aside>
+        <main className="flex-grow">{children}</main>
+      </div>
       <Footer />
     </>
   );
