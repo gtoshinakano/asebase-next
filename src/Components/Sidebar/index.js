@@ -15,12 +15,12 @@ const Sidebar = () => {
       )}
       <aside
         className={`bg-blueGray-800 min-h-screen transition-width ease-in-out duration-300 text-white flex flex-col  z-20 fixed ${
-          !open ? 'w-10' : 'w-64'
+          !open ? 'w-10' : 'w-56'
         }
       `}
       >
-        <div>
-          <Image src="/assets/img/logo_asebase.svg" alt="Asebase Logo" />
+        <div className="flex justify-center">
+          <Image src="/assets/img/logo_asebase.svg" alt="Asebase Logo" width={200} height={46.35} />
         </div>
         <div className="flex-1 font-thin">
           <div className="block overflow-hidden w-full">
