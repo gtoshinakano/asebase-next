@@ -19,9 +19,7 @@ const Sidebar = () => {
         }
       `}
       >
-        <div className="flex justify-center">
-          <Image src="/assets/img/logo_asebase.svg" alt="Asebase Logo" width={200} height={46.35} />
-        </div>
+        
         <div className="flex-1 font-thin">
           <div className="block overflow-hidden w-full">
             <Link href="/explore" className="block py-1 px-2.5">
@@ -88,9 +86,12 @@ const Sidebar = () => {
             type="button"
             onClick={() => setOpen(!open)}
           >
+            <div className="inline-flex justify-center mr-3">
+              <Image src="/assets/img/logo_asebase.svg" alt="Asebase Logo" width={120} height={28} />
+            </div>
             <i
               className={
-                !open ? 'ri-arrow-right-s-fill' : 'ri-arrow-left-s-fill'
+                `${!open ? 'ri-arrow-right-s-fill' : 'ri-arrow-left-s-fill'} mr-2.5`
               }
             ></i>
           </button>
