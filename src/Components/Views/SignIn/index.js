@@ -1,26 +1,30 @@
-import React from 'react'
+import React from 'react';
 import Panel from '@Styled/Panel';
 import { signIn } from 'next-auth/client';
 import { useRouter } from 'next/router';
-import { SchemaModel, StringType } from 'schema-typed'
+import { SchemaModel, StringType } from 'schema-typed';
 
 const Screen = ({ csrfToken, providers }) => {
-
   const router = useRouter();
   const { error } = router.query;
 
-  const [disabled, setDisabled] = React.useState(false)
-  const [loading, setLoading] = React.useState(false)
-  const [email, setEmail] = React.useState(process.env.NEXT_PUBLIC_TEST_EMAIL || "")
+  const [disabled, setDisabled] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [email, setEmail] = React.useState(
+    process.env.NEXT_PUBLIC_TEST_EMAIL || ''
+  );
 
-  const onEmailChange = ({target}) => setEmail(target.value)
+  const onEmailChange = ({ target }) => setEmail(target.value);
 
   const onSubmit = (e) => {
-    setLoading(true)
-    setDisabled(true)
-  }
-  
-  const disableSubmit = disabled || email.length < 10 || schema.checkForField("email", {email: email}).hasError
+    setLoading(true);
+    setDisabled(true);
+  };
+
+  const disableSubmit =
+    disabled ||
+    email.length < 10 ||
+    schema.checkForField('email', { email: email }).hasError;
 
   return (
     <div className="w-full sm:w-10/12 md:w-1/2 lg:w-1/3 xl:w-1/4 p-3">
@@ -53,7 +57,11 @@ const Screen = ({ csrfToken, providers }) => {
             disabled={disableSubmit}
           >
             <span className="mr-2">Login por Email</span>
-            {loading ? <i className="ri-loader-5-line mr-3 animate-spin"></i> : <i className="ri-arrow-right-s-fill"></i>}
+            {loading ? (
+              <i className="ri-loader-5-line mr-3 animate-spin"></i>
+            ) : (
+              <i className="ri-arrow-right-s-fill"></i>
+            )}
           </button>
         </form>
         <hr className="mt-3 mb-4" />
@@ -68,7 +76,9 @@ const Screen = ({ csrfToken, providers }) => {
                 onClick={() => signIn(provider.id)}
                 disabled={disableSubmit}
               >
-                <i className={`${socialIcons[provider.id]} text-orange-500`}></i>
+                <i
+                  className={`${socialIcons[provider.id]} text-orange-500`}
+                ></i>
                 <span className="inline-block ml-2">
                   Entrar com o {provider.name}
                 </span>
@@ -107,5 +117,5 @@ const SignInError = ({ error }) => {
 };
 
 const schema = SchemaModel({
-  email: StringType().isEmail('Email required')
-})
+  email: StringType().isEmail('Email required'),
+});

@@ -1,8 +1,6 @@
 import Layout from '@Components/Layouts/NotSignedCommon';
 
 export default function Page() {
-
-
   return (
     <Layout>
       <div className="w-full h-screen flex justify-center items-center bg-gray-100">
@@ -12,8 +10,13 @@ export default function Page() {
               <i className="ri-mail-send-line text-3xl"></i>
             </span>
             <p className="flex-grow px-2">
-              <span className="text-xl font-bold block mb-3">Email de login enviado</span>
-              <span className="font-extralight">Clique no link enviado ao endereço de email fornecido para acessar o ASEBASE</span>
+              <span className="text-xl font-bold block mb-3">
+                Email de login enviado
+              </span>
+              <span className="font-extralight">
+                Clique no link enviado ao endereço de email fornecido para
+                acessar o ASEBASE
+              </span>
             </p>
           </div>
         </div>

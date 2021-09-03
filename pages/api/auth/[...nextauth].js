@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 //import { FirebaseAdapter } from '@next-auth/firebase-adapter';
-import {sendVerificationRequest} from '@Utils/signin-email'
+import { sendVerificationRequest } from '@Utils/signin-email';
 
 import firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -33,7 +33,7 @@ export default NextAuth({
         },
       },
       from: process.env.EMAILSV_FROM,
-      sendVerificationRequest: sendVerificationRequest
+      sendVerificationRequest: sendVerificationRequest,
     }),
     // Temporarily removing the Apple provider from the demo site as the
     // callback URL for it needs updating due to Vercel changing domains

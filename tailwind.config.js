@@ -9,11 +9,11 @@ module.exports = {
     },
     extend: {
       transitionProperty: {
-        'width': 'width'
+        width: 'width',
       },
       width: {
         '20px': '20px',
-        '150px': '150px'
+        '150px': '150px',
       },
     },
   },
