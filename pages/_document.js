@@ -17,7 +17,10 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head>{this.props.styleTags}</Head>
+        <Head>
+          {this.props.styleTags}
+          <link rel="shortcut icon" href="https://asebex698954184.files.wordpress.com/2018/09/asebex_no_a1.png?w=24" />
+        </Head>
         <body>
           <Main />
           <NextScript />

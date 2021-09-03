@@ -4,7 +4,7 @@ export default function Page() {
 
 
   return (
-    <Layout>
+    <Layout title="Perfil de Bolsista">
       <div className="w-full h-screen flex justify-center items-center bg-gray-100">
         <div className="w-full sm:w-10/12 md:w-1/2 lg:w-1/3 xl:w-1/4 p-3">
           <div className="bg-white w-full px-4 py-5 flex flex-row justify-center rounded">
