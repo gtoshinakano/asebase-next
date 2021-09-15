@@ -1,4 +1,6 @@
 import Layout from '@Components/Layouts/MemberOnly';
+import { getSession } from 'next-auth/client';
+
 
 export default function Page() {
   return (
@@ -23,4 +25,13 @@ export default function Page() {
       </div>
     </Layout>
   );
+}
+
+export async function getServerSideProps(context){
+  const session = await getSession(context)
+  return {
+    props: {
+      session: session,
+    }
+  }
 }

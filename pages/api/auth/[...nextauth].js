@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 //import { FirebaseAdapter } from '@next-auth/firebase-adapter';
 import { sendVerificationRequest } from '@Utils/signin-email';
+import { query } from '@lib/db';
 
 import firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -139,7 +140,10 @@ export default NextAuth({
   // when an action is performed.
   // https://next-auth.js.org/configuration/callbacks
   callbacks: {
-    // async signIn(user, account, profile) { return true },
+    async signIn(user, account, profile) { 
+      console.log(user, account, profile)
+      return true 
+    },
     // async redirect(url, baseUrl) { return baseUrl },
     // async session(session, user) { return session },
     // async jwt(token, user, account, profile, isNewUser) { return token }
