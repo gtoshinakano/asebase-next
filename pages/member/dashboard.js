@@ -16,8 +16,7 @@ export default function Page() {
                 Usuário criado com sucesso
               </span>
               <span className="font-extralight">
-                Acesse a caixa de entrada do email fornecido e clique no link
-                enviado para realizar a verificação de sua conta
+                Development
               </span>
             </p>
           </div>
