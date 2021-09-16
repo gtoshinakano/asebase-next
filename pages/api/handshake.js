@@ -8,7 +8,7 @@ const get = async (req, res) => {
 
   if(!token) res.status(400).json({message: "I refuse to handshake with you"})
   else{
-    res.status(200).json({message: "Hey, high five! ERROR✋"})
+    res.status(200).json({message: "Hey, high five! ", sub: token.sub})
   }
 
 };
