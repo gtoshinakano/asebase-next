@@ -16,12 +16,10 @@ export default function Layout({ children, title }) {
 
   if(isFetched && !data) router.push('/')
 
-  if(data?.action === "force-sign-out-user") {
+  if(data && data.action === "force-sign-out-user") {
     signOut()
     router.push('/')
   }
-
-
 
   return (
     <>
@@ -30,7 +28,9 @@ export default function Layout({ children, title }) {
       </Head>
       <ScreenLoader title="Um momento" message="Aguarde enquanto carregamos alguns dados" isLoading={isLoading} />
       <Sidebar />
-      <main className="pl-10">{children}</main>
+      {isLoading 
+        ? <main className="pl-10">Carregando página</main>
+        : <main className="pl-10">{children}</main>}
     </>
   );
 }

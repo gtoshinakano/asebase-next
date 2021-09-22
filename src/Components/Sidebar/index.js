@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from '@Components/Link';
 
 const Sidebar = () => {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   return (
     <>
