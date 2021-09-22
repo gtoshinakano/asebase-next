@@ -12,7 +12,7 @@ const ScreenLoader = ({title, message, isLoading}) => {
       <Transition
         show={isLoading}
         enter="transition-opacity duration-300"
-        enterFrom="opacity-0"
+        enterFrom="opacity-100"
         enterTo="opacity-100"
         leave="transition-opacity duration-300"
         leaveFrom="opacity-100"

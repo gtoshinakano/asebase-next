@@ -21,9 +21,8 @@ const get = async (req, res) => {
       console.log(userInfo)
       if(userInfo.blocked) res.status(200).json({message: "You are blocked for transgress our Terms of Use", action: "force-sign-out-user" })
       else res.status(200).json({
-        message: "High Five 🖐", 
-        uid: userInfo.id, 
-        data: {...userInfo, ...session.user} })
+        message: "High Five 🖐",  
+        data: {...userInfo, ...session.user, uid: userInfo.id} })
     }
     
   }

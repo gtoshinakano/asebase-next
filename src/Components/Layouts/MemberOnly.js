@@ -5,12 +5,14 @@ import { handshake } from '@Utils/defaultQueries';
 import ScreenLoader from '@Styled/ScreenLoader';
 import { useRouter } from 'next/router';
 import { signOut } from "next-auth/client"
+import Skeleton from 'react-loading-skeleton';
+import { Transition } from '@headlessui/react';
 
 export default function Layout({ children, title }) {
 
   const client = useQueryClient()
-  client.setQueryDefaults('handshake', { queryFn: handshake })
-  const {isLoading, data, isFetched} = useQuery('handshake', {staleTime: Infinity})
+  client.setQueryDefaults('handshake', { queryFn: handshake, staleTime: Infinity })
+  const {isLoading, data, isFetched} = useQuery('handshake')
 
   const router = useRouter()
 
@@ -29,8 +31,19 @@ export default function Layout({ children, title }) {
       <ScreenLoader title="Um momento" message="Aguarde enquanto carregamos alguns dados" isLoading={isLoading} />
       <Sidebar />
       {isLoading 
-        ? <main className="pl-10">Carregando página</main>
-        : <main className="pl-10">{children}</main>}
+        && <main className="pl-10"><Skeleton width="100%" className="h-64" /></main>
+      }
+      <Transition
+        show={!isLoading}
+        enter="transition-opacity duration-75"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-opacity duration-150"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
+        <main className="pl-10">{children}</main>
+      </Transition>
     </>
   );
 }
