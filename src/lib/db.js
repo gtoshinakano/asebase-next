@@ -12,11 +12,21 @@ const config = {
 }
 
 // create the connection to database
-const db = mysql(config);
+export const db = mysql(config);
 
 export async function query( q, values) {
   try {
     const results = await db.query(q, values)
+    await db.end()
+    return results
+  } catch (e) {
+    throw Error(e.message)
+  }
+}
+
+export async function insertId( q, values) {
+  try {
+    const results = await db.query(q, values).query((r)=> r.insertId)
     await db.end()
     return results
   } catch (e) {

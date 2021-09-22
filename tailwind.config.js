@@ -16,6 +16,10 @@ module.exports = {
         '150px': '150px',
       },
     },
+    fontFamily: {
+      noto: ['"Noto Sans"', 'Helvetica'],
+      notoJP: ['"Noto Sans JP"', 'Helvetica'],
+    },
   },
   variants: {
     extend: {

@@ -14,7 +14,7 @@ const Sidebar = () => {
         ></div>
       )}
       <aside
-        className={`bg-blueGray-800 min-h-screen transition-width ease-in-out duration-300 text-white flex flex-col  z-20 fixed ${
+        className={`bg-red-700 min-h-screen transition-width ease-in-out duration-300 text-white flex flex-col  z-20 fixed ${
           !open ? 'w-10' : 'w-56'
         }
       `}
@@ -22,7 +22,7 @@ const Sidebar = () => {
         
         <div className="flex-1 font-thin">
           <div className="block overflow-hidden w-full">
-            <Link href="/explore" className="block py-1 px-2.5">
+            <Link href="/explore" className="block py-1 px-2.5 hover:bg-red-600 hover:text-white hover:font-bold">
               <span className="inline-flex justify-center items-center whitespace-nowrap">
                 <i className="ri-earth-fill text-lg mr-4"></i>
                 Explorar Asebase
