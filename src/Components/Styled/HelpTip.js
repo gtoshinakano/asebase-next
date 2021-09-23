@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { Transition } from '@headlessui/react';
 
-const HelpTip = ({icon, message}) => {
+const HelpTip = ({icon, message, error, warning}) => {
   const [show, setShow] = useState(false);
 
   return (
@@ -16,7 +16,11 @@ const HelpTip = ({icon, message}) => {
         leaveTo="opacity-0"
       >
         <div className="relative">  
-          <div className="absolute transform -translate-x-full w-64 bg-black text-white rounded px-3 py-2">{message} lorem ipsum sum amet sie te</div>
+          <div 
+            className={`absolute transform -translate-x-full w-64 pr-1
+            `}>
+              <div className={`rounded px-2 py-1 ${error && "bg-white text-red-500 border border-red-500 font-semibold"}`}>{message}</div>
+            </div>
         </div>
       </Transition>
       <button 
@@ -25,7 +29,7 @@ const HelpTip = ({icon, message}) => {
         onMouseOut={() => setShow(false)}
         onMouseOver={() => setShow(true)}
       >
-        <i className={`${icon} `}></i>
+        {icon}
       </button>
     </div>
   );

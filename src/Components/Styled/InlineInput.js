@@ -32,8 +32,14 @@ const InlineInput = ({onChange, onBlur, mutation, placeholder, required, deletab
   return (
     <div className={`p-1`}>
       <div className="relative">
-        <div className="absolute right-1 top-1 text-xs font-thin z-10 inline-flex">
-          <HelpTip icon="ri-question-fill" message={message}/>
+        <div className="absolute right-1 top-auto text-xs font-thin z-10 inline-flex">
+          {inputErr.hasError && 
+            <HelpTip 
+              icon={<i className="text-lg text-red-300 ri-error-warning-line"></i>} 
+              message={inputErr.errorMessage}
+              error
+            />
+          }
         </div>
       </div>
       <IInput
@@ -55,7 +61,7 @@ const InlineInput = ({onChange, onBlur, mutation, placeholder, required, deletab
 
 const IInput = styled.input.attrs(props => ({
   className: `w-full focus:outline-none text-gray-700 hover:bg-gray-100 focus:bg-blueGray-100 py-1 px-0.5 font-notoJP font-thin ${props.inputCSS} 
-  ${props.error?.hasError && "ring-1 ring-rose-400"}`,
+  ${props.error?.hasError && "ring-1 ring-red-200"}`,
 }))`
 
 `
