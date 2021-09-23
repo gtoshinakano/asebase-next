@@ -11,10 +11,10 @@ const get = async (req, res) => {
 
   if(!token) res.status(400).json({message: "I refuse to handshake with you"})
   else{
-    const user_info = await query("SELECT id, blocked FROM users_info WHERE id=?", token.sub) // WHERE blocked != 1
+    const user_info = await query("SELECT id, blocked FROM users_info WHERE id=?", token.sub) // WHERE blocked != 1 #TODO Adicionar user_verified
 
-    if(user_info.length === 0){// There is no user_info, so let's create
-      const newId = await insertId("INSERT INTO users_info(auth_id, blocked) VALUES(?, ? )",[token.sub, 0])
+    if(user_info.length === 0){// There is no user_info, so let's create one
+      const newId = await insertId("INSERT INTO users_info(auth_id, blocked) VALUES(?, ? )",[token.sub, 0]) 
       res.status(200).json({message: "User Info Created", uid: newId})  
     }else{
       const userInfo = user_info[0]
@@ -22,7 +22,13 @@ const get = async (req, res) => {
       if(userInfo.blocked) res.status(200).json({message: "You are blocked for transgress our Terms of Use", action: "force-sign-out-user" })
       else res.status(200).json({
         message: "High Five 🖐",  
-        data: {...userInfo, ...session.user, uid: userInfo.id} })
+        data: {
+          ...userInfo, 
+          ...session.user, 
+          uid: userInfo.id,
+          serverTime: new Date() 
+          //TODO Adicionar user_verified
+        } })
     }
     
   }
