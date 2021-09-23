@@ -18,8 +18,8 @@ const UserProperties = () => {
       <div className="w-2/3 py-2 px-1.5">
         {!isLoading ? data.data.uid : <Skeleton width={20} />}
       </div>
-      <div className="w-1/3 inline-flex  py-2">
-        <i className="ri-mail-lock-line mr-2"></i> Email
+      <div className="w-1/3 inline-flex py-2">
+        <i className="ri-mail-lock-line mr-2 "></i> Email
       </div>
       <div className="w-2/3 py-2 px-1.5">
         {!isLoading ? data.data.email : <Skeleton width={20} />}

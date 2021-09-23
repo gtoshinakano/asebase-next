@@ -6,7 +6,7 @@ export default function Page({session}) {
   return (
     <Layout title="Perfil de Bolsista">
       <div className="w-full min-h-screen flex flex-wrap flex-col font-notoJP text-gray-700">
-        <div className="h-64 w-full bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500"></div>
+        <div className="h-64 w-full bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 print:hidden"></div>
         <DashboardView />
       </div>
     </Layout>

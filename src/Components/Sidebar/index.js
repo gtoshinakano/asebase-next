@@ -14,7 +14,7 @@ const Sidebar = () => {
         ></div>
       )}
       <aside
-        className={`bg-red-700 min-h-screen transition-width ease-in-out duration-300 text-white flex flex-col  z-20 fixed ${
+        className={`bg-red-700 min-h-screen transition-width ease-in-out duration-300 text-white flex flex-col z-20 fixed print:hidden ${
           !open ? 'w-10' : 'w-56'
         }
       `}

@@ -42,7 +42,7 @@ export default function Layout({ children, title }) {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <main className="pl-10">{children}</main>
+        <main className="pl-10 print:pl-0">{children}</main>
       </Transition>
     </>
   );
