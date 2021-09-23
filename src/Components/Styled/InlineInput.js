@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import { Popover, Transition } from '@headlessui/react';
 import _ from 'lodash'
+import HelpTip from '@Styled/HelpTip';
 
 const InlineInput = ({onChange, onBlur, mutation, placeholder, required, deletable, inputCSS, type, value, schema, name, message, inline}) => {
   
@@ -32,7 +32,9 @@ const InlineInput = ({onChange, onBlur, mutation, placeholder, required, deletab
   return (
     <div className={`p-1`}>
       <div className="relative">
-        <div className="absolute right-1 top-1 text-xs font-thin z-10">{message}</div>
+        <div className="absolute right-1 top-1 text-xs font-thin z-10 inline-flex">
+          <HelpTip icon="ri-question-fill" message={message}/>
+        </div>
       </div>
       <IInput
         type={type}
