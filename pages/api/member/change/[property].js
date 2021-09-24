@@ -1,5 +1,4 @@
 import {query} from '@lib/db'
-import { getSession } from "next-auth/client"
 import {getSessionUserInfoId} from '@Helpers'
 import jwt from 'next-auth/jwt';
 
