@@ -3,11 +3,13 @@ import styled from 'styled-components';
 import _ from 'lodash'
 import HelpTip from '@Styled/HelpTip';
 
-const InlineInput = ({onChange, onBlur, mutation, placeholder, required, deletable, inputCSS, type, value, schema, name, message, inline}) => {
+const InlineInput = ({onChange, onBlur, mutation, placeholder, disabled, resetable, inputCSS, type, value, schema, name, inline}) => {
   
   const [menuOpen, setMenuOpen] = useState(false);
   const [inputErr, setInputErr] = useState({hasError: false});
   const [inputVal, setInputVal] = useState(value);
+  const [serverMsg, setServerMsg] = useState("");
+
 
   React.useEffect(() => setInputVal(value), [value])
 
@@ -25,21 +27,28 @@ const InlineInput = ({onChange, onBlur, mutation, placeholder, required, deletab
       }
       //onBlur()
     }else{
-      setInputErr({hasError: false})
+      setInputErr(noError)
     }
+  }
+
+  const resetInput = (e) => {
+    e.preventDefault()
+    setInputVal(value)
+    setInputErr(noError)
   }
 
   return (
     <div className={`p-1`}>
       <div className="relative">
-        <div className="absolute right-1 top-auto text-xs font-thin z-10 inline-flex">
+        <div className="absolute right-2 font-thin z-10 inline-flex">
           {inputErr.hasError && 
             <HelpTip 
               icon={<i className="text-lg text-red-300 ri-error-warning-line"></i>} 
-              message={inputErr.errorMessage}
+              message={<>{inputErr.errorMessage} asjid asojdas iodasjiodjiasd oasjd asodas jiodjio</>}
               error
             />
           }
+
         </div>
       </div>
       <IInput
@@ -53,6 +62,7 @@ const InlineInput = ({onChange, onBlur, mutation, placeholder, required, deletab
         inputCSS={inputCSS}
         value={inputVal}
         error={inputErr}
+        disabled={disabled}
       />
       
     </div>
@@ -65,5 +75,7 @@ const IInput = styled.input.attrs(props => ({
 }))`
 
 `
+
+const noError = {hasError: false}
 
 export default InlineInput;

@@ -15,6 +15,10 @@ module.exports = {
         '20px': '20px',
         '150px': '150px',
       },
+      maxWidth: {
+        '265px': '265px',
+        '150px': '150px',
+      },
       screens: {
         'print': {'raw': 'print'},
       },
