@@ -4,6 +4,7 @@ import { useQuery } from "react-query"
 import Skeleton from 'react-loading-skeleton';
 import InlineInput from '@Components/Styled/InlineInput';
 import * as schemas from '@Utils/Schemas/User'
+import { changeNickname } from '@Utils/DefaultQueries/Mutations'
 
 const UserProperties = () => {
 
@@ -27,7 +28,7 @@ const UserProperties = () => {
       <div className="w-1/3 inline-flex py-2">
         <i className="ri-open-arm-line mr-2"></i> Nickname
       </div>
-      <div className="w-2/3 ">
+      <div className="w-2/3">
         {!isLoading 
           ? <InlineInput 
               value={data.data.name} 
@@ -35,8 +36,8 @@ const UserProperties = () => {
               inputCSS=""
               name="name"
               schema={schemas.Session}
-              message="teste"
-              //mutation invalidade
+              mutationFn={changeNickname}
+              invalidate="handshake"
               resetable
             /> 
           : <Skeleton width={20} />}

@@ -2,17 +2,22 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import _ from 'lodash'
 import HelpTip from '@Styled/HelpTip';
-import { useMutation } from 'react-query';
-import axios from 'axios';
+import { useMutation, useQueryClient } from 'react-query';
 
-const InlineInput = ({onChange, onBlur, mutationFn, placeholder, disabled, resetable, inputCSS, type, value, schema, name, inline}) => {
+const InlineInput = ({mutationFn, invalidate, placeholder, resetable, inputCSS, type, value, schema, name}) => {
   
   const [menuOpen, setMenuOpen] = useState(false);
   const [inputErr, setInputErr] = useState({hasError: false});
   const [inputVal, setInputVal] = useState(value);
   const [serverMsg, setServerMsg] = useState("");
+  const client = useQueryClient()
 
-  const {data, isLoading, isSuccess, mutate} = useMutation(mutationFn)
+  const { isLoading, isSuccess, mutate} = useMutation((data) => mutationFn(data), {
+    onSuccess: (data) => {
+      if(invalidate && invalidate !== "") client.invalidateQueries(invalidate)
+      if(data?.serverMessage) setServerMsg(data.serverMessage)
+    }
+  })
 
 
   React.useEffect(() => setInputVal(value), [value])
@@ -27,7 +32,7 @@ const InlineInput = ({onChange, onBlur, mutationFn, placeholder, disabled, reset
   
     if(inputVal !== value) {
       if(!inputErr.hasError) {
-        //TODO Mutation
+        mutate({[name]: inputVal})
       }
       //onBlur()
     }else{
@@ -52,12 +57,22 @@ const InlineInput = ({onChange, onBlur, mutationFn, placeholder, disabled, reset
               error
             />
           }
-          {inputVal !== value && resetable &&
+          {inputVal !== value && resetable && !serverMsg && 
             <HelpTip 
               icon={<i className="ri-arrow-go-back-line text-lg hover:text-blueGray-900"></i>} 
               message={<><i className="ri-eraser-fill mr-1"></i> Desfazer</>}
+              warning
+            />
+          }
+          {serverMsg &&
+            <HelpTip 
+              icon={<i className="ri-feedback-fill text-lg hover:text-blueGray-900"></i>} 
+              message={<>{serverMsg}</>}
               onClick={resetInput}
             />
+          }
+          { isLoading &&
+            <i className="ri-loader-5-line text-lg animate-spin"></i>
           }
         </div>
       </div>

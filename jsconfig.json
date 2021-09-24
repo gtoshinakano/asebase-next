@@ -6,6 +6,7 @@
       "@Layouts/*": ["src/Layouts/*"],
       "@Views/*": ["src/Components/Views/*"],
       "@Utils/*": ["src/Utils/*"],
+      "@Helpers": ["src/Utils/Helpers"],
       "@Contexts/*": ["src/Contexts/*"],
       "@Credentials/*": ["src/Credentials/*"],
       "@Styled/*": ["src/Components/Styled/*"],

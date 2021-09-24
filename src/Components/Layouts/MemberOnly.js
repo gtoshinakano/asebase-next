@@ -1,7 +1,7 @@
 import Sidebar from '@Components/Sidebar';
 import Head from 'next/head';
 import { useQueryClient, useQuery } from 'react-query';
-import { handshake } from '@Utils/defaultQueries';
+import { handshake } from '@Utils/DefaultQueries';
 import ScreenLoader from '@Styled/ScreenLoader';
 import { useRouter } from 'next/router';
 import { signOut } from "next-auth/client"

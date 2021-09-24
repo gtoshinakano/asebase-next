@@ -18,7 +18,7 @@ const get = async (req, res) => {
       res.status(200).json({message: "User Info Created", uid: newId})  
     }else{
       const userInfo = user_info[0]
-      console.log(userInfo)
+
       if(userInfo.blocked) res.status(200).json({message: "You are blocked for transgress our Terms of Use", action: "force-sign-out-user" })
       else res.status(200).json({
         message: "High Five 🖐",  
