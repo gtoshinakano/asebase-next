@@ -5,7 +5,7 @@ const HelpTip = ({icon, message, error, warning}) => {
   const [show, setShow] = useState(false);
 
   return (
-    <div>
+    <div className="print:hidden">
       <Transition
         show={show}
         enter="transition-opacity duration-200"
@@ -17,15 +17,19 @@ const HelpTip = ({icon, message, error, warning}) => {
       >
         <div className="relative">  
           <div 
-            className={`absolute transform -translate-x-full min-w-max pr-1`}>
-              <div className={`rounded px-1 py-0.5 mt-1 text-xs inline-flex max-w-265px
+            className={`absolute transform -translate-x-full min-w-max flex-col pr-1.5`}>
+              <div className="relative">
+                <div className="absolute h-1.5 w-1.5 z-0 transform rotate-45 right-0 top-3 -mr-0.5 bg-red-500"></div>
+              </div>
+              <div className={`rounded px-1.5 py-0.5 mt-1 text-xs inline-flex max-w-265px z-10
                 ${error 
                   ? "bg-red-500 text-white border border-red-500"
                   : warning ? "bg-white text-orange-500 border border-orange-500"
                   : "bg-black text-white"
                 }
-                `}
+              `}
               >{message}</div>
+              
             </div>
         </div>
       </Transition>

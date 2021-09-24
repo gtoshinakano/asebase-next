@@ -2,13 +2,17 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import _ from 'lodash'
 import HelpTip from '@Styled/HelpTip';
+import { useMutation } from 'react-query';
+import axios from 'axios';
 
-const InlineInput = ({onChange, onBlur, mutation, placeholder, disabled, resetable, inputCSS, type, value, schema, name, inline}) => {
+const InlineInput = ({onChange, onBlur, mutationFn, placeholder, disabled, resetable, inputCSS, type, value, schema, name, inline}) => {
   
   const [menuOpen, setMenuOpen] = useState(false);
   const [inputErr, setInputErr] = useState({hasError: false});
   const [inputVal, setInputVal] = useState(value);
   const [serverMsg, setServerMsg] = useState("");
+
+  const {data, isLoading, isSuccess, mutate} = useMutation(mutationFn)
 
 
   React.useEffect(() => setInputVal(value), [value])
@@ -44,7 +48,7 @@ const InlineInput = ({onChange, onBlur, mutation, placeholder, disabled, resetab
           {inputErr.hasError && 
             <HelpTip 
               icon={<i className="text-lg text-red-300 ri-error-warning-line"></i>} 
-              message={<>{inputErr.errorMessage} asjid asojdas iodasjiodjiasd oasjd asodas jiodjio</>}
+              message={<>{inputErr.errorMessage}</>}
               error
             />
           }
