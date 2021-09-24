@@ -5,10 +5,6 @@ import { Transition } from '@headlessui/react'
 
 const ScreenLoader = ({title, message, isLoading}) => {
   return (
-    <>
-      <Head>
-        <title>Área de Membros - {title} - ASEBASE</title>
-      </Head>
       <Transition
         show={isLoading}
         enter="transition-opacity duration-300"
@@ -24,7 +20,7 @@ const ScreenLoader = ({title, message, isLoading}) => {
           <p className="w-1/3 text-center text-white">{message}</p>
         </div>
       </Transition>
-    </>
+
   );
 };
 

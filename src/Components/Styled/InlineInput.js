@@ -82,7 +82,6 @@ const InlineInput = ({mutationFn, invalidate, placeholder, resetable, inputCSS, 
         onBlur={onInputBlur}
         onMouseOver={() => setMenuOpen(!menuOpen)}
         onMouseOut={() => setMenuOpen(!menuOpen)}
-        disabled={false} //TODO disable when loading
         placeholder={placeholder}
         inputCSS={inputCSS}
         value={inputVal}
