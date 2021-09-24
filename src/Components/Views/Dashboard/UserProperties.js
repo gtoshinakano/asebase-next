@@ -36,6 +36,8 @@ const UserProperties = () => {
               name="name"
               schema={schemas.Session}
               message="teste"
+              //mutation invalidade
+              resetable
             /> 
           : <Skeleton width={20} />}
       </div>

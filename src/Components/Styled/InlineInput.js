@@ -47,12 +47,18 @@ const InlineInput = ({onChange, onBlur, mutationFn, placeholder, disabled, reset
         <div className="absolute right-2 font-thin z-10 inline-flex">
           {inputErr.hasError && 
             <HelpTip 
-              icon={<i className="text-lg text-red-300 ri-error-warning-line"></i>} 
-              message={<>{inputErr.errorMessage}</>}
+              icon={<i className="text-lg text-red-300 ri-alert-fill"></i>} 
+              message={<><i className=" ri-error-warning-line mr-2"></i>{inputErr.errorMessage}</>}
               error
             />
           }
-
+          {inputVal !== value && resetable &&
+            <HelpTip 
+              icon={<i className="ri-arrow-go-back-line text-lg hover:text-blueGray-900"></i>} 
+              message={<><i className="ri-eraser-fill mr-1"></i> Desfazer</>}
+              onClick={resetInput}
+            />
+          }
         </div>
       </div>
       <IInput
@@ -66,7 +72,7 @@ const InlineInput = ({onChange, onBlur, mutationFn, placeholder, disabled, reset
         inputCSS={inputCSS}
         value={inputVal}
         error={inputErr}
-        disabled={disabled}
+        disabled={isLoading}
       />
       
     </div>
