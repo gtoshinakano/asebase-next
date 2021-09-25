@@ -38,7 +38,7 @@ const UserProperties = () => {
               mutationFn={updateNickname}
               invalidate="handshake"
               resetable
-              onMessageClick={signOut}
+              onMessageClick={signOut} //TODO signOut and router.push('/')
               loading={isLoading}
             /> 
           : <Skeleton width={20} />}
