@@ -13,17 +13,24 @@ export default async (req, res) => {
     const checkedUser = await getSessionUserInfoId(token.sub)
     if(!checkedUser.hasError) {
       try {
-        let mutationQuery
         switch (property) {
           case 'name':
-            mutationQuery = await query("UPDATE users SET name=?, updated_at=NOW() WHERE id = ?", [req.body.name, token.sub])
-            break;
-        
+            await query(
+              "UPDATE users SET name=?, updated_at=NOW() WHERE auth_id = ?", 
+              [req.body.name, token.sub]
+            )
+            return res.json({serverMessage: "Alteração visível somente após login. Clique no balão ao lado para re-autenticar"})
+          case 'full_name':
+            await query(
+              "UPDATE users_info SET full_name=?, updated_at=NOW() WHERE auth_id = ?", 
+              [req.body.full_name, token.sub]
+            )
+            return res.status(200).json({log: "Update Done"})
+      
           default:
-            mutationQuery = ""
-            break;
+            return res.status(400).json({serverMessage: "Bad Request"})
         }
-        return res.json({serverMessage: "Alteração visível somente após login. Clique no balão ao lado para re-autenticar"})
+        
       } catch (e) {
         res.json({ hasError: true, errorMessage: e.message })
       }

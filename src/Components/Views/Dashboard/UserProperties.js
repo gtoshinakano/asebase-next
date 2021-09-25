@@ -37,7 +37,6 @@ const UserProperties = () => {
               schema={schemas.Session}
               mutationFn={updateNickname}
               invalidate="handshake"
-              resetable
               onMessageClick={signOut} //TODO signOut and router.push('/')
               loading={isLoading}
             /> 

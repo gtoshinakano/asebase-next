@@ -19,7 +19,7 @@ const DashboardView = () => {
       {session ? (
         <>
           <PersonalInfo />
-          <div ref={nikkeiRef} className={`${nikkeiVisible && "text-4xl"}`}>{nikkeiVisible && "Agora to"}</div>
+          <div ref={nikkeiRef} className={`${nikkeiVisible && "text-4xl"}`}>{nikkeiVisible && ""}</div>
         </>
       ) : <Skeleton className="w-full h-6" />}
       
