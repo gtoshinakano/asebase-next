@@ -1,14 +1,13 @@
 import React from 'react';
-import { useSession } from "next-auth/client"
+import { signOut } from "next-auth/client"
 import { useQuery } from "react-query"
 import Skeleton from 'react-loading-skeleton';
 import InlineInput from '@Components/Styled/InlineInput';
 import * as schemas from '@Utils/Schemas/User'
-import { changeNickname } from '@Utils/DefaultQueries/Mutations'
+import { updateNickname } from '@Utils/DefaultQueries/Mutations'
 
 const UserProperties = () => {
 
-  const [session, loading] = useSession()
   const {data, isLoading} = useQuery('handshake')
 
   return (
@@ -36,13 +35,25 @@ const UserProperties = () => {
               inputCSS=""
               name="name"
               schema={schemas.Session}
-              mutationFn={changeNickname}
+              mutationFn={updateNickname}
               invalidate="handshake"
               resetable
+              onMessageClick={signOut}
+              loading={isLoading}
             /> 
           : <Skeleton width={20} />}
       </div>
-      
+      <div className="w-1/3 inline-flex py-2">
+        <i className="ri-shield-user-line mr-2"></i> Status
+      </div>
+      <div className="w-2/3 py-2 px-1.5 inline-flex text-sky-300">
+        {/* TODO user verification 
+        
+        */
+        
+        }
+        <i className="ri-shield-check-line mr-2"></i> Verificado
+      </div>
     </div>
   );
 }

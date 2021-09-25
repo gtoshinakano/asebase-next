@@ -4,15 +4,14 @@ import _ from 'lodash'
 import HelpTip from '@Styled/HelpTip';
 import { useMutation, useQueryClient } from 'react-query';
 
-const InlineInput = ({mutationFn, invalidate, placeholder, resetable, inputCSS, type, value, schema, name}) => {
+const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value, schema, name, onMessageClick, loading}) => {
   
-  const [menuOpen, setMenuOpen] = useState(false);
   const [inputErr, setInputErr] = useState({hasError: false});
   const [inputVal, setInputVal] = useState(value);
   const [serverMsg, setServerMsg] = useState("");
   const client = useQueryClient()
 
-  const { isLoading, isSuccess, mutate} = useMutation((data) => mutationFn(data), {
+  const { isLoading, mutate} = useMutation((data) => mutationFn(data), {
     onSuccess: (data) => {
       if(invalidate && invalidate !== "") client.invalidateQueries(invalidate)
       if(data?.serverMessage) setServerMsg(data.serverMessage)
@@ -40,10 +39,9 @@ const InlineInput = ({mutationFn, invalidate, placeholder, resetable, inputCSS, 
     }
   }
 
-  const resetInput = (e) => {
-    e.preventDefault()
-    setInputVal(value)
-    setInputErr(noError)
+  const handleKeyPress = (e) => {
+    if(e.keyCode === 13) e.target.blur(); 
+    
   }
 
   return (
@@ -57,21 +55,14 @@ const InlineInput = ({mutationFn, invalidate, placeholder, resetable, inputCSS, 
               error
             />
           }
-          {inputVal !== value && resetable && !serverMsg && 
-            <HelpTip 
-              icon={<i className="ri-arrow-go-back-line text-lg hover:text-blueGray-900"></i>} 
-              message={<><i className="ri-eraser-fill mr-1"></i> Desfazer</>}
-              warning
-            />
-          }
           {serverMsg &&
             <HelpTip 
               icon={<i className="ri-feedback-fill text-lg hover:text-blueGray-900"></i>} 
               message={<>{serverMsg}</>}
-              onClick={resetInput}
+              onClick={onMessageClick}
             />
           }
-          { isLoading &&
+          { (isLoading || loading) &&
             <i className="ri-loader-5-line text-lg animate-spin"></i>
           }
         </div>
@@ -80,15 +71,13 @@ const InlineInput = ({mutationFn, invalidate, placeholder, resetable, inputCSS, 
         type={type}
         onChange={valueChange}
         onBlur={onInputBlur}
-        onMouseOver={() => setMenuOpen(!menuOpen)}
-        onMouseOut={() => setMenuOpen(!menuOpen)}
+        onKeyUp={handleKeyPress}
         placeholder={placeholder}
         inputCSS={inputCSS}
         value={inputVal}
         error={inputErr}
-        disabled={isLoading}
+        disabled={isLoading || loading}
       />
-      
     </div>
   );
 }

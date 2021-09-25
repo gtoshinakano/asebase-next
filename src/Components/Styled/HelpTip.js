@@ -45,6 +45,7 @@ const HelpTip = ({icon, message, error, warning, onClick}) => {
         onMouseOut={() => setShow(false)}
         onMouseOver={() => setShow(true)}
         type="button"
+        tabIndex="-1"
       >
         {icon}
       </button>

@@ -23,7 +23,7 @@ export default async (req, res) => {
             mutationQuery = ""
             break;
         }
-        return res.json({serverMessage: "Esta alteração só surtirá efeito no próximo login"})
+        return res.json({serverMessage: "Alteração visível somente após login. Clique no balão ao lado para re-autenticar"})
       } catch (e) {
         res.json({ hasError: true, errorMessage: e.message })
       }
