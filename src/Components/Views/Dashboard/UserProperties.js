@@ -45,7 +45,7 @@ const UserProperties = () => {
       <div className="w-1/3 inline-flex py-2">
         <i className="ri-shield-user-line mr-2"></i> Status
       </div>
-      <div className="w-2/3 py-2 px-1.5 inline-flex text-sky-300">
+      <div className="w-2/3 py-2 px-1.5 inline-flex text-sky-500">
         {/* TODO user verification 
         
         */

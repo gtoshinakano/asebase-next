@@ -17,18 +17,23 @@ const PersonalInfo = () => {
   if(isLoading) return (<Skeleton className="w-full h-10" />)
 
   else return (
-    <div className="pr-1.5" >
-      <InlineInput 
-        value={data?.full_name || ""} 
-        placeholder="Nome Completo"
-        inputCSS="text-3xl"
-        name="full_name"
-        schema={schemas.PersonalProfile}
-        mutationFn={updateFullName}
-        invalidate={queryKey}
-        loading={isLoading}
-      />
-    </div>
+    <>
+      <div className="pr-1.5" >
+        <InlineInput 
+          value={data?.full_name || ""} 
+          placeholder="Nome Completo"
+          inputCSS="text-3xl"
+          name="full_name"
+          schema={schemas.PersonalProfile}
+          mutationFn={updateFullName}
+          invalidate={queryKey}
+          loading={isLoading}
+        />
+      </div>
+      <div className="pr-1.5" >
+        
+      </div>
+    </>
   );
 }
 
