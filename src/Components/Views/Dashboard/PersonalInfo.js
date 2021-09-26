@@ -35,7 +35,7 @@ const PersonalInfo = () => {
         />
       </div>
       <div className="pr-1.5" >
-        <GenderInput value={data?.gender || null} />
+        <GenderInput value={data?.gender || null} queryKey={queryKey} />
       </div>
       <div className="pl-2 mt-3 inline font-thin text-gray-700">
         Natural de 
