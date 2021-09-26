@@ -14,7 +14,7 @@ const PersonalInfo = () => {
   const handshake = useQuery('handshake')
   const uid = handshake.data?.data.uid || ""
   const queryKey = ["personal-profile", uid]
-  const {data, isLoading, isFetching} = useQuery(queryKey, getPersonalProfile, {staleTime: Infinity})
+  const {data, isLoading} = useQuery(queryKey, getPersonalProfile, {staleTime: Infinity})
 
   let birthDate = moment(data?.birth_date).utc() || ""
   
@@ -71,7 +71,7 @@ const PersonalInfo = () => {
           value={birthDate.format("DD/MM/YYYY")}
           mutationFn={updateBirthDate}
           invalidate={queryKey}
-        />
+        />.
       </div>
     </>
   );

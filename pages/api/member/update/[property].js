@@ -27,6 +27,8 @@ export default async (req, res) => {
             return await resSingleUpdate('birth_city', req.body.birth_city, token.sub, res)
           case 'birth_state':
             return await resSingleUpdate('birth_state', req.body.birth_state, token.sub, res)
+          case 'gender':
+            return await resSingleUpdate('gender', req.body.gender, token.sub, res)
           case 'birth_date':
             return await resBirthDate(req.body, token.sub, res)
           default:
