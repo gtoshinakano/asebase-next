@@ -16,8 +16,10 @@ const PersonalInfo = () => {
   const uid = handshake.data?.data.uid || ""
   const queryKey = ["personal-profile", uid]
   const {data, isLoading, isFetching} = useQuery(queryKey, getPersonalProfile, {staleTime: Infinity})
-  console.log(isLoading, isFetching)
+  console.log(moment(data?.birth_date), moment().utcOffset())
 
+  let birthDate = moment(data?.birth_date).utc() || ""
+  
   if(isLoading) return (<Skeleton className="w-full h-10" />)
 
   else return (
@@ -61,7 +63,7 @@ const PersonalInfo = () => {
           schema={schemas.PersonalProfile}
           name="birth_date"
           mask={maskDate}
-          value={moment(data?.birth_date).format("DD/MM/YYYY") || ""}
+          value={birthDate.format("DD/MM/YYYY")}
           mutationFn={updateBirthDate}
           invalidate={queryKey}
         />
