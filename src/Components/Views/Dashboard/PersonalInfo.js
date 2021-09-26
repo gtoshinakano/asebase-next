@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 import { getPersonalProfile } from '@Utils/DefaultQueries';
 import Skeleton from 'react-loading-skeleton';
 import * as schemas from '@Utils/Schemas/User'
-import { updateBirthDate, updateBirthCity, updateFullName } from '@Utils/DefaultQueries/Mutations'
+import { updateBirthDate, updateBirthCity, updateFullName, updateBirthState } from '@Utils/DefaultQueries/Mutations'
 import GenderInput from '@Components/Styled/GenderInput';
 import { maskDate } from '@Utils/Helpers/masks';
 import moment from 'moment';
@@ -44,15 +44,20 @@ const PersonalInfo = () => {
           placeholder="Município"
           schema={schemas.PersonalProfile}
           name="birth_city"
-          value={data?.birth_city || null}
+          value={data?.birth_city || ""}
           mutationFn={updateBirthCity}
           invalidate={queryKey}
         />
         , do Estado de
-        {/* {<InlineInput
+        <InlineInput
           inline
-          placeholder="Estado"
-        />} */}
+          placeholder="Município"
+          schema={schemas.PersonalProfile}
+          name="birth_state"
+          value={data?.birth_state || ""}
+          mutationFn={updateBirthState}
+          invalidate={queryKey}
+        />
         , Brasil.
       </div>
       <div className="pl-2 mt-3 inline font-thin text-gray-700">

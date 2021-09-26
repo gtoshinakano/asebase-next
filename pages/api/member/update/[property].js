@@ -22,11 +22,13 @@ export default async (req, res) => {
             )
             return res.json({serverMessage: "Alteração visível somente após login. Clique no balão ao lado para re-autenticar"})
           case 'full_name':
-            return await handleSingleUpdate('full_name', req.body.full_name, token.sub, res)
+            return await resSingleUpdate('full_name', req.body.full_name, token.sub, res)
           case 'birth_city':
-            return await handleSingleUpdate('birth_city', req.body.birth_city, token.sub, res)
+            return await resSingleUpdate('birth_city', req.body.birth_city, token.sub, res)
+          case 'birth_state':
+            return await resSingleUpdate('birth_state', req.body.birth_state, token.sub, res)
           case 'birth_date':
-            return await handleBirthDate(req.body, token.sub, res)
+            return await resBirthDate(req.body, token.sub, res)
           default:
             return res.status(400).json({serverMessage: "Bad Request"})
         }
@@ -43,7 +45,7 @@ export default async (req, res) => {
 
 }
 
-const handleBirthDate = async (body, sub, res) => {
+const resBirthDate = async (body, sub, res) => {
   
   const date = moment(body.birth_date, "DD/MM/YYYY", true)
   if(!date.isValid()) return res.status(400).json({serverMessage: "Wrong Format"})
@@ -56,7 +58,7 @@ const handleBirthDate = async (body, sub, res) => {
   }
 }
 
-const handleSingleUpdate = async (field, value, sub, res) => {
+const resSingleUpdate = async (field, value, sub, res) => {
   await query(
     `UPDATE users_info SET ${field}=?, updated_at=NOW() WHERE auth_id = ?`, 
     [value, sub]
