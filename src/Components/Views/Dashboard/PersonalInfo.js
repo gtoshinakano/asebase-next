@@ -51,7 +51,7 @@ const PersonalInfo = () => {
         , do Estado de
         <InlineInput
           inline
-          placeholder="Município"
+          placeholder="Estado"
           schema={schemas.PersonalProfile}
           name="birth_state"
           value={data?.birth_state || ""}

@@ -13,15 +13,15 @@ const GenderInput = ({value, mutationFn, invalidate, name, loading}) => {
       {inputVal === null && <button 
         className="text-xl inline-flex min-w-max font-thin hover:bg-gray-100 p-1 print:hidden"
         onClick={() => setInputVal(0)}
-      ><span className="ml-1 mr-2 w-7">🧍</span> <span className="border-b">Indefinido</span></button>}
+      ><span className="ml-1 mr-2 w-7">🧍</span> <span className="border-b print:border-b-0">Indefinido</span></button>}
       {inputVal === 0 && <button 
         className="text-xl inline-flex min-w-max font-thin hover:bg-gray-100 p-1 "
         onClick={() => setInputVal(1)}
-      ><span className="ml-1 mr-2 w-7">🧍‍♂️</span> <span className="border-b">Masculino</span></button>}
+      ><span className="ml-1 mr-2 w-7">🧍‍♂️</span> <span className="border-b print:border-b-0">Masculino</span></button>}
       {inputVal === 1 && <button 
         className="text-xl inline-flex min-w-max font-thin hover:bg-gray-100 p-1 "
         onClick={() => setInputVal(null)}
-        ><span className="ml-1 mr-2 w-7">🧍‍♀️</span> <span className="border-b">Feminino</span></button>}
+        ><span className="ml-1 mr-2 w-7">🧍‍♀️</span> <span className="border-b print:border-b-0">Feminino</span></button>}
     </div>
   );
 }
