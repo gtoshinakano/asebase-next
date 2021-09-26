@@ -4,10 +4,9 @@ import { useQuery } from 'react-query';
 import { getPersonalProfile } from '@Utils/DefaultQueries';
 import Skeleton from 'react-loading-skeleton';
 import * as schemas from '@Utils/Schemas/User'
-import { updateFullName } from '@Utils/DefaultQueries/Mutations'
+import { updateBirthDate, updateBirthCity, updateFullName } from '@Utils/DefaultQueries/Mutations'
 import GenderInput from '@Components/Styled/GenderInput';
 import { maskDate } from '@Utils/Helpers/masks';
-import { updateBirthDate } from '@Utils/DefaultQueries/Mutations';
 import moment from 'moment';
 
 const PersonalInfo = () => {
@@ -16,7 +15,6 @@ const PersonalInfo = () => {
   const uid = handshake.data?.data.uid || ""
   const queryKey = ["personal-profile", uid]
   const {data, isLoading, isFetching} = useQuery(queryKey, getPersonalProfile, {staleTime: Infinity})
-  console.log(moment(data?.birth_date), moment().utcOffset())
 
   let birthDate = moment(data?.birth_date).utc() || ""
   
@@ -47,6 +45,8 @@ const PersonalInfo = () => {
           schema={schemas.PersonalProfile}
           name="birth_city"
           value={data?.birth_city || null}
+          mutationFn={updateBirthCity}
+          invalidate={queryKey}
         />
         , do Estado de
         {/* {<InlineInput

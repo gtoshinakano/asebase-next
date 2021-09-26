@@ -22,11 +22,9 @@ export default async (req, res) => {
             )
             return res.json({serverMessage: "Alteração visível somente após login. Clique no balão ao lado para re-autenticar"})
           case 'full_name':
-            await query(
-              "UPDATE users_info SET full_name=?, updated_at=NOW() WHERE auth_id = ?", 
-              [req.body.full_name, token.sub]
-            )
-            return res.status(200).json({log: "Update Done"})
+            return await handleSingleUpdate('full_name', req.body.full_name, token.sub, res)
+          case 'birth_city':
+            return await handleSingleUpdate('birth_city', req.body.birth_city, token.sub, res)
           case 'birth_date':
             return await handleBirthDate(req.body, token.sub, res)
           default:
@@ -56,4 +54,12 @@ const handleBirthDate = async (body, sub, res) => {
     )
     return res.status(200).json({log: "Update Done"})
   }
+}
+
+const handleSingleUpdate = async (field, value, sub, res) => {
+  await query(
+    `UPDATE users_info SET ${field}=?, updated_at=NOW() WHERE auth_id = ?`, 
+    [value, sub]
+  )
+  return res.status(200).json({log: "Update Done"})
 }

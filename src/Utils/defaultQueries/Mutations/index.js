@@ -16,3 +16,8 @@ export const updateBirthDate = async (data) => {
   const ret = await axios.post(`${API_ADDRESS}/api/member/update/birth_date`, data)
   return ret.data
 }
+
+export const updateBirthCity = async (data) => {
+  const ret = await axios.post(`${API_ADDRESS}/api/member/update/birth_city`, data)
+  return ret.data
+}
