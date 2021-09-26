@@ -28,33 +28,32 @@ export default async (req, res) => {
             )
             return res.status(200).json({log: "Update Done"})
           case 'birth_date':
-            await query(
-              "UPDATE users_info SET birth_date=?, updated_at=NOW() WHERE auth_id = ?", 
-              [req.body.full_name, token.sub]
-            )
-            return res.status(200).json({log: "Update Done"})
-      
+            return await handleBirthDate(req.body, token.sub, res)
           default:
             return res.status(400).json({serverMessage: "Bad Request"})
         }
         
       } catch (e) {
-        res.json({ hasError: true, errorMessage: e.message })
+        res.json({ errorMessage: e.message })
       }
     }else{
-      res.json({ hasError: true, errorMessage: "Error checking credentials" })
+      res.json({ errorMessage: "Error checking credentials" })
     }
   }else{
-    res.json({ hasError: true, errorMessage: "Bad Request" })
+    res.json({ errorMessage: "Bad Request" })
   }
 
 }
 
-const handleBirthDate = async (body, sub) => {
+const handleBirthDate = async (body, sub, res) => {
+  
   const date = moment(body.birth_date, "DD/MM/YYYY", true)
-
-  await query(
-    "UPDATE users_info SET birth_date=?, updated_at=NOW() WHERE auth_id = ?", 
-    [date, sub]
-  )
+  if(!date.isValid()) return res.status(400).json({serverMessage: "Wrong Format"})
+  else{
+    await query(
+      "UPDATE users_info SET birth_date=?, updated_at=NOW() WHERE auth_id = ?", 
+      [date.format("YYYY-MM-DD HH:mm:ss"), sub]
+    )
+    return res.status(200).json({log: "Update Done"})
+  }
 }

@@ -27,7 +27,7 @@ module.exports = {
         'print': {'raw': 'print'},
       },
       spacing: {
-        '2.25': '0.575rem'
+        'input': '0.590rem'
       }
     },
     fontFamily: {

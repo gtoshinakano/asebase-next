@@ -8,6 +8,7 @@ import { updateFullName } from '@Utils/DefaultQueries/Mutations'
 import GenderInput from '@Components/Styled/GenderInput';
 import { maskDate } from '@Utils/Helpers/masks';
 import { updateBirthDate } from '@Utils/DefaultQueries/Mutations';
+import moment from 'moment';
 
 const PersonalInfo = () => {
 
@@ -60,7 +61,7 @@ const PersonalInfo = () => {
           schema={schemas.PersonalProfile}
           name="birth_date"
           mask={maskDate}
-          value={data?.birth_date || ""}
+          value={moment(data?.birth_date).format("DD/MM/YYYY") || ""}
           mutationFn={updateBirthDate}
           invalidate={queryKey}
         />
