@@ -6,6 +6,7 @@ import Skeleton from 'react-loading-skeleton';
 import * as schemas from '@Utils/Schemas/User'
 import { updateFullName } from '@Utils/DefaultQueries/Mutations'
 import GenderInput from '@Components/Styled/GenderInput';
+import { maskDate } from '@Utils/Helpers/masks';
 
 const PersonalInfo = () => {
 
@@ -34,13 +35,14 @@ const PersonalInfo = () => {
       <div className="pr-1.5" >
         <GenderInput value={data?.gender || null} />
       </div>
-      <div className="pr-1.5 mt-3 inline font-thin text-gray-700">
+      <div className="pl-2 mt-3 inline font-thin text-gray-700">
         Natural de 
         <InlineInput
           inline
           placeholder="Município"
           schema={schemas.PersonalProfile}
           name="birth_city"
+          value={data?.birth_city || null}
         />
         , do Estado de
         <InlineInput
@@ -48,6 +50,17 @@ const PersonalInfo = () => {
           placeholder="Estado"
         />
         , Brasil.
+      </div>
+      <div className="pl-2 mt-3 inline font-thin text-gray-700">
+        Nascido em 
+        <InlineInput
+          inline
+          placeholder="dd/mm/aaaa"
+          schema={schemas.PersonalProfile}
+          name="birth_city"
+          mask={maskDate}
+          value={data?.gender || null}
+        />
       </div>
     </>
   );

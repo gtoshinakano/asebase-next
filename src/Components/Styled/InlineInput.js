@@ -4,7 +4,7 @@ import _ from 'lodash'
 import HelpTip from '@Styled/HelpTip';
 import { useMutation, useQueryClient } from 'react-query';
 
-const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value, schema, name, onMessageClick, loading, inline}) => {
+const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value, schema, name, onMessageClick, loading, inline, mask}) => {
   
   const [width, setWidth] = useState(0);
   const [inputErr, setInputErr] = useState({hasError: false});
@@ -27,7 +27,9 @@ const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value
   const valueChange = ({target}) => {
     const error = schema.checkForField(name, {[name]: target.value})
     setInputErr(error)
-    setInputVal(target.value)
+    let val = target.value
+    if(mask) val = mask(val)
+    setInputVal(val)
   }
 
   const onInputBlur = () => {
@@ -89,7 +91,7 @@ const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value
 }
 
 const IInput = styled.input.attrs(props => ({
-  className: `focus:outline-none text-gray-700 hover:bg-gray-100 focus:bg-blueGray-100 py-1 px-0.5 font-notoJP font-thin ${props.inputCSS} ${props.inline ? "transform translate-y-2.25 border-b w-full" : "w-full"}
+  className: `focus:outline-none text-gray-700 hover:bg-gray-100 focus:bg-blueGray-100 py-1 px-0.5 font-notoJP font-thin tracking-wide ${props.inputCSS} ${props.inline ? "transform translate-y-2.25 border-b w-full" : "w-full"}
   ${props.error?.hasError && "ring-1 ring-red-200"}`,
 }))`
   
