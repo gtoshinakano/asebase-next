@@ -6,5 +6,6 @@ export const Session = SchemaModel({
 });
 
 export const PersonalProfile = SchemaModel({
-  full_name: StringType().isRequired('Campo obrigatório')
+  full_name: StringType().isRequired('Campo obrigatório'),
+  birth_city: StringType().isRequired('Campo obrigatório')
 })

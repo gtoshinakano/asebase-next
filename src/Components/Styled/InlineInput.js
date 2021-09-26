@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import styled from 'styled-components';
 import _ from 'lodash'
 import HelpTip from '@Styled/HelpTip';
 import { useMutation, useQueryClient } from 'react-query';
 
-const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value, schema, name, onMessageClick, loading}) => {
+const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value, schema, name, onMessageClick, loading, inline}) => {
   
+  const [width, setWidth] = useState(0);
   const [inputErr, setInputErr] = useState({hasError: false});
   const [inputVal, setInputVal] = useState(value);
   const [serverMsg, setServerMsg] = useState("");
@@ -18,8 +19,10 @@ const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value
     }
   })
 
+  const span = useRef();
 
   React.useEffect(() => setInputVal(value), [value])
+  React.useEffect(() => {setWidth(span.current.offsetWidth)}, [inputVal, placeholder])
 
   const valueChange = ({target}) => {
     const error = schema.checkForField(name, {[name]: target.value})
@@ -33,7 +36,6 @@ const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value
       if(!inputErr.hasError) {
         mutate({[name]: inputVal})
       }
-      //onBlur()
     }else{
       setInputErr(noError)
     }
@@ -41,52 +43,56 @@ const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value
 
   const handleKeyPress = (e) => {
     if(e.keyCode === 13) e.target.blur(); 
-    
   }
 
-  return (
-    <div className={`p-1`}>
-      <div className="relative">
-        <div className="absolute right-2 font-thin z-10 inline-flex">
-          {inputErr.hasError && 
-            <HelpTip 
-              icon={<i className="text-lg text-red-300 ri-alert-fill"></i>} 
-              message={<><i className=" ri-error-warning-line mr-2"></i>{inputErr.errorMessage}</>}
-              error
-            />
-          }
-          {serverMsg &&
-            <HelpTip 
-              icon={<i className="ri-feedback-fill text-lg hover:text-blueGray-900"></i>} 
-              message={<>{serverMsg}</>}
-              onClick={onMessageClick}
-            />
-          }
-          { (isLoading || loading) &&
-            <i className="ri-loader-5-line text-lg animate-spin"></i>
-          }
+  return (    
+    <>
+      <div className="invisible absolute py-1 px-1.5 font-notoJP font-thin whitespace-pre" ref={span}>{inputVal ? inputVal : placeholder}</div>
+      <div className={`p-1 ${inline && "inline-flex"}`} style={inline && {width}}>
+        <div className="relative">
+          <div className="absolute right-2 font-thin z-10 inline-flex">
+            {inputErr.hasError && 
+              <HelpTip 
+                icon={<i className="text-lg text-red-300 ri-alert-fill"></i>} 
+                message={<><i className=" ri-error-warning-line mr-2"></i>{inputErr.errorMessage}</>}
+                error
+              />
+            }
+            {serverMsg &&
+              <HelpTip 
+                icon={<i className="ri-feedback-fill text-lg hover:text-blueGray-900"></i>} 
+                message={<>{serverMsg}</>}
+                onClick={onMessageClick}
+              />
+            }
+            { (isLoading || loading) &&
+              <i className="ri-loader-5-line text-lg animate-spin translate"></i>
+            }
+          </div>
         </div>
+        <IInput
+          type={type}
+          onChange={valueChange}
+          onBlur={onInputBlur}
+          onKeyUp={handleKeyPress}
+          placeholder={placeholder}
+          inputCSS={inputCSS}
+          value={inputVal}
+          error={inputErr}
+          disabled={isLoading || loading}
+          inline={inline}
+          width={width}
+        />
       </div>
-      <IInput
-        type={type}
-        onChange={valueChange}
-        onBlur={onInputBlur}
-        onKeyUp={handleKeyPress}
-        placeholder={placeholder}
-        inputCSS={inputCSS}
-        value={inputVal}
-        error={inputErr}
-        disabled={isLoading || loading}
-      />
-    </div>
+    </>
   );
 }
 
 const IInput = styled.input.attrs(props => ({
-  className: `w-full focus:outline-none text-gray-700 hover:bg-gray-100 focus:bg-blueGray-100 py-1 px-0.5 font-notoJP font-thin ${props.inputCSS} 
+  className: `focus:outline-none text-gray-700 hover:bg-gray-100 focus:bg-blueGray-100 py-1 px-0.5 font-notoJP font-thin ${props.inputCSS} ${props.inline ? "transform translate-y-2.25 border-b w-full" : "w-full"}
   ${props.error?.hasError && "ring-1 ring-red-200"}`,
 }))`
-
+  
 `
 
 const noError = {hasError: false}

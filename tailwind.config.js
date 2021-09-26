@@ -11,6 +11,10 @@ module.exports = {
       transitionProperty: {
         width: 'width',
       },
+      minWidth: {
+        '5': '1.25rem',
+        '20': '5rem',
+      },
       width: {
         '20px': '20px',
         '150px': '150px',
@@ -22,6 +26,9 @@ module.exports = {
       screens: {
         'print': {'raw': 'print'},
       },
+      spacing: {
+        '2.25': '0.575rem'
+      }
     },
     fontFamily: {
       noto: ['"Noto Sans"', 'Helvetica'],
