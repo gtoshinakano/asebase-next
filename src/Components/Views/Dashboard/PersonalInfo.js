@@ -7,6 +7,7 @@ import * as schemas from '@Utils/Schemas/User'
 import { updateFullName } from '@Utils/DefaultQueries/Mutations'
 import GenderInput from '@Components/Styled/GenderInput';
 import { maskDate } from '@Utils/Helpers/masks';
+import { updateBirthDate } from '@Utils/DefaultQueries/Mutations';
 
 const PersonalInfo = () => {
 
@@ -45,10 +46,10 @@ const PersonalInfo = () => {
           value={data?.birth_city || null}
         />
         , do Estado de
-        <InlineInput
+        {/* {<InlineInput
           inline
           placeholder="Estado"
-        />
+        />} */}
         , Brasil.
       </div>
       <div className="pl-2 mt-3 inline font-thin text-gray-700">
@@ -57,9 +58,11 @@ const PersonalInfo = () => {
           inline
           placeholder="dd/mm/aaaa"
           schema={schemas.PersonalProfile}
-          name="birth_city"
+          name="birth_date"
           mask={maskDate}
-          value={data?.gender || null}
+          value={data?.birth_date || ""}
+          mutationFn={updateBirthDate}
+          invalidate={queryKey}
         />
       </div>
     </>

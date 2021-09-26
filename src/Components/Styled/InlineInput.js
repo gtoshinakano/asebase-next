@@ -92,10 +92,8 @@ const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value
 
 const IInput = styled.input.attrs(props => ({
   className: `focus:outline-none text-gray-700 hover:bg-gray-100 focus:bg-blueGray-100 py-1 px-0.5 font-notoJP font-thin tracking-wide ${props.inputCSS} ${props.inline ? "transform translate-y-2.25 border-b w-full" : "w-full"}
-  ${props.error?.hasError && "ring-1 ring-red-200"}`,
-}))`
-  
-`
+  ${props.error?.hasError && "ring-1 ring-red-200"}`
+}))``
 
 const noError = {hasError: false}
 

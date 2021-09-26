@@ -11,3 +11,8 @@ export const updateFullName = async (data) => {
   const ret = await axios.post(`${API_ADDRESS}/api/member/update/full_name`, data)
   return ret.data
 }
+
+export const updateBirthDate = async (data) => {
+  const ret = await axios.post(`${API_ADDRESS}/api/member/update/birth_date`, data)
+  return ret.data
+}
