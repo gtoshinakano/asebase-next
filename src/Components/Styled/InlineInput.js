@@ -3,13 +3,15 @@ import styled from 'styled-components';
 import _ from 'lodash'
 import HelpTip from '@Styled/HelpTip';
 import { useMutation, useQueryClient } from 'react-query';
+import AutoSuggest from '@Styled/AutoSuggest';
 
-const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value, schema, name, onMessageClick, loading, inline, mask}) => {
+const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value, schema, name, onMessageClick, loading, inline, mask, options}) => {
   
   const [width, setWidth] = useState(0);
   const [inputErr, setInputErr] = useState({hasError: false});
   const [inputVal, setInputVal] = useState(value);
   const [serverMsg, setServerMsg] = useState("");
+  const [focused, setFocused] = useState(false);
   const client = useQueryClient()
 
   const { isLoading, mutate} = useMutation((data) => mutationFn(data), {
@@ -18,7 +20,6 @@ const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value
       if(data?.serverMessage) setServerMsg(data.serverMessage)
     }
   })
-
   const span = useRef();
 
   React.useEffect(() => setInputVal(value), [value])
@@ -33,7 +34,7 @@ const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value
   }
 
   const onInputBlur = () => {
-  
+    setFocused(false)
     if(inputVal !== value) {
       if(!inputErr.hasError) {
         mutate({[name]: inputVal})
@@ -47,12 +48,19 @@ const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value
     if(e.keyCode === 13) e.target.blur(); 
   }
 
+  const onSuggestionSelect = (val) => {
+    setFocused(false)
+    setInputVal(val)
+    setInputErr(noError)
+    mutate({[name]: val})
+  }
+
   return (    
     <>
       <div className="invisible absolute py-1 px-1.5 font-notoJP font-thin whitespace-pre" ref={span}>
         {inputVal ? inputVal : placeholder}
       </div>
-      <div className={`p-1 ${inline && "inline-flex"}`} style={inline && {width}}>
+      <div className={`p-1 ${inline && "inline-flex flex-wrap"}`} style={inline && {width}}>
         <div className="relative">
           <div className="absolute right-2 font-thin z-10 inline-flex">
             {inputErr.hasError && 
@@ -79,6 +87,7 @@ const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value
           onChange={valueChange}
           onBlur={onInputBlur}
           onKeyUp={handleKeyPress}
+          onFocus={() => setFocused(true)}
           placeholder={placeholder}
           inputCSS={inputCSS}
           value={inputVal}
@@ -87,6 +96,13 @@ const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value
           inline={inline}
           width={width}
         />
+        <AutoSuggest 
+          inputVal={inputVal} 
+          options={options} 
+          width={width} 
+          open={focused}
+          onSelect={onSuggestionSelect}
+        /> 
       </div>
     </>
   );

@@ -47,6 +47,7 @@ const PersonalInfo = () => {
           value={data?.birth_city || ""}
           mutationFn={updateBirthCity}
           invalidate={queryKey}
+          options={schemas.cities}
         />
         , do Estado de
         <InlineInput

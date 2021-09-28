@@ -14,6 +14,7 @@ module.exports = {
       minWidth: {
         '5': '1.25rem',
         '20': '5rem',
+        '150px': '150px',
       },
       width: {
         '20px': '20px',
@@ -42,5 +43,5 @@ module.exports = {
       cursor: ['disabled'],
     },
   },
-  plugins: [],
+  plugins: [require('tailwind-scrollbar')],
 };
