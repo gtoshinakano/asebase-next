@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import _ from 'lodash'
 import HelpTip from '@Styled/HelpTip';
 import { useMutation, useQueryClient } from 'react-query';
-import AutoSuggest from '@Styled/AutoSuggest';
+import AutoComplete from '@Styled/AutoComplete';
 
 const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value, schema, name, onMessageClick, loading, inline, mask, options}) => {
   
@@ -34,6 +34,7 @@ const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value
   }
 
   const onInputBlur = () => {
+    console.log("blur")
     setFocused(false)
     if(inputVal !== value) {
       if(!inputErr.hasError) {
@@ -49,6 +50,7 @@ const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value
   }
 
   const onSuggestionSelect = (val) => {
+    console.log("selected")
     setFocused(false)
     setInputVal(val)
     setInputErr(noError)
@@ -57,7 +59,7 @@ const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value
 
   return (    
     <>
-      <div className="invisible absolute py-1 px-1.5 font-notoJP font-thin whitespace-pre" ref={span}>
+      <div className="invisible absolute px-1.5 font-notoJP font-thin whitespace-pre" ref={span}>
         {inputVal ? inputVal : placeholder}
       </div>
       <div className={`p-1 ${inline && "inline-flex flex-wrap"}`} style={inline && {width}}>
@@ -96,7 +98,7 @@ const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value
           inline={inline}
           width={width}
         />
-        <AutoSuggest 
+        <AutoComplete 
           inputVal={inputVal} 
           options={options} 
           width={width} 
