@@ -16,7 +16,7 @@ export default function AutoComplete({inputVal, width, options, open, onSelect})
   return (
     <div className="w-full">
       <Container width={ width }>
-        <Listbox value={inputVal} onChange={onSelect}>
+        <Listbox value={inputVal} onChange={() => null}>
           <Transition
             show={open}
             as={Fragment}
@@ -45,7 +45,7 @@ export default function AutoComplete({inputVal, width, options, open, onSelect})
                       className={`${
                         selected ? 'font-medium' : 'font-thin'
                       } block truncate cursor-pointer  py-1.5 px-3`}
-                      onClick={() => onSelect(item)}
+                      onMouseDown={() => onSelect(item)}
                     >
                       {item}
                     </span>

@@ -33,7 +33,7 @@ const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value
     setInputVal(val)
   }
 
-  const onInputBlur = () => {
+  const onInputBlur = (e) => {
     console.log("blur")
     setFocused(false)
     if(inputVal !== value) {
