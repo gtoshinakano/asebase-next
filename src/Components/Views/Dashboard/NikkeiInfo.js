@@ -15,7 +15,7 @@ const NikkeiInfo = ({open}) => {
   return (
     <div className="pl-2 mt-3 font-thin text-gray-700 pt-4">
       <Checkbox 
-        checked={true}
+        checked={data.is_nikkei}
         labels={["Não possui ascendência japonesa", "Possui ascendência japonesa"]}
       /> 
     </div>

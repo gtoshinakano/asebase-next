@@ -10,7 +10,7 @@ const Checkbox = ({ className, checked, labels, name,...props }) => {
     />
     <StyledCheckbox checked={checked}>
       {checked 
-        ? <i class="ri-checkbox-fill text-sky-500"></i>
+        ? <i className="ri-checkbox-fill text-sky-500"></i>
         : <i className="ri-checkbox-blank-line"></i>
       }
     </StyledCheckbox>
