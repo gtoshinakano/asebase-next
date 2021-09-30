@@ -5,7 +5,7 @@ import HelpTip from '@Styled/HelpTip';
 import { useMutation, useQueryClient } from 'react-query';
 import AutoComplete from '@Styled/AutoComplete';
 
-const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value, schema, name, onMessageClick, loading, inline, mask, options}) => {
+const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value, schema, name, onMessageClick, loading, inline, mask, options, minSuggestionLength}) => {
   
   const [width, setWidth] = useState(0);
   const [inputErr, setInputErr] = useState({hasError: false});
@@ -104,6 +104,7 @@ const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value
           width={width} 
           open={focused}
           onSelect={onSuggestionSelect}
+          minSuggestionLength={minSuggestionLength}
         /> 
       </div>
     </>

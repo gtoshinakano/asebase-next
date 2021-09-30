@@ -8,6 +8,8 @@ import { updateBirthDate, updateBirthCity, updateFullName, updateBirthState } fr
 import GenderInput from '@Components/Styled/GenderInput';
 import { maskDate } from '@Utils/Helpers/masks';
 import moment from 'moment';
+import _ from 'lodash'
+import br_states from '@Utils/StaticData/br_states.json'
 
 const PersonalInfo = () => {
 
@@ -48,6 +50,7 @@ const PersonalInfo = () => {
           mutationFn={updateBirthCity}
           invalidate={queryKey}
           options={schemas.cities}
+          minSuggestionLength={3}
         />
         , do Estado de
         <InlineInput
@@ -58,6 +61,10 @@ const PersonalInfo = () => {
           value={data?.birth_state || ""}
           mutationFn={updateBirthState}
           invalidate={queryKey}
+          minSuggestionLength={0}
+          options={ data?.birth_city.length > 0 
+            ? getEstadosByCityName(data.birth_city) : _.map(br_states.estados, i=>i.nome)
+          }
         />
         , Brasil.
       </div>
@@ -79,3 +86,11 @@ const PersonalInfo = () => {
 }
 
 export default PersonalInfo;
+
+const getEstadosByCityName = (city) => {
+  const filtered = _.filter(br_states.estados, (i) => {
+    return i.cidades.includes(city)
+  })
+  console.log(filtered)
+  return [filtered[0]?.nome]
+}

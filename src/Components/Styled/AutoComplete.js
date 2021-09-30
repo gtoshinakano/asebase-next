@@ -3,15 +3,15 @@ import { Listbox, Transition } from '@headlessui/react'
 import styled from 'styled-components'
 import _ from 'lodash'
 
-export default function AutoComplete({inputVal, width, options, open, onSelect}) {
+export default function AutoComplete({inputVal, width, options, open, onSelect, minSuggestionLength}) {
 
 
   const re = new RegExp(_.escapeRegExp(inputVal), 'i')
   const isMatch = (result) => re.test(result)
 
-  const opts = _.filter(options, isMatch)
+  const opts = minSuggestionLength === 0 ? options : _.filter(options, isMatch)
 
-  if(inputVal.length < 4 || opts.length === 0) return ("")
+  if(inputVal.length < minSuggestionLength || opts.length === 0) return ("")
 
   return (
     <div className="w-full">

@@ -24,6 +24,6 @@ export const PersonalProfile = SchemaModel({
     .pattern(/^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$/, "Data inválida")
 })
 
-const states = _.map(br_states.estados, (i) => i.nome)
+export const states = _.map(br_states.estados, (i) => i.nome)
 
 export const cities = _.flattenDeep(_.map(br_states.estados, (i) => i.cidades))
