@@ -34,7 +34,6 @@ const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value
   }
 
   const onInputBlur = (e) => {
-    console.log("blur")
     setFocused(false)
     if(inputVal !== value) {
       if(!inputErr.hasError) {
@@ -50,7 +49,6 @@ const InlineInput = ({mutationFn, invalidate, placeholder, inputCSS, type, value
   }
 
   const onSuggestionSelect = (val) => {
-    console.log("selected")
     setFocused(false)
     setInputVal(val)
     setInputErr(noError)

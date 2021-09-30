@@ -1,9 +1,11 @@
 import React, {useRef} from 'react';
 import UserProperties from './UserProperties'
 import PersonalInfo from './PersonalInfo';
+import NikkeiInfo from './NikkeiInfo';
 import { useSession } from 'next-auth/client';
 import Skeleton from 'react-loading-skeleton';
 import useOnScreen from '@Components/Hooks/useOnScreen';
+
 
 const DashboardView = () => {
 
@@ -19,7 +21,7 @@ const DashboardView = () => {
       {session ? (
         <>
           <PersonalInfo />
-          <div ref={nikkeiRef} className={`${nikkeiVisible && "text-4xl"}`}>{nikkeiVisible && ""}</div>
+          <div ref={nikkeiRef}><NikkeiInfo open={nikkeiVisible} /></div>
         </>
       ) : <Skeleton className="w-full h-6" />}
       

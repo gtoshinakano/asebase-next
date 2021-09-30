@@ -91,6 +91,5 @@ const getEstadosByCityName = (city) => {
   const filtered = _.filter(br_states.estados, (i) => {
     return i.cidades.includes(city)
   })
-  console.log(filtered)
   return [filtered[0]?.nome]
 }

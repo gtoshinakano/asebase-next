@@ -7,12 +7,14 @@ import { useRouter } from 'next/router';
 import { signOut } from "next-auth/client"
 import Skeleton from 'react-loading-skeleton';
 import { Transition } from '@headlessui/react';
+import { getPersonalProfile } from '@Utils/DefaultQueries';
 
 export default function Layout({ children, title }) {
 
   const client = useQueryClient()
   client.setQueryDefaults('handshake', { queryFn: handshake, staleTime: Infinity })
   const {isLoading, data, isFetched} = useQuery('handshake')
+  if(data && data.uid) client.setQueryDefaults(["personal-profile", data.uid], {queryFn: getPersonalProfile, staleTime: Infinity})
 
   const router = useRouter()
 
