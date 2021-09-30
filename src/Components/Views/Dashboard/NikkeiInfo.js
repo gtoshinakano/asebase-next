@@ -16,11 +16,15 @@ const NikkeiInfo = ({open}) => {
   return (
     <div className="pl-2 mt-3 font-thin text-gray-700 pt-4">
       <Checkbox 
-        checked={data.is_nikkei}
+        checked={data.is_nikkei === 1}
         labels={["Não possui ascendência japonesa", "Possui ascendência japonesa"]}
         loading={isLoading}
         mutationFn={updateIsNikkei}
         name="is_nikkei"
+        confirm={{
+          when: true, title: "ATENÇÃO! Tem certeza de que quer continuar?",
+          message: "* Seus dados de ascendência preenchidos serão apagados caso confirme"
+        }}
       /> 
     </div>
   );

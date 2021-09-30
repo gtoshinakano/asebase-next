@@ -1,8 +1,9 @@
 import React,{useState} from 'react';
 import styled from 'styled-components';
 import { useMutation } from 'react-query';
+import Confirm from '@Styled/Confirm'
 
-const Checkbox = ({ className, checked, labels, name, disabled, loading, mutationFn, callback, invalidate, ...props }) => {
+const Checkbox = ({ className, checked, labels, name, disabled, loading, mutationFn, callback, invalidate, confirm, ...props }) => {
 
   const [isChecked, setIsChecked] = useState(checked);
   const [serverMsg, setServerMsg] = useState("");
@@ -17,10 +18,20 @@ const Checkbox = ({ className, checked, labels, name, disabled, loading, mutatio
     }
   })
 
-  const onCheck = () => {
+  const onCheck = async () => {
     console.log("check")
-    setIsChecked(!isChecked)
-    // TODO mutate(data)
+    const val = !isChecked
+    if(confirm && confirm.when === isChecked){
+      const res = await Confirm.show(confirm)
+      if(res) {
+        console.log("yes")
+        mutate({[name]: val ? 1 : 0})
+        setIsChecked(val)
+      }
+    }else {
+      mutate({[name]: val ? 1 : 0})
+      setIsChecked(val)
+    }
   }
 
   const isDisabled = disabled || loading || isLoading
@@ -69,5 +80,11 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
 const StyledCheckbox = styled.div.attrs(props => ({
   className: "text-2xl mr-0.5"
 }))``
+
+// const confirm = {
+//   when: true,
+//   message: "",
+//   title: ""
+// }
 
 export default Checkbox
