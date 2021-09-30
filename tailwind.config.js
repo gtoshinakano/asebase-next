@@ -43,5 +43,5 @@ module.exports = {
       cursor: ['disabled'],
     },
   },
-  plugins: [require('tailwind-scrollbar')],
+  plugins: [],
 };

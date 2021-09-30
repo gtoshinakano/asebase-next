@@ -31,3 +31,8 @@ export const updateBirthState = async (data) => {
   const ret = await axios.post(`${API_ADDRESS}/api/member/update/birth_state`, data)
   return ret.data
 }
+
+export const updateIsNikkei = async (data) => {
+  const ret = await axios.post(`${API_ADDRESS}/api/member/update/is_nikkei`, data)
+  return ret.data
+}
