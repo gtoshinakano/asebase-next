@@ -17,7 +17,7 @@ const Checkbox = ({ className, checked, labels, name, disabled, loading, mutatio
       if(invalidate && invalidate !== "") client.invalidateQueries(invalidate)
       if(data?.serverMessage) setServerMsg(data.serverMessage)
       if(callback) callback()
-    }
+    }, mutationKey: name
   })
 
   const onCheck = async () => {
@@ -25,7 +25,6 @@ const Checkbox = ({ className, checked, labels, name, disabled, loading, mutatio
     if(confirm && confirm.when === isChecked){
       const res = await Confirm.show(confirm)
       if(res) {
-        console.log("yes")
         mutate({[name]: val ? 1 : 0})
         setIsChecked(val)
       }

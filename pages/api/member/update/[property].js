@@ -74,7 +74,6 @@ const resIsNikkei = async (body, sub, res) => {
   try{
     const [user] = await query("SELECT id, blocked FROM users_info WHERE auth_id=?", sub)
     const {is_nikkei} = body
-    console.log(is_nikkei, user.id)
     if(user && user.id > 0){
       await query("UPDATE users_info SET is_nikkei=?, updated_at=NOW() WHERE auth_id=?", [is_nikkei, sub])
       if(!is_nikkei){
