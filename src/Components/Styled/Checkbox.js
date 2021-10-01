@@ -1,7 +1,8 @@
 import React,{useState} from 'react';
 import styled from 'styled-components';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import Confirm from '@Styled/Confirm'
+import Skeleton from 'react-loading-skeleton';
 
 const Checkbox = ({ className, checked, labels, name, disabled, loading, mutationFn, callback, invalidate, confirm, ...props }) => {
 
@@ -10,6 +11,7 @@ const Checkbox = ({ className, checked, labels, name, disabled, loading, mutatio
 
   React.useEffect(() => setIsChecked(checked), [checked])
 
+  const client = useQueryClient()
   const { isLoading, mutate } = useMutation((data) => mutationFn(data), {
     onSuccess: (data) => {
       if(invalidate && invalidate !== "") client.invalidateQueries(invalidate)
@@ -19,7 +21,6 @@ const Checkbox = ({ className, checked, labels, name, disabled, loading, mutatio
   })
 
   const onCheck = async () => {
-    console.log("check")
     const val = !isChecked
     if(confirm && confirm.when === isChecked){
       const res = await Confirm.show(confirm)
@@ -55,8 +56,8 @@ const Checkbox = ({ className, checked, labels, name, disabled, loading, mutatio
     </StyledCheckbox>
     <label 
       htmlFor={name} 
-      className={`pt-1 ${isDisabled ? "text-gray-200":""}` } 
-    >{isChecked ? labels[1] :  labels[0]}</label>
+      className={`pt-1` } 
+    >{isLoading ? <Skeleton width={250} height={20} /> : isChecked ? labels[1] :  labels[0]}</label>
   </Container>
 )}
 

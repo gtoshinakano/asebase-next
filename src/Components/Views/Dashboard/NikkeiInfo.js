@@ -20,10 +20,17 @@ const NikkeiInfo = ({open}) => {
         labels={["Não possui ascendência japonesa", "Possui ascendência japonesa"]}
         loading={isLoading}
         mutationFn={updateIsNikkei}
+        invalidate={queryKey}
         name="is_nikkei"
         confirm={{
           when: true, title: "ATENÇÃO! Tem certeza de que quer continuar?",
-          message: "* Seus dados de ascendência preenchidos serão apagados caso confirme"
+          message: "* Seus dados de ascendência preenchidos serão apagados caso confirme",
+          confirmBtn: <div className="w-12 inline-flex">
+            <i className="ri-check-line mr-3"></i> Sim
+          </div>, 
+          cancelBtn: <div className="w-12 inline-flex">
+            <i className="ri-delete-back-2-line mr-3"></i> Não
+          </div>
         }}
       /> 
     </div>

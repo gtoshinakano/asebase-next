@@ -31,6 +31,8 @@ export default async (req, res) => {
             return await resSingleUpdate('gender', req.body.gender, token.sub, res)
           case 'birth_date':
             return await resBirthDate(req.body, token.sub, res)
+          case 'is_nikkei':
+            return await resIsNikkei(req.body, token.sub, res)
           default:
             return res.status(400).json({serverMessage: "Bad Request"})
         }
@@ -66,4 +68,22 @@ const resSingleUpdate = async (field, value, sub, res) => {
     [value, sub]
   )
   return res.status(200).json({log: "Update Done"})
+}
+
+const resIsNikkei = async (body, sub, res) => {
+  try{
+    const [user] = await query("SELECT id, blocked FROM users_info WHERE auth_id=?", sub)
+    const {is_nikkei} = body
+    console.log(is_nikkei, user.id)
+    if(user && user.id > 0){
+      await query("UPDATE users_info SET is_nikkei=?, updated_at=NOW() WHERE auth_id=?", [is_nikkei, sub])
+      if(!is_nikkei){
+        await query("DELETE FROM japanese_origins WHERE user_id=?", [user.id])
+      }
+      return res.status(200).json({log: "Update Done"})
+    } else return res.status(400).json({serverMessage: "Bad Request"})
+  }
+  catch(e){
+    return res.status(400).json({serverMessage: JSON.stringify(e)})
+  }
 }
