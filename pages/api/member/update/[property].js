@@ -10,7 +10,7 @@ export default async (req, res) => {
   const { property } = req.query
   const token = await jwt.getToken({ req, secret })
   
-  if(req.method === "POST") {
+  if(req.method === "PUT") {
     const checkedUser = await getSessionUserInfoId(token.sub)
     if(!checkedUser.hasError) {
       try {
