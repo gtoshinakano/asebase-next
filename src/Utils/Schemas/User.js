@@ -10,6 +10,7 @@ import {
 import moment from 'moment';
 import br_states from '@Utils/StaticData/br_states.json';
 import _ from 'lodash';
+import {JAPAN_PROVINCES} from '@Utils/StaticData/json-data'
 
 export const Session = SchemaModel({
   name: StringType()
@@ -48,11 +49,12 @@ export const NikkeiProfile = SchemaModel({
   jp_generation: NumberType("Deve ser um número").range(2,5,"Número entre 2 e 5"),
   jpFamilyMembers: ArrayType("Deve ser um array").addRule((val, data) => {
     return val.filter(i=> i.length === generationLengths[data.jp_generation])?.length > 0
-  }, "Você deve ter pelo menos um familiar do grau de geração selecionado"),
+  }, "Você deve ter pelo menos um familiar com o grau de geração selecionado"),
   jpFamilyOrigins: ObjectType("Não é um objeto").addRule((val, data) => {
-    //console.log(data.jpFamilyMembers.includes())
-    return true
-  })
+    const provinces = JAPAN_PROVINCES.map(i=> i.name)
+    const values = Object.values(val)
+    return _.difference(values, provinces).length === 0
+  }, "Selecione um valor válido para as províncias ou selecione a opção Japão")
 })
 
 export const generationLengths = [0,1,1,3,5,7]

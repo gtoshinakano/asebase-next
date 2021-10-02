@@ -58,7 +58,7 @@ const NikkeiInfo = ({ open }) => {
   };
 
   const error = schemas.NikkeiProfile.check(form)
-  //console.log(Object.values(error).filter(e=> e.hasError))
+  console.log(Object.values(error).filter(e=> e.hasError))
 
   const handleOriginChange = (v, member) => {
     const newForm = {
@@ -163,9 +163,18 @@ const NikkeiInfo = ({ open }) => {
               <h2 className="p-2 mb-1">
                 3. De qual ou quais províncias eles vieram?
               </h2>
+              {jpFamilyMembers.length>0 && error.jpFamilyMembers.hasError ? (
+                <div className="py-2 px-4 w-full text-red-300 text-xs inline-flex border-l-4 border-red-400 ml-3 align-middle">
+                <i className="ri-feedback-fill mr-3 text-base"></i> {error.jpFamilyMembers.errorMessage}
+              </div>
+              ): error.jpFamilyOrigins.hasError ? (
+                <div className="py-2 px-4 w-full text-red-300 text-xs inline-flex border-l-4 border-red-400 ml-3 align-middle">
+                  <i className="ri-feedback-fill mr-3 text-base"></i> {error.jpFamilyOrigins.errorMessage}
+                </div>
+              ): null}
               {jpFamilyMembers.map((i) => (
                 <div className="w-3/4 m-2 font-extralight flex" key={i}>
-                  <span className="pt-4">O(A) meu(minha) {familyLabels[i]} é imigrante de</span>
+                  <span className="pt-4">{familyLabels[i]} é imigrante de</span>
                   <div className="flex-grow"><InlineInput 
                     inline
                     placeholder="Província"
@@ -298,7 +307,6 @@ const NikkeiBranch = ({ node, onSelect, formValue, hasError }) => {
   
   const gen = formValue.jp_generation
   const shouldError = hasError && schemas.generationLengths[gen] === node.value?.length
-  console.log(shouldError)
   return (
     <div className="">
       <button
