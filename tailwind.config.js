@@ -12,8 +12,8 @@ module.exports = {
         width: 'width',
       },
       minWidth: {
-        '5': '1.25rem',
-        '20': '5rem',
+        5: '1.25rem',
+        20: '5rem',
         '90px': '90px',
       },
       width: {
@@ -25,11 +25,11 @@ module.exports = {
         '150px': '150px',
       },
       screens: {
-        'print': {'raw': 'print'},
+        print: { raw: 'print' },
       },
       spacing: {
-        'input': '0.590rem'
-      }
+        input: '0.590rem',
+      },
     },
     fontFamily: {
       noto: ['"Noto Sans"', 'Helvetica'],

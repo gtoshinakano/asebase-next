@@ -842,9 +842,7 @@
     {
       "sigla": "DF",
       "nome": "Distrito Federal",
-      "cidades": [
-        "Brasília"
-      ]
+      "cidades": ["Brasília"]
     },
     {
       "sigla": "ES",

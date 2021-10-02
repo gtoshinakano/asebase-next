@@ -19,10 +19,12 @@ const Sidebar = () => {
         }
       `}
       >
-        
         <div className="flex-1 font-thin">
           <div className="block overflow-hidden">
-            <Link href="/explore" className="block py-1 px-2.5 hover:bg-red-600 hover:text-white hover:font-bold">
+            <Link
+              href="/explore"
+              className="block py-1 px-2.5 hover:bg-red-600 hover:text-white hover:font-bold"
+            >
               <span className="inline-flex justify-center items-center whitespace-nowrap">
                 <i className="ri-earth-fill text-lg mr-4"></i>
                 Explorar Asebase
@@ -87,12 +89,17 @@ const Sidebar = () => {
             onClick={() => setOpen(!open)}
           >
             <div className="inline-flex justify-center mr-3">
-              <Image src="/assets/img/logo_asebase.svg" alt="Asebase Logo" width={120} height={28} />
+              <Image
+                src="/assets/img/logo_asebase.svg"
+                alt="Asebase Logo"
+                width={120}
+                height={28}
+              />
             </div>
             <i
-              className={
-                `${!open ? 'ri-arrow-right-s-fill' : 'ri-arrow-left-s-fill'} mr-2.5`
-              }
+              className={`${
+                !open ? 'ri-arrow-right-s-fill' : 'ri-arrow-left-s-fill'
+              } mr-2.5`}
             ></i>
           </button>
         </div>

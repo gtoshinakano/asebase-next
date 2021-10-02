@@ -1,17 +1,16 @@
 import React, { Component, Fragment } from 'react';
 import { render } from 'react-dom';
-import {Dialog, Transition} from '@headlessui/react'
+import { Dialog, Transition } from '@headlessui/react';
 
 let resolve;
 
 const defaultProps = {
   title: 'Confirmation',
-  message: 'Are you sure?'
+  message: 'Are you sure?',
 };
 class Confirm extends Component {
-
   static create(props = {}) {
-    if(typeof window === 'object'){
+    if (typeof window === 'object') {
       const containerElement = document?.createElement('div');
       document?.body.appendChild(containerElement);
       return render(<Confirm createConfirmProps={props} />, containerElement);
@@ -97,7 +96,7 @@ class Confirm extends Component {
                 </Dialog.Title>
                 <div className="mt-2">
                   <p className="text-sm text-gray-500">
-                  {message || defaultProps.message}
+                    {message || defaultProps.message}
                   </p>
                 </div>
 
@@ -107,14 +106,14 @@ class Confirm extends Component {
                     className="inline-flex justify-center px-3 py-1.5 text-sm font-medium text-gray-900 bg-gray-100 border border-transparent rounded hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-500"
                     onClick={this.handleCancel}
                   >
-                    {cancelBtn || "Cancela"}
+                    {cancelBtn || 'Cancela'}
                   </button>
                   <button
                     type="button"
                     className="inline-flex justify-center px-3 py-1.5 text-sm font-medium text-white bg-sky-600 border border-transparent rounded-md hover:bg-sky-500 hover:text-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 ml-1"
                     onClick={this.handleConfirm}
                   >
-                    {confirmBtn || "Confirmar"}
+                    {confirmBtn || 'Confirmar'}
                   </button>
                 </div>
               </div>

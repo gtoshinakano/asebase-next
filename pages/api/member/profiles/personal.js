@@ -1,15 +1,13 @@
-import {query} from '@lib/db'
+import { query } from '@lib/db';
 import jwt from 'next-auth/jwt';
 
-const secret = process.env.SECRET
+const secret = process.env.SECRET;
 
 async function get(req, res) {
-
   const token = await jwt.getToken({ req, secret });
   try {
-    
     if (!token.sub) {
-      return res.status(400).json({ message: 'Not Signed' })
+      return res.status(400).json({ message: 'Not Signed' });
     }
     const result = await query(
       `
@@ -18,13 +16,12 @@ async function get(req, res) {
       WHERE auth_id = ?
     `,
       [token.sub]
-    )
-    console.log(query)
-    return res.status(200).json(result[0])
+    );
+    console.log(query);
+    return res.status(200).json(result[0]);
   } catch (e) {
-    res.status(401).json({ message: e.message })
+    res.status(401).json({ message: e.message });
   }
-
 }
 
-export default get
+export default get;

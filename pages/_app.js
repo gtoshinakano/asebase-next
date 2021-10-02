@@ -1,11 +1,11 @@
 import Head from 'next/head';
 import { Provider } from 'next-auth/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools'
+import { ReactQueryDevtools } from 'react-query/devtools';
 import '../styles/tailwind.css';
 import '../styles/global.css';
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }) {
   return (

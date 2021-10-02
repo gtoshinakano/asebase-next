@@ -1,21 +1,26 @@
-import { Fragment, useState } from 'react'
-import { Listbox, Transition } from '@headlessui/react'
-import styled from 'styled-components'
-import _ from 'lodash'
+import { Fragment, useState } from 'react';
+import { Listbox, Transition } from '@headlessui/react';
+import styled from 'styled-components';
+import _ from 'lodash';
 
-export default function AutoComplete({inputVal, width, options, open, onSelect, minSuggestionLength}) {
+export default function AutoComplete({
+  inputVal,
+  width,
+  options,
+  open,
+  onSelect,
+  minSuggestionLength,
+}) {
+  const re = new RegExp(_.escapeRegExp(inputVal), 'i');
+  const isMatch = (result) => re.test(result);
 
+  const opts = minSuggestionLength === 0 ? options : _.filter(options, isMatch);
 
-  const re = new RegExp(_.escapeRegExp(inputVal), 'i')
-  const isMatch = (result) => re.test(result)
-
-  const opts = minSuggestionLength === 0 ? options : _.filter(options, isMatch)
-
-  if(inputVal.length < minSuggestionLength || opts.length === 0) return ("")
+  if (inputVal.length < minSuggestionLength || opts.length === 0) return '';
 
   return (
     <div className="w-full">
-      <Container width={ width }>
+      <Container width={width}>
         <Listbox value={inputVal} onChange={() => null}>
           <Transition
             show={open}
@@ -38,7 +43,6 @@ export default function AutoComplete({inputVal, width, options, open, onSelect, 
                     `
                   }
                   value={item}
-                  
                 >
                   {({ selected, active }) => (
                     <span
@@ -57,11 +61,12 @@ export default function AutoComplete({inputVal, width, options, open, onSelect, 
         </Listbox>
       </Container>
     </div>
-  )
+  );
 }
 
-const Container = styled.div.attrs(props=> ({
-  className: "absolute pt-2 -ml-2.5 z-50"
+const Container = styled.div.attrs((props) => ({
+  className: 'absolute pt-2 -ml-2.5 z-50',
 }))`
-  width: ${props => props.width+120 > 240 ? "240px" : props.width+120+"px"}
-`
+  width: ${(props) =>
+    props.width + 120 > 240 ? '240px' : props.width + 120 + 'px'};
+`;

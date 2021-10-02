@@ -4,25 +4,31 @@ import { useQueryClient, useQuery } from 'react-query';
 import { handshake } from '@Utils/DefaultQueries';
 import ScreenLoader from '@Styled/ScreenLoader';
 import { useRouter } from 'next/router';
-import { signOut } from "next-auth/client"
+import { signOut } from 'next-auth/client';
 import Skeleton from 'react-loading-skeleton';
 import { Transition } from '@headlessui/react';
 import { getPersonalProfile } from '@Utils/DefaultQueries';
 
 export default function Layout({ children, title }) {
+  const client = useQueryClient();
+  client.setQueryDefaults('handshake', {
+    queryFn: handshake,
+    staleTime: Infinity,
+  });
+  const { isLoading, data, isFetched } = useQuery('handshake');
+  if (data && data.uid)
+    client.setQueryDefaults(['personal-profile', data.uid], {
+      queryFn: getPersonalProfile,
+      staleTime: Infinity,
+    });
 
-  const client = useQueryClient()
-  client.setQueryDefaults('handshake', { queryFn: handshake, staleTime: Infinity })
-  const {isLoading, data, isFetched} = useQuery('handshake')
-  if(data && data.uid) client.setQueryDefaults(["personal-profile", data.uid], {queryFn: getPersonalProfile, staleTime: Infinity})
+  const router = useRouter();
 
-  const router = useRouter()
+  if (isFetched && !data) router.push('/');
 
-  if(isFetched && !data) router.push('/')
-
-  if(data && data.action === "force-sign-out-user") {
-    signOut()
-    router.push('/')
+  if (data && data.action === 'force-sign-out-user') {
+    signOut();
+    router.push('/');
   }
 
   return (
@@ -30,11 +36,17 @@ export default function Layout({ children, title }) {
       <Head>
         <title>Área de Membros - {title} - ASEBASE</title>
       </Head>
-      <ScreenLoader title="Um momento" message="Aguarde enquanto carregamos alguns dados" isLoading={isLoading} />
+      <ScreenLoader
+        title="Um momento"
+        message="Aguarde enquanto carregamos alguns dados"
+        isLoading={isLoading}
+      />
       <Sidebar />
-      {isLoading 
-        && <main className="pl-10"><Skeleton width="100%" className="h-64" /></main>
-      }
+      {isLoading && (
+        <main className="pl-10">
+          <Skeleton width="100%" className="h-64" />
+        </main>
+      )}
       <Transition
         show={!isLoading}
         enter="transition-opacity duration-75"
