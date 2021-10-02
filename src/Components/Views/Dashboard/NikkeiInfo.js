@@ -13,6 +13,7 @@ import {JAPAN_PROVINCES} from '@Utils/StaticData/json-data'
 import OrgChart from 'react-orgchart';
 import 'react-orgchart/index.css';
 import InlineInput from '@Components/Styled/InlineInput';
+import * as schemas from '@Utils/Schemas/User'
 
 const NikkeiInfo = ({ open }) => {
   const [form, setForm] = useState(_form);
@@ -55,6 +56,9 @@ const NikkeiInfo = ({ open }) => {
     };
     setForm(newForm);
   };
+
+  const error = schemas.NikkeiProfile.check(form)
+  console.log(Object.values(error).filter(e=> e.hasError))
 
   const handleOriginChange = (v, member) => {
     const newForm = {
@@ -122,7 +126,10 @@ const NikkeiInfo = ({ open }) => {
       </div>
       {data.is_nikkei === 1 && (
         <>
-          <div className="w-full overflow-x-scroll m-auto p-3 pb-6 bg-gray-100">
+          <div className={`w-full overflow-x-scroll m-auto p-3 pb-6 bg-gray-100
+              ${jpFamilyMembers.length>0 && error.jpFamilyMembers.hasError && "border border-red-400 m-3"}
+            `}
+          >
             {!isMutating ? (
               <>
                 <div className="relative">
@@ -133,7 +140,12 @@ const NikkeiInfo = ({ open }) => {
                 <OrgChart
                   tree={familyTree}
                   NodeComponent={({ node }) => (
-                    <NikkeiBranch node={node} onSelect={familySelect} />
+                    <NikkeiBranch 
+                      node={node} 
+                      onSelect={familySelect} 
+                      formValue={form} 
+                      hasError={jpFamilyMembers.length>0 && error.jpFamilyMembers.hasError}
+                    />
                   )}
                 />
               </>
@@ -148,7 +160,7 @@ const NikkeiInfo = ({ open }) => {
               </h2>
               {jpFamilyMembers.map((i) => (
                 <div className="w-3/4 m-2 font-extralight flex" key={i}>
-                  <span className="pt-4">O(a) meu/minha {familyLabels[i]} é imigrante de</span>
+                  <span className="pt-4 lowercase">O(a) meu/minha {familyLabels[i]} é imigrante de</span>
                   <InlineInput 
                     inline
                     placeholder="Província"
@@ -276,18 +288,25 @@ const NikkeiPicker = ({ selected, onSelect }) => {
   );
 };
 
-const NikkeiBranch = ({ node, onSelect, selected }) => {
+const NikkeiBranch = ({ node, onSelect, formValue, hasError }) => {
+  
+  const gen = formValue.jp_generation
+  const shouldError = hasError && schemas.generationLengths[gen] === node.value?.length
+  console.log(shouldError)
   return (
     <div className="">
       <button
-        className={`py-1.5 px-1.5 min-w-90px whitespace-nowrap mx-1 rounded-lg text-sm shadow-lg hover:bg-sky-100 focus:bg-sky-600 focus:text-white inline-flex items-center justify-center hover:text-black
-        ${
-          node.selected
-            ? 'bg-sky-500 text-white ring-2 ring-offset-2 ring-offset-sky-300 ring-white ring-opacity-60'
-            : 'font-extralight bg-white text-black'
-        }
+        className={`py-1.5 px-1.5 min-w-90px whitespace-nowrap mx-1 rounded-lg text-sm shadow-lg hover:bg-sky-200 focus:bg-sky-600 focus:text-white inline-flex items-center justify-center hover:text-black
+          ${
+            node.selected
+              ? 'bg-sky-500 text-white ring-2 ring-offset-2 ring-offset-sky-300 ring-white ring-opacity-60'
+              : 'font-extralight bg-white text-black'
+          }
+          ${
+            shouldError && 'ring-2 ring-offset-2 ring-offset-red-300 ring-white ring-opacity-60'
+          }
         `}
-        onClick={() => onSelect(node.value, node.label)}
+        onClick={node.value ? () => onSelect(node.value, node.label) : null}
       >
         {node.selected && <span className="mr-1">🍙</span>} {node.label}
       </button>

@@ -43,3 +43,16 @@ export const PersonalProfile = SchemaModel({
 export const states = _.map(br_states.estados, (i) => i.nome);
 
 export const cities = _.flattenDeep(_.map(br_states.estados, (i) => i.cidades));
+
+export const NikkeiProfile = SchemaModel({
+  jp_generation: NumberType("Deve ser um número").range(2,5,"Número entre 2 e 5"),
+  jpFamilyMembers: ArrayType("Deve ser um array").addRule((val, data) => {
+    return val.filter(i=> i.length === generationLengths[data.jp_generation])?.length > 0
+  }, "Você deve ter pelo menos um familiar do grau de geração selecionado"),
+  jpFamilyOrigins: ObjectType("Não é um objeto").addRule((val, data) => {
+    //console.log(data.jpFamilyMembers.includes())
+    return true
+  })
+})
+
+export const generationLengths = [0,1,1,3,5,7]
