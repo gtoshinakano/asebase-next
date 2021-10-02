@@ -9,8 +9,10 @@ import {
   getOptsByGeneration,
   familyLabels
 } from '@Utils/StaticData/family-data';
+import {JAPAN_PROVINCES} from '@Utils/StaticData/json-data'
 import OrgChart from 'react-orgchart';
 import 'react-orgchart/index.css';
+import InlineInput from '@Components/Styled/InlineInput';
 
 const NikkeiInfo = ({ open }) => {
   const [form, setForm] = useState(_form);
@@ -52,7 +54,6 @@ const NikkeiInfo = ({ open }) => {
       }, {}),
     };
     setForm(newForm);
-    console.log(newForm);
   };
 
   const handleOriginChange = (v, member) => {
@@ -61,6 +62,7 @@ const NikkeiInfo = ({ open }) => {
       jpFamilyOrigins: { ...form.jpFamilyOrigins, [member]: v },
     };
     setForm(newForm);
+    console.log(newForm)
   };
 
   if (isLoading) return <Skeleton className="w-50 h-5" />;
@@ -144,9 +146,18 @@ const NikkeiInfo = ({ open }) => {
               <h2 className="p-2 mb-1">
                 3. De qual ou quais províncias eles vieram?
               </h2>
-              {Object.keys(jpFamilyOrigins).map((i) => (
-                <div className="w-full m-2" key={i}>
-                  {familyLabels[i]}
+              {jpFamilyMembers.map((i) => (
+                <div className="w-3/4 m-2 font-extralight flex" key={i}>
+                  <span className="pt-4">O(a) meu/minha {familyLabels[i]} é imigrante de</span>
+                  <InlineInput 
+                    inline
+                    placeholder="Província"
+                    name={i}
+                    value={jpFamilyOrigins[i]}
+                    minSuggestionLength={2}
+                    options={JAPAN_PROVINCES.map(i=> i.name)}
+                    onChange={(v) => handleOriginChange(v, i)}
+                  />
                 </div>
               ))}
             </div>

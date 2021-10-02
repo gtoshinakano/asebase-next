@@ -20,6 +20,7 @@ const InlineInput = ({
   mask,
   options,
   minSuggestionLength,
+  onChange
 }) => {
   const [width, setWidth] = useState(0);
   const [inputErr, setInputErr] = useState({ hasError: false });
@@ -42,18 +43,19 @@ const InlineInput = ({
   }, [inputVal, placeholder]);
 
   const valueChange = ({ target }) => {
-    const error = schema.checkForField(name, { [name]: target.value });
+    const error = schema?.checkForField(name, { [name]: target.value }) || noError;
     setInputErr(error);
     let val = target.value;
     if (mask) val = mask(val);
     setInputVal(val);
+    if(onChange) onChange(val)
   };
 
   const onInputBlur = (e) => {
     setFocused(false);
     if (inputVal !== value) {
       if (!inputErr.hasError) {
-        mutate({ [name]: inputVal });
+        if(mutationFn) mutate({ [name]: inputVal });
       }
     } else {
       setInputErr(noError);
@@ -68,7 +70,8 @@ const InlineInput = ({
     setFocused(false);
     setInputVal(val);
     setInputErr(noError);
-    mutate({ [name]: val });
+    if(mutationFn) mutate({ [name]: val });
+    if(onChange) onChange(val)
   };
 
   return (
