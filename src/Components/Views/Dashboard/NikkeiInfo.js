@@ -58,7 +58,7 @@ const NikkeiInfo = ({ open }) => {
   };
 
   const error = schemas.NikkeiProfile.check(form)
-  console.log(Object.values(error).filter(e=> e.hasError))
+  //console.log(Object.values(error).filter(e=> e.hasError))
 
   const handleOriginChange = (v, member) => {
     const newForm = {
@@ -133,7 +133,12 @@ const NikkeiInfo = ({ open }) => {
             {!isMutating ? (
               <>
                 <div className="relative">
-                  <div className="absolute right-0 p-2 border-2 border-gray-900 bg-white text-xs font-semibold">
+                  {jpFamilyMembers.length>0 && error.jpFamilyMembers.hasError &&
+                    <div className="absolute left-0 p-2 text-red-600 text-xs font-extralight w-5/12 md:w-1/3">
+                    <i className="ri-feedback-fill mr-2"></i> {error.jpFamilyMembers.errorMessage}
+                  </div>
+                  }
+                  <div className="absolute right-0 p-2 border-2 border-gray-500 bg-white text-xs font-semibold opacity-50 w-1/3 sm:w-1/4 md:w-1/4">
                     🍙 Imigrantes japoneses
                   </div>
                 </div>
@@ -282,7 +287,7 @@ const NikkeiPicker = ({ selected, onSelect }) => {
         </p>
       </div>
       <h2 className="p-2 mt-8 mb-1">
-        2. Quais são os seus familiares imigrantes japoneses?
+        2. Quem são os seus familiares imigrantes japoneses?
       </h2>
     </div>
   );
