@@ -251,8 +251,6 @@ export const generationsExample = [
   'Pelo menos um dos seus tataravós foi imigrante japonês.',
 ];
 
-export const generations = ['', 'Issei', 'Nisei', 'Sansei', 'Yonsei', 'Gosei'];
-
 export const familyLabels = {
   '0': '🧔 Pai',
   '0-0': '👴 Avô (pat.)',
