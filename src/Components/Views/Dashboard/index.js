@@ -15,17 +15,20 @@ const DashboardView = () => {
   const nikkeiVisible = useOnScreen(nikkeiRef)
 
   return(
-    <div className="w-full px-1 sm:w-11/12 lg:w-4/5 xl:w-1/2 flex-grow mx-auto pt-12 flex flex-col">
-      <h1 className="text-4xl font-black inline-flex"><i className="ri-map-pin-user-fill mr-2 pb-4"></i> MEMBRO ASEBASE <em className="text-sm ml-1 font-extralight pt-1">v0.1</em></h1>
-      <UserProperties />
-      {session ? (
-        <>
-          <PersonalInfo />
-          <div ref={nikkeiRef}><NikkeiInfo open={nikkeiVisible} /></div>
-        </>
-      ) : <Skeleton className="w-full h-6" />}
-      
-    </div>
+    <>
+      <div className="w-full px-1 sm:w-11/12 lg:w-4/5 xl:w-1/2 flex-grow mx-auto pt-12 flex flex-col">
+        <h1 className="text-4xl font-black inline-flex"><i className="ri-map-pin-user-fill mr-2 pb-4"></i> MEMBRO ASEBASE <em className="text-sm ml-1 font-extralight pt-1">v0.1</em></h1>
+        <UserProperties />
+        {session 
+          ? (<PersonalInfo />)
+          : <Skeleton className="w-full h-6" />}
+      </div>
+      <div className="w-full">
+        {session 
+          ? (<div ref={nikkeiRef}><NikkeiInfo open={nikkeiVisible} /></div>) 
+          : <Skeleton className="w-full h-6" />}
+      </div>
+    </>
   )
 
 }

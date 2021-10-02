@@ -13,7 +13,7 @@ async function get(req, res) {
     }
     const result = await query(
       `
-      SELECT full_name, gender, birth_date, birth_country, birth_state, birth_city, is_nikkei, map_latlng
+      SELECT full_name, gender, birth_date, birth_country, birth_state, birth_city, is_nikkei, jp_generation, map_latlng
       FROM users_info
       WHERE auth_id = ?
     `,
