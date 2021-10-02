@@ -165,8 +165,8 @@ const NikkeiInfo = ({ open }) => {
               </h2>
               {jpFamilyMembers.map((i) => (
                 <div className="w-3/4 m-2 font-extralight flex" key={i}>
-                  <span className="pt-4 lowercase">O(a) meu/minha {familyLabels[i]} é imigrante de</span>
-                  <InlineInput 
+                  <span className="pt-4">O(A) meu(minha) {familyLabels[i]} é imigrante de</span>
+                  <div className="flex-grow"><InlineInput 
                     inline
                     placeholder="Província"
                     name={i}
@@ -175,6 +175,7 @@ const NikkeiInfo = ({ open }) => {
                     options={JAPAN_PROVINCES.map(i=> i.name)}
                     onChange={(v) => handleOriginChange(v, i)}
                   />
+                  </div>
                 </div>
               ))}
             </div>
