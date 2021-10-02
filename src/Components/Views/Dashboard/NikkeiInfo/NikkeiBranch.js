@@ -1,5 +1,6 @@
 import React from 'react';
 import OrgChart from 'react-orgchart';
+import * as schemas from '@Utils/Schemas/User'
 
 
 const NikkeiBranch = ({jpFamilyMembers, error, familyTree, familySelect, form}) => {

@@ -5,18 +5,15 @@ import Skeleton from 'react-loading-skeleton';
 import { updateIsNikkei } from '@Utils/DefaultQueries/Mutations';
 import {
   newItemsBySelected,
-  getOptsByGeneration,
-  familyLabels
+  getOptsByGeneration
 } from '@Utils/StaticData/family-data';
-import {JAPAN_PROVINCES} from '@Utils/StaticData/json-data'
 import 'react-orgchart/index.css';
-import InlineInput from '@Components/Styled/InlineInput';
 import * as schemas from '@Utils/Schemas/User'
 import NikkeiPicker from './NikkeiPicker';
 import NikkeiBranch from './NikkeiBranch';
-import Blockquote from '@Styled/BlockQuote';
+import NikkeiOrigins from './NikkeiOrigins';
 
-const NikkeiInfo = ({ open }) => {
+const NikkeiInfo = () => {
   const [form, setForm] = useState(_form);
   const handshake = useQuery('handshake');
   const uid = handshake.data?.data.uid || '';
@@ -59,7 +56,6 @@ const NikkeiInfo = ({ open }) => {
   };
 
   const error = schemas.NikkeiProfile.check(form)
-  console.log(Object.values(error).filter(e=> e.hasError))
 
   const handleOriginChange = (v, member) => {
     const newForm = {
@@ -104,7 +100,7 @@ const NikkeiInfo = ({ open }) => {
           />
         </div>
         {data.is_nikkei === 1 && (
-          <div className="ml-4 pl-3flex flex-wrap">
+          <div className="ml-4 pl-3 flex flex-wrap">
             {isMutating || isLoading ? (
               <div>
                 <Skeleton width={100} height={100} count={4} className="m-2" />
@@ -144,39 +140,11 @@ const NikkeiInfo = ({ open }) => {
             )}
           </div>
           <div className="mt-3 px-1 sm:w-11/12 lg:w-4/5 xl:w-1/2 flex-grow mx-auto flex flex-col">
-            <div className="ml-4 pl-3 flex flex-wrap">
-              <h2 className="p-2 mb-1">
-                3. De qual ou quais províncias eles vieram?
-              </h2>
-              {jpFamilyMembers.length>0 && error.jpFamilyMembers.hasError ? (
-                <Blockquote
-                  errorMessage={error.jpFamilyMembers.errorMessage}
-                  icon="ri-feedback-fill text-red-600"
-                  className="text-red-300 border-red-400"
-                />
-              ): error.jpFamilyOrigins.hasError ? (
-                <Blockquote
-                  errorMessage={error.jpFamilyOrigins.errorMessage}
-                  icon="ri-feedback-fill text-red-600"
-                  className="text-red-300 border-red-400"
-                />
-              ): null}
-              {jpFamilyMembers.map((i) => (
-                <div className="w-3/4 m-2 font-extralight flex" key={i}>
-                  <span className="pt-4">{familyLabels[i]} é imigrante de</span>
-                  <div className="flex-grow"><InlineInput 
-                    inline
-                    placeholder="Província"
-                    name={i}
-                    value={jpFamilyOrigins[i]}
-                    minSuggestionLength={2}
-                    options={JAPAN_PROVINCES.map(i=> i.name)}
-                    onChange={(v) => handleOriginChange(v, i)}
-                  />
-                  </div>
-                </div>
-              ))}
-            </div>
+            <NikkeiOrigins 
+              form={form}
+              error={error}
+              originChange={handleOriginChange}
+            />
           </div>
         </>
       )}
