@@ -154,10 +154,10 @@ const NikkeiInfo = () => {
         <div className="w-full px-7 mt-5 mb-10 sm:w-11/12 lg:w-4/5 xl:w-1/2 mx-auto flex flex-col">
           <div className="ml-3 w-full flex flex-wrap px-1 justify-end">
             <button className={`py-3 px-4 inline-flex tracking-widest
-              ${hasError ? "bg-blueGray-200 font-thin text-gray-500" : "bg-blue-500 font-semibold text-white"}
+              ${hasError ? "bg-blueGray-200 font-thin text-gray-500 w-full" : "bg-blue-500 font-semibold text-white"}
             `}>
               <i className={`${hasError ? "ri-error-warning-fill" : "ri-save-3-fill"} mr-5 text-lg`}></i>
-              {hasError ? "Verifique se peencheu os dados corretamente" : "SALVAR"}
+              {hasError ? "Resolva todas as pendências para poder salvar esta seção" : "SALVAR"}
             </button>
           </div>
         </div>
