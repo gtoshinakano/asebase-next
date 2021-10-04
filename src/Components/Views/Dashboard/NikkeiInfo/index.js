@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Checkbox from '@Components/Styled/Checkbox';
-import { useQuery, useIsMutating } from 'react-query';
+import { useQuery, useIsMutating, useMutation, useQueryClient } from 'react-query';
 import Skeleton from 'react-loading-skeleton';
-import { updateIsNikkei } from '@Utils/DefaultQueries/Mutations';
+import { updateIsNikkei, updateNikkeiProfile } from '@Utils/DefaultQueries/Mutations';
 import { getNikkeiProfile } from '@Utils/DefaultQueries/UserQueries'
 import {
   newItemsBySelected,
@@ -14,22 +14,30 @@ import NikkeiPicker from './NikkeiPicker';
 import NikkeiBranch from './NikkeiBranch';
 import NikkeiOrigins from './NikkeiOrigins';
 import { Transition } from '@headlessui/react';
+import Confirm from '@Styled/Confirm';
 
 const NikkeiInfo = () => {
+
   const [form, setForm] = useState(_form);
+  const client = useQueryClient()
   const handshake = useQuery('handshake');
   const uid = handshake.data?.data.uid || '';
   const queryKey = ['personal-profile', uid];
+  const nikkeiQueryKey = ["nikkei-profile", uid]
   const { data, isLoading } = useQuery(queryKey, { staleTime: Infinity });
-  const isMutating = useIsMutating('is_nikkei');
 
   const { jpFamilyMembers, jp_generation } = form;
 
-  const nikkei = useQuery(["nikkei-profile", uid], getNikkeiProfile, {staleTime: Infinity})
+  const nikkei = useQuery(nikkeiQueryKey, getNikkeiProfile, {staleTime: Infinity})
 
   useEffect(() => setForm(nikkei.data || _form), [nikkei.data])
 
-  console.log(form)
+  const mutation = useMutation(updateNikkeiProfile, {
+    onSuccess: () => {
+      client.invalidateQueries(queryKey)
+      client.invalidateQueries(nikkeiQueryKey)
+    }
+  })
 
   const familyTree = newItemsBySelected(
     jpFamilyMembers,
@@ -74,6 +82,10 @@ const NikkeiInfo = () => {
     };
     setForm(newForm);
   };
+
+  const onReset =  (e) => {
+    setForm(nikkei.data)
+  }
 
   if (isLoading) return (<Skeleton width="100%" height="420" />)
 
@@ -141,8 +153,8 @@ const NikkeiInfo = () => {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div className={`w-full overflow-x-scroll m-auto p-3 pb-6 bg-gray-100
-            ${jpFamilyMembers.length>0 && error.jpFamilyMembers.hasError && "border border-red-400 m-3"}
+        <div className={`w-full overflow-x-scroll p-3 pb-6 bg-gray-100
+            ${jpFamilyMembers.length>0 && error.jpFamilyMembers.hasError && "border border-l-0 border-r-0 border-red-400 space-x-2"}
           `}
         >
           <NikkeiBranch 
@@ -154,11 +166,11 @@ const NikkeiInfo = () => {
           />
         </div>
         <div className="mt-3 px-1 sm:w-11/12 lg:w-4/5 xl:w-1/2 flex-grow mx-auto flex flex-col">
-          <NikkeiOrigins 
+          {jpFamilyMembers.length > 0 && <NikkeiOrigins 
             form={form}
             error={error}
             originChange={handleOriginChange}
-          />
+          />}
         </div>
       </Transition>
         
@@ -171,18 +183,29 @@ const NikkeiInfo = () => {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div className="w-full px-7 mt-5 mb-10 sm:w-11/12 lg:w-4/5 xl:w-1/2 mx-auto flex flex-col">
+        <div className="w-full px-7 mt-10 mb-10 sm:w-11/12 lg:w-4/5 xl:w-1/2 mx-auto flex flex-col">
           <div className="ml-3 w-full flex flex-wrap px-1 justify-end">
+            {!_.isEqual(form, nikkei.data) && 
             <button 
-              className={`py-3 px-4 inline-flex align-middle tracking-widest
-                ${hasError ? "bg-blueGray-200 font-thin text-gray-500 w-full cursor-not-allowed text-xs" : "bg-blue-500 font-semibold text-white hover:bg-blue-400"}
+              className={`py-3 px-4 inline-flex tracking-widest bg-blueGray-300 text-black w-full sm:w-auto hover:bg-blueGray-200`}
+              onClick={onReset} 
+              type="button"
+            >
+              <i className="ri-arrow-go-back-line mr-5 text-lg"></i>
+              <span className="my-auto">
+                Redefinir
+              </span>
+            </button>}
+            <button 
+              className={`py-3 px-4 inline-flex tracking-widest
+                ${hasError ? "bg-blueGray-200 font-thin text-gray-500 flex-grow cursor-not-allowed text-xs" : "bg-sky-500 font-semibold text-white hover:bg-sky-400"}
               `}
               onClick={() => console.log(form, )}
               disabled={hasError}
             >
               <i className={`${hasError ? "ri-error-warning-fill" : "ri-save-3-fill"} mr-5 text-lg`}></i>
               <span className="my-auto">
-                {hasError ? "Resolva todas as pendências para poder salvar esta seção" : "SALVAR"}
+                {hasError ? "Preencha os campos corretamente para poder salvar esta seção" : "SALVAR"}
               </span>
             </button>
           </div>

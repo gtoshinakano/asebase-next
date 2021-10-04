@@ -12,7 +12,7 @@ const NikkeiBranch = ({jpFamilyMembers, error, familyTree, familySelect, form}) 
         <i className="ri-feedback-fill mr-2"></i> {error.jpFamilyMembers.errorMessage}
       </div>
       }
-      <div className="absolute right-0 p-2 border-2 border-gray-500 bg-white text-xs font-semibold opacity-70 w-1/3 sm:w-1/4 md:w-auto">
+      <div className="absolute right-0 p-2 border-2 border-gray-500 bg-white text-xs font-semibold opacity-70 w-1/3 sm:w-1/4 md:w-auto hover:opacity-10">
         🍙 Imigrantes japoneses
       </div>
     </div>

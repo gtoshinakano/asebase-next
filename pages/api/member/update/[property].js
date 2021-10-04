@@ -1,5 +1,6 @@
 import { query } from '@lib/db';
 import { getSessionUserInfoId } from '@Helpers';
+import * as schemas from '@Utils/Schemas/User'
 import jwt from 'next-auth/jwt';
 import moment from 'moment';
 
@@ -55,6 +56,8 @@ export default async (req, res) => {
             return await resBirthDate(req.body, token.sub, res);
           case 'is_nikkei':
             return await resIsNikkei(req.body, token.sub, res);
+          case '':
+            return await resNikkeiInfo(req.body, token.sub, res)
           default:
             return res.status(400).json({ serverMessage: 'Bad Request' });
         }
@@ -111,3 +114,19 @@ const resIsNikkei = async (body, sub, res) => {
     return res.status(400).json({ serverMessage: JSON.stringify(e) });
   }
 };
+
+const resNikkeiInfo = async (body, sub, res) => {
+  try{
+    const error = schemas.NikkeiProfile.check(body)
+    console.log(body, error)
+    if(Object.values(error).filter(e=> e.hasError).length > 0 ) {
+      return res.status(401).json({...error})
+    }else{
+      return res.status(200).json({ log: 'Update Done' })
+    }
+  }
+  catch(e) {
+   return res.status(401).json({serverMessage: JSON.stringify(e)})
+  }
+
+}

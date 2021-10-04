@@ -1,3 +1,4 @@
+import Blockquote from '@Components/Styled/BlockQuote';
 import { RadioGroup } from '@headlessui/react';
 
 const NikkeiPicker = ({ selected, onSelect, generations }) => {
@@ -6,10 +7,17 @@ const NikkeiPicker = ({ selected, onSelect, generations }) => {
       <h2 className="p-2 mt-5 mb-1">
         1. Qual é o seu grau de descendência japonesa?
       </h2>
+      <Blockquote icon="ri-questionnaire-fill text-4xl" className="border-gray-300 text-gray-500 tracking-wider ml-2 mb-6">
+        O seu Grau de Descendência é determinado a partir do{' '}
+        <b>primeiro japonês imigrante</b> da qual você possui laços
+        consangüíneos. No caso, ele seria o imigrante de 1ª Geração (o{' '}
+        <i>Issei</i>), os seus filhos seriam da 2ª geração (<i>Nissei</i>),
+        seus netos da 3ª (<i>Sansei</i>) e assim por diante.
+      </Blockquote>
       <div className="w-full">
         <RadioGroup value={selected} onChange={onSelect}>
           <RadioGroup.Label className="sr-only">Server size</RadioGroup.Label>
-          <div className="space-y-2 flex flex-wrap">
+          <div className="space-y-2 flex flex-wrap justify-evenly">
             {generations.map((generation) => (
               <RadioGroup.Option
                 key={generation.generation}
@@ -89,15 +97,6 @@ const NikkeiPicker = ({ selected, onSelect, generations }) => {
             ))}
           </div>
         </RadioGroup>
-      </div>
-      <div className="ml-2 mt-7 text-xs border p-5 bg-purple-50">
-        <p>
-          O seu Grau de Descendência é determinado a partir do{' '}
-          <b>primeiro japonês imigrante</b> da qual você possui laços
-          consangüíneos. No caso, ele seria o imigrante de 1ª Geração (o{' '}
-          <i>Issei</i>), os seus filhos seriam da 2ª geração (<i>Nissei</i>),
-          seus netos da 3ª (<i>Sansei</i>) e assim por diante.
-        </p>
       </div>
       <h2 className="p-2 mt-8 mb-1">
         2. Quem são os seus familiares imigrantes japoneses?

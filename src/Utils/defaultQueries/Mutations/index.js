@@ -51,3 +51,11 @@ export const updateIsNikkei = async (data) => {
   );
   return ret.data;
 };
+
+export const updateNikkeiProfile = async (data) => {
+  const ret = await axios.put(
+    `${API_ADDRESS}/api/member/update/nikkei_profile`,
+    data
+  );
+  return ret.data;
+};
