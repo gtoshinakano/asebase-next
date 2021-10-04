@@ -13,6 +13,7 @@ import * as schemas from '@Utils/Schemas/User'
 import NikkeiPicker from './NikkeiPicker';
 import NikkeiBranch from './NikkeiBranch';
 import NikkeiOrigins from './NikkeiOrigins';
+import { Transition } from '@headlessui/react';
 
 const NikkeiInfo = () => {
   const [form, setForm] = useState(_form);
@@ -26,7 +27,7 @@ const NikkeiInfo = () => {
 
   const nikkei = useQuery(["nikkei-profile", uid], getNikkeiProfile, {staleTime: Infinity})
 
-  useEffect(() => setForm(nikkei.data), [nikkei.data])
+  useEffect(() => setForm(nikkei.data || _form), [nikkei.data])
 
   console.log(form)
 
@@ -108,61 +109,73 @@ const NikkeiInfo = () => {
             }}
           />
         </div>
-        {data.is_nikkei === 1 && (
+        <Transition
+          show={data.is_nikkei === 1}
+          enter="transition duration-100"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition duration-100"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
           <div className="ml-4 pl-3 flex flex-wrap">
-            {isMutating || isLoading ? (
-              <div>
-                <Skeleton width={100} height={100} count={4} className="m-2" />
-                <Skeleton width={100} height={100} className="h-14" />
-              </div>
-            ) : (
-              <NikkeiPicker
-                selected={
-                  _.filter(
-                    generations,
-                    (g) => g.generation === jp_generation
-                  )[0]
-                }
-                onSelect={generationSelect}
-                generations={generations}
-              />
-            )}
-          </div>
-        )}
-      </div>
-      {data.is_nikkei === 1 && (
-        <>
-          <div className={`w-full overflow-x-scroll m-auto p-3 pb-6 bg-gray-100
-              ${jpFamilyMembers.length>0 && error.jpFamilyMembers.hasError && "border border-red-400 m-3"}
-            `}
-          >
-            {!isMutating ? (
-              <NikkeiBranch 
-                jpFamilyMembers={jpFamilyMembers} 
-                error={error} 
-                familyTree={familyTree} 
-                familySelect={familySelect}
-                form={form}
-              />
-            ) : (
-              <Skeleton height={415} />
-            )}
-          </div>
-          <div className="mt-3 px-1 sm:w-11/12 lg:w-4/5 xl:w-1/2 flex-grow mx-auto flex flex-col">
-            <NikkeiOrigins 
-              form={form}
-              error={error}
-              originChange={handleOriginChange}
+            <NikkeiPicker
+              selected={
+                _.filter(
+                  generations,
+                  (g) => g.generation === jp_generation
+                )[0]
+              }
+              onSelect={generationSelect}
+              generations={generations}
             />
           </div>
-        </>
-      )}
-      {data.is_nikkei === 1 && (
+        </Transition>
+      </div>
+      <Transition
+        show={data.is_nikkei === 1}
+        enter="transition-opacity duration-100"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-opacity duration-100"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
+        <div className={`w-full overflow-x-scroll m-auto p-3 pb-6 bg-gray-100
+            ${jpFamilyMembers.length>0 && error.jpFamilyMembers.hasError && "border border-red-400 m-3"}
+          `}
+        >
+          <NikkeiBranch 
+            jpFamilyMembers={jpFamilyMembers} 
+            error={error} 
+            familyTree={familyTree} 
+            familySelect={familySelect}
+            form={form}
+          />
+        </div>
+        <div className="mt-3 px-1 sm:w-11/12 lg:w-4/5 xl:w-1/2 flex-grow mx-auto flex flex-col">
+          <NikkeiOrigins 
+            form={form}
+            error={error}
+            originChange={handleOriginChange}
+          />
+        </div>
+      </Transition>
+        
+      <Transition
+        show={data.is_nikkei === 1}
+        enter="transition-opacity duration-100"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-opacity duration-100"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
         <div className="w-full px-7 mt-5 mb-10 sm:w-11/12 lg:w-4/5 xl:w-1/2 mx-auto flex flex-col">
           <div className="ml-3 w-full flex flex-wrap px-1 justify-end">
             <button 
               className={`py-3 px-4 inline-flex align-middle tracking-widest
-                ${hasError ? "bg-blueGray-200 font-thin text-gray-500 w-full cursor-not-allowed text-xs" : "bg-blue-500 font-semibold text-white"}
+                ${hasError ? "bg-blueGray-200 font-thin text-gray-500 w-full cursor-not-allowed text-xs" : "bg-blue-500 font-semibold text-white hover:bg-blue-400"}
               `}
               onClick={() => console.log(form, )}
               disabled={hasError}
@@ -174,7 +187,7 @@ const NikkeiInfo = () => {
             </button>
           </div>
         </div>
-      )}
+      </Transition>
     </>
   );
 };
