@@ -4,10 +4,13 @@ import { RadioGroup } from '@headlessui/react';
 const NikkeiPicker = ({ selected, onSelect, generations }) => {
   return (
     <div className="w-full flex flex-wrap px-1">
-      <h2 className="p-2 mt-5 mb-1">
+      <h2 className="p-2 mt-5 mb-1 print:mx-auto">
         1. Qual é o seu grau de descendência japonesa?
       </h2>
-      <Blockquote icon="ri-questionnaire-fill text-4xl" className="border-gray-300 text-gray-500 tracking-wider ml-2 mb-6">
+      <Blockquote 
+        icon="ri-questionnaire-fill text-4xl" 
+        className="border-gray-300 text-gray-500 tracking-wider ml-2 mb-6 print:hidden"
+      >
         O seu Grau de Descendência é determinado a partir do{' '}
         <b>primeiro japonês imigrante</b> da qual você possui laços
         consangüíneos. No caso, ele seria o imigrante de 1ª Geração (o{' '}

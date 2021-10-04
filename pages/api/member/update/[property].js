@@ -3,6 +3,8 @@ import { getSessionUserInfoId } from '@Helpers';
 import * as schemas from '@Utils/Schemas/User'
 import jwt from 'next-auth/jwt';
 import moment from 'moment';
+import { JAPAN_PROVINCES } from '@Utils/StaticData/json-data';
+import _ from 'lodash'
 
 const secret = process.env.SECRET;
 
@@ -56,7 +58,7 @@ export default async (req, res) => {
             return await resBirthDate(req.body, token.sub, res);
           case 'is_nikkei':
             return await resIsNikkei(req.body, token.sub, res);
-          case '':
+          case 'nikkei_info':
             return await resNikkeiInfo(req.body, token.sub, res)
           default:
             return res.status(400).json({ serverMessage: 'Bad Request' });
@@ -118,10 +120,18 @@ const resIsNikkei = async (body, sub, res) => {
 const resNikkeiInfo = async (body, sub, res) => {
   try{
     const error = schemas.NikkeiProfile.check(body)
-    console.log(body, error)
     if(Object.values(error).filter(e=> e.hasError).length > 0 ) {
       return res.status(401).json({...error})
     }else{
+      await query('DELETE FROM japanese_origins WHERE user_id=?', [sub]);
+      const {jpFamilyOrigins} = body
+      console.log(jpFamilyOrigins["0"])
+      const promises = Object.keys(jpFamilyOrigins).map((key) => {
+        const [jp_code] = _.filter(JAPAN_PROVINCES, (f)=> (f.name===jpFamilyOrigins[key]))
+        return query('INSERT INTO japanese_origins VALUES(?, ?, ?)', [sub, jp_code.code, key])
+      })
+      console.log(promises)
+      await Promise.all(promises)
       return res.status(200).json({ log: 'Update Done' })
     }
   }

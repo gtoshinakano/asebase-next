@@ -73,7 +73,8 @@ const NikkeiInfo = () => {
 
   const error = schemas.NikkeiProfile.check(form)
   const hasError = Object.values(schemas.NikkeiProfile.check(form)).filter(e=> e.hasError).length > 0
-  console.log(hasError)
+
+  const hasChanged = !_.isEqual(form, nikkei.data)
 
   const handleOriginChange = (v, member) => {
     const newForm = {
@@ -85,6 +86,10 @@ const NikkeiInfo = () => {
 
   const onReset =  (e) => {
     setForm(nikkei.data)
+  }
+
+  const onSubmit = (e) => {
+    mutation.mutate({...form})
   }
 
   if (isLoading) return (<Skeleton width="100%" height="420" />)
@@ -185,29 +190,33 @@ const NikkeiInfo = () => {
       >
         <div className="w-full px-7 mt-10 mb-10 sm:w-11/12 lg:w-4/5 xl:w-1/2 mx-auto flex flex-col">
           <div className="ml-3 w-full flex flex-wrap px-1 justify-end">
-            {!_.isEqual(form, nikkei.data) && 
-            <button 
-              className={`py-3 px-4 inline-flex tracking-widest bg-blueGray-300 text-black w-full sm:w-auto hover:bg-blueGray-200`}
-              onClick={onReset} 
-              type="button"
-            >
-              <i className="ri-arrow-go-back-line mr-5 text-lg"></i>
-              <span className="my-auto">
-                Redefinir
-              </span>
-            </button>}
-            <button 
-              className={`py-3 px-4 inline-flex tracking-widest
-                ${hasError ? "bg-blueGray-200 font-thin text-gray-500 flex-grow cursor-not-allowed text-xs" : "bg-sky-500 font-semibold text-white hover:bg-sky-400"}
-              `}
-              onClick={() => console.log(form, )}
-              disabled={hasError}
-            >
-              <i className={`${hasError ? "ri-error-warning-fill" : "ri-save-3-fill"} mr-5 text-lg`}></i>
-              <span className="my-auto">
-                {hasError ? "Preencha os campos corretamente para poder salvar esta seção" : "SALVAR"}
-              </span>
-            </button>
+            {hasChanged &&
+              <>
+                <button 
+                  className={`py-3 px-4 inline-flex tracking-widest bg-blueGray-300 text-black w-full sm:w-auto hover:bg-blueGray-200`}
+                  onClick={onReset} 
+                  type="button"
+                  disabled={mutation.isLoading}
+                >
+                  <i className="ri-arrow-go-back-line mr-5 text-lg"></i>
+                  <span className="my-auto">
+                    Redefinir
+                  </span>
+                </button>
+                <button 
+                  className={`py-3 px-4 inline-flex tracking-widest
+                    ${hasError ? "bg-blueGray-200 font-thin text-gray-500 flex-grow cursor-not-allowed text-xs" : "bg-sky-500 font-semibold text-white hover:bg-sky-400"}
+                  `}
+                  onClick={onSubmit}
+                  disabled={hasError || mutation.isLoading}
+                >
+                  <i className={`${hasError ? "ri-error-warning-fill" : mutation.isLoading || isLoading || nikkei.isFetching ? "ri-loader-5-line animate-spin" :"ri-save-3-fill"} mr-5 text-lg`}></i>
+                  <span className="my-auto">
+                    {hasError ? "Preencha os campos corretamente para poder salvar esta seção" : "SALVAR"}
+                  </span>
+                </button>
+              </>
+            }
           </div>
         </div>
       </Transition>

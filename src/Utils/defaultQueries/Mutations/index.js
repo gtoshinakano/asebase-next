@@ -54,7 +54,7 @@ export const updateIsNikkei = async (data) => {
 
 export const updateNikkeiProfile = async (data) => {
   const ret = await axios.put(
-    `${API_ADDRESS}/api/member/update/nikkei_profile`,
+    `${API_ADDRESS}/api/member/update/nikkei_info`,
     data
   );
   return ret.data;
