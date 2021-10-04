@@ -17,7 +17,7 @@ async function get(req, res) {
     `,
       [token.sub]
     );
-    console.log(query);
+    console.log(result);
     return res.status(200).json(result[0]);
   } catch (e) {
     res.status(401).json({ message: e.message });

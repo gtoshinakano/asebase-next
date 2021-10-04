@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Checkbox from '@Components/Styled/Checkbox';
 import { useQuery, useIsMutating } from 'react-query';
 import Skeleton from 'react-loading-skeleton';
 import { updateIsNikkei } from '@Utils/DefaultQueries/Mutations';
+import { getNikkeiProfile } from '@Utils/DefaultQueries/UserQueries'
 import {
   newItemsBySelected,
   getOptsByGeneration
@@ -22,6 +23,12 @@ const NikkeiInfo = () => {
   const isMutating = useIsMutating('is_nikkei');
 
   const { jpFamilyMembers, jp_generation } = form;
+
+  const nikkei = useQuery(["nikkei-profile", uid], getNikkeiProfile, {staleTime: Infinity})
+
+  useEffect(() => setForm(nikkei.data), [nikkei.data])
+
+  console.log(form)
 
   const familyTree = newItemsBySelected(
     jpFamilyMembers,
@@ -153,11 +160,17 @@ const NikkeiInfo = () => {
       {data.is_nikkei === 1 && (
         <div className="w-full px-7 mt-5 mb-10 sm:w-11/12 lg:w-4/5 xl:w-1/2 mx-auto flex flex-col">
           <div className="ml-3 w-full flex flex-wrap px-1 justify-end">
-            <button className={`py-3 px-4 inline-flex tracking-widest
-              ${hasError ? "bg-blueGray-200 font-thin text-gray-500 w-full" : "bg-blue-500 font-semibold text-white"}
-            `}>
+            <button 
+              className={`py-3 px-4 inline-flex align-middle tracking-widest
+                ${hasError ? "bg-blueGray-200 font-thin text-gray-500 w-full cursor-not-allowed text-xs" : "bg-blue-500 font-semibold text-white"}
+              `}
+              onClick={() => console.log(form, )}
+              disabled={hasError}
+            >
               <i className={`${hasError ? "ri-error-warning-fill" : "ri-save-3-fill"} mr-5 text-lg`}></i>
-              {hasError ? "Resolva todas as pendências para poder salvar esta seção" : "SALVAR"}
+              <span className="my-auto">
+                {hasError ? "Resolva todas as pendências para poder salvar esta seção" : "SALVAR"}
+              </span>
             </button>
           </div>
         </div>
