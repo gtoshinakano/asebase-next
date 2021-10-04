@@ -87,13 +87,14 @@ const InlineInput = ({
         style={inline && { width }}
       >
         <div className="relative">
-          <div className="absolute right-2 font-thin z-10 inline-flex">
+          <div className={`absolute right-2 font-thin z-10 inline-flex ${inline && "top-3"}`}>
             {inputErr.hasError && (
               <HelpTip
-                icon={<i className="text-lg text-red-300 ri-alert-fill"></i>}
+                icon={<i className={`text-lg text-red-300 ri-alert-fill`}></i>}
                 message={
                   <>
-                    <i className=" ri-error-warning-line mr-2"></i>
+                    <i 
+                      className={`ri-error-warning-line mr-2`}></i>
                     {inputErr.errorMessage}
                   </>
                 }

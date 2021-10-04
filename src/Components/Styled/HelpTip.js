@@ -49,7 +49,7 @@ const HelpTip = ({ icon, message, error, warning, onClick }) => {
         </div>
       </Transition>
       <button
-        className="cursor-pointer "
+        className="cursor-pointer"
         onClick={onClick}
         onMouseOut={() => setShow(false)}
         onMouseOver={() => setShow(true)}
