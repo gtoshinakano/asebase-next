@@ -92,11 +92,11 @@ const NikkeiInfo = () => {
     mutation.mutate({...form})
   }
 
-  if (isLoading) return (<Skeleton width="100%" height="420" />)
+  if (isLoading) return (<Skeleton  />)
 
   return (
     <>
-      <div className="px-1 sm:w-11/12 lg:w-4/5 xl:w-1/2 flex-grow mx-auto flex flex-col">
+      <div className="px-1 sm:w-11/12 lg:w-4/5 xl:w-1/2 flex-grow mx-auto flex flex-col overflow-hidden">
         <div className="pl-1.5 mt-3 font-thin text-gray-700 pt-4">
           <Checkbox
             checked={data.is_nikkei === 1}
@@ -264,3 +264,17 @@ const generations = [
     description: 'Pelo menos um de seus tataravós é imigrante Japonês',
   },
 ];
+
+const NikkeiProfileSkeleton = () => (
+  <div className="h-96 p-2">
+    <Skeleton className="w-full h-12 mt-2" />
+    <Skeleton width="35%" className="block w-1/4 h-8 mt-4" />
+    <br />
+    <Skeleton width="50%"className="block w-full h-8 my-3" />
+    <br />
+    <Skeleton width="80%"className="block w-full h-8 mb-3 my-2" />
+    <br />
+    <Skeleton width="30%"className="block w-full h-8 mb-3 my-2" />
+    <br />
+    <Skeleton width="50%"className="block w-full h-8 mb-3 my-2" />
+  </div>)

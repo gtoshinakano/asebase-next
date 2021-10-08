@@ -15,6 +15,7 @@ import { maskDate } from '@Utils/Helpers/masks';
 import moment from 'moment';
 import _ from 'lodash';
 import br_states from '@Utils/StaticData/br_states.json';
+import UserProperties from './UserProperties';
 
 const PersonalInfo = () => {
   const handshake = useQuery('handshake');
@@ -26,7 +27,7 @@ const PersonalInfo = () => {
 
   let birthDate = moment(data?.birth_date).utc() || '';
 
-  if (isLoading) return <Skeleton className="w-full h-10" />;
+  if(isLoading) return (<Skeleton />);
   else
     return (
       <>
@@ -102,3 +103,17 @@ const getEstadosByCityName = (city) => {
   });
   return [filtered[0]?.nome];
 };
+
+const PersonalProfileSkeleton = () => (
+  <div className="h-96 w-full p-2">
+    <Skeleton className="w-full h-12 mt-2" />
+    <Skeleton width="35%" className="block w-1/4 h-8 mt-4" />
+    <br />
+    <Skeleton width="50%"className="block w-full h-8 my-3" />
+    <br />
+    <Skeleton width="80%"className="block w-full h-8 mb-3 my-2" />
+    <br />
+    <Skeleton width="30%"className="block w-full h-8 mb-3 my-2" />
+    <br />
+    <Skeleton width="50%"className="block w-full h-8 mb-3 my-2" />
+  </div>)

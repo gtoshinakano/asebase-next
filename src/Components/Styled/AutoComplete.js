@@ -48,7 +48,7 @@ export default function AutoComplete({
                     <span
                       className={`${
                         selected ? 'font-medium' : 'font-thin'
-                      } block truncate cursor-pointer  py-1.5 px-3`}
+                      } block truncate cursor-pointer py-1.5 px-3`}
                       onMouseDown={() => onSelect(item)}
                     >
                       {item}
@@ -68,5 +68,5 @@ const Container = styled.div.attrs((props) => ({
   className: 'absolute pt-2 -ml-2.5 z-50',
 }))`
   width: ${(props) =>
-    props.width + 120 > 240 ? '240px' : props.width + 120 + 'px'};
+    props.width + 120 > 240 ? '240px' : props.width + 50 + 'px'};
 `;

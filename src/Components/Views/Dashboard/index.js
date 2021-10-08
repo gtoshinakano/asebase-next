@@ -7,7 +7,7 @@ import Skeleton from 'react-loading-skeleton';
 import useOnScreen from '@Components/Hooks/useOnScreen';
 
 const DashboardView = () => {
-  const session = useSession();
+  const [session, loading] = useSession();
 
   const nikkeiRef = useRef();
   const nikkeiVisible = useOnScreen(nikkeiRef);
@@ -20,16 +20,15 @@ const DashboardView = () => {
           <em className="text-sm ml-1 font-extralight pt-1">v0.1</em>
         </h1>
         <UserProperties />
-        {session ? <PersonalInfo /> : <Skeleton className="w-full h-6" />}
+        {session && <PersonalInfo /> }
       </div>
       <div className="w-full">
-        {session ? (
-          <div ref={nikkeiRef}>
-            <NikkeiInfo open={nikkeiVisible} />
-          </div>
-        ) : (
-          <Skeleton className="w-full h-6" />
-        )}
+        <div ref={nikkeiRef}>
+          {session && !loading 
+            ? <NikkeiInfo open={nikkeiVisible} />
+            : <Skeleton className="w-full h-44" />
+          }
+        </div>
       </div>
     </>
   );
