@@ -2429,9 +2429,9 @@ export const PARENTESCOS = {
 };
 
 export const AREAS = [
-  { label: 'Exatas', value: 1 },
-  { label: 'Humanas', value: 2 },
-  { label: 'Biológicas', value: 3 },
+  { label: '📐 Exatas', value: 1 },
+  { label: '🏛 Humanas', value: 2 },
+  { label: '🔬 Biológicas', value: 3 },
 ];
 
 export const PLACEHOLDERS = {

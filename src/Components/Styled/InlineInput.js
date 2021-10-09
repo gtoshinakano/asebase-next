@@ -20,7 +20,8 @@ const InlineInput = ({
   mask,
   options,
   minSuggestionLength,
-  onChange
+  onChange,
+  maxLength
 }) => {
   const [width, setWidth] = useState(0);
   const [inputErr, setInputErr] = useState({ hasError: false });
@@ -128,6 +129,7 @@ const InlineInput = ({
           disabled={isLoading || loading}
           inline={inline}
           width={width}
+          maxLength={maxLength}
         />
         <AutoComplete
           inputVal={inputVal}

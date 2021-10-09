@@ -27,7 +27,7 @@ const PersonalInfo = () => {
 
   let birthDate = moment(data?.birth_date).utc() || '';
 
-  if(isLoading) return (<Skeleton />);
+  if(isLoading) return (<PersonalProfileSkeleton />);
   else
     return (
       <>

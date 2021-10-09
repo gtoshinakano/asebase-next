@@ -92,7 +92,7 @@ const NikkeiInfo = () => {
     mutation.mutate({...form})
   }
 
-  if (isLoading) return (<Skeleton  />)
+  if (isLoading) return (<NikkeiProfileSkeleton  />)
 
   return (
     <>
@@ -188,7 +188,7 @@ const NikkeiInfo = () => {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div className="w-full px-7 mt-10 mb-10 sm:w-11/12 lg:w-4/5 xl:w-1/2 mx-auto flex flex-col">
+        <div className="w-full px-7 mt-7 sm:w-11/12 lg:w-4/5 xl:w-1/2 mx-auto flex flex-col">
           <div className="ml-3 w-full flex flex-wrap px-1 justify-end">
             {hasChanged &&
               <>
