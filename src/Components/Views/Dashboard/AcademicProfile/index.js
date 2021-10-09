@@ -9,14 +9,14 @@ const AcademicProfile = () => {
 
   const [form, setForm] = useState(_form);
   const client = useQueryClient()
-  const {data} = client.getQueryData("handshake")
-  const queryKey = ["academic-profile", data.id]
+  const handshake = client.getQueryData("handshake")
+  const queryKey = ["academic-profile", handshake?.data.id]
   const academic = useQuery(queryKey, getAcademicProfile, {staleTime: Infinity})
 
   useEffect(() => setForm(academic?.data || []), [academic.data])
 
 
-  const onAcademicChange = (e) => console.log(e)
+  const onAcademicChange = (val, index) => console.log(val, index)
 
   if (academic.isLoading || academic.isFetching ) return <Skeleton width="100%" height={195} />
 

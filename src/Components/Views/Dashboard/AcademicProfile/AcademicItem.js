@@ -16,11 +16,11 @@ const AcademicItem = ({data, onChange, index}) => {
 
   useEffect(() => setForm(data), [data])
 
-
-  
-
-
-  const onGradChange= (e) => console.log(e)
+  const onSingleChange = (val, name) => {
+    const newForm = {...form, [name]: val}
+    setForm(newForm)
+    onChange(newForm, index)
+  }
 
   return (
     <div className="w-full flex flex-nowrap">
@@ -29,7 +29,7 @@ const AcademicItem = ({data, onChange, index}) => {
       >
         <i className="ri-add-box-fill text-lg"></i>
       </button>
-      <div className="flex-grow pl-o sm:pl-2 pb-5">
+      <div className="flex-grow sm:pl-2 pb-5">
         <div>
           {user?.gender === "f" ? "👩‍🎓" : "👨‍🎓"} Ano de Conclusão: 
           <InlineInput
@@ -39,15 +39,15 @@ const AcademicItem = ({data, onChange, index}) => {
             name="year"
             mask={maskOnlyNumbers}
             value={form.year}
-            onChange={onGradChange}
+            onChange={onSingleChange}
             maxLength={4}
             options={getValidYears()}
           />
         </div>
         <div>
-          <StudyAreaToggle value={form.study_area} />
+          <StudyAreaToggle value={form.study_area} onChange={onSingleChange} name="study_area" />
         </div>
-        <div className="pt-3 sm:pt-0">
+        <div className="pt-3 sm:pt-1.5">
           🎓 Formação em: 
           <InlineInput
             inline
@@ -55,18 +55,18 @@ const AcademicItem = ({data, onChange, index}) => {
             //schema={schemas.PersonalProfile}
             name="subject"
             value={form.subject}
-            onChange={onGradChange}
+            onChange={onSingleChange}
           />
         </div>
-        <div className="pt-3 sm:pt-0">
-          🏫 Instituição
+        <div className="pt-3 sm:pt-3">
+          🏫 Instituição :
           <InlineInput
             inline
-            placeholder="ex: Universidade de ..."
+            placeholder="ex: Universidade de São Paulo"
             //schema={schemas.PersonalProfile}
             name="institution_name"
             value={form.institution_name}
-            onChange={onGradChange}
+            onChange={onSingleChange}
           />
         </div>
       </div>

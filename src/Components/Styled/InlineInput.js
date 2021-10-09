@@ -49,7 +49,7 @@ const InlineInput = ({
     let val = target.value;
     if (mask) val = mask(val);
     setInputVal(val);
-    if(onChange) onChange(val)
+    if(onChange) onChange(val, name)
   };
 
   const onInputBlur = (e) => {
