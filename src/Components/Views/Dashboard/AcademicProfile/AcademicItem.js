@@ -1,6 +1,7 @@
 import React, { useState, useEffect }  from 'react';
 import InlineInput from '@Components/Styled/InlineInput';
 import { maskOnlyNumbers } from '@Utils/Helpers/masks';
+import * as schemas from '@Utils/Schemas/User'
 import { useQueryClient } from 'react-query';
 import StudyAreaToggle from './StudyAreaToggle';
 import moment from 'moment';
@@ -16,6 +17,9 @@ const AcademicItem = ({data, onChange, index}) => {
 
   useEffect(() => setForm(data), [data])
 
+  const error = schemas.AcademicItem.check(form)
+  const hasError = Object.values(error).filter(e=> e.hasError).length > 0
+
   const onSingleChange = (val, name) => {
     const newForm = {...form, [name]: val}
     setForm(newForm)
@@ -23,7 +27,7 @@ const AcademicItem = ({data, onChange, index}) => {
   }
 
   return (
-    <div className="w-full flex flex-nowrap">
+    <div className={`w-full flex flex-nowrap ${hasError && "bg-red-50"}`}>
       <button
         className="py-auto px-1.5 hover:bg-gray-200 text-gray-300 hover:text-gray-700"
       >
@@ -35,7 +39,7 @@ const AcademicItem = ({data, onChange, index}) => {
           <InlineInput
             inline
             placeholder="ano de formação"
-            //schema={schemas.PersonalProfile}
+            schema={schemas.AcademicItem}
             name="year"
             mask={maskOnlyNumbers}
             value={form.year}
@@ -52,10 +56,11 @@ const AcademicItem = ({data, onChange, index}) => {
           <InlineInput
             inline
             placeholder="ex: Engenharia Elétrica"
-            //schema={schemas.PersonalProfile}
+            schema={schemas.AcademicItem}
             name="subject"
             value={form.subject}
             onChange={onSingleChange}
+            maxLength={150}
           />
         </div>
         <div className="pt-3 sm:pt-3">
@@ -63,10 +68,11 @@ const AcademicItem = ({data, onChange, index}) => {
           <InlineInput
             inline
             placeholder="ex: Universidade de São Paulo"
-            //schema={schemas.PersonalProfile}
+            schema={schemas.AcademicItem}
             name="institution_name"
             value={form.institution_name}
             onChange={onSingleChange}
+            maxLength={150}
           />
         </div>
       </div>

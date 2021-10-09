@@ -58,3 +58,12 @@ export const NikkeiProfile = SchemaModel({
 })
 
 export const generationLengths = [0,1,1,3,5,7]
+
+export const AcademicItem = SchemaModel({
+  year: NumberType("Não é um número").isRequired("Campo obrigatório").range(1920, parseInt(moment().format('YYYY')) + 5, "Ano fora do intervalo válido"),
+  study_area: NumberType().range(1,3,"Algo errado aconteceu"),
+  subject: StringType().isRequired("Campo obrigatório"),
+  institution_name: StringType().isRequired("Campo obrigatório")
+})
+
+export const AcademicList = ArrayType().isRequired("obrig").of(AcademicItem)
