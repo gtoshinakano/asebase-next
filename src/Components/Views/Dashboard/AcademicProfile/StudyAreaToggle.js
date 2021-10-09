@@ -12,15 +12,14 @@ const StudyAreaToggle = ({disabled, value, onChange}) => {
 
   const [val] = AREAS.filter(f=> f.value === inputVal)
   return (
-    <div className="mt-2">
-      <button
-        className="inline-flex min-w-max font-thin pt-2 pb-0.5 hover:bg-gray-100 print:hidden disabled:cursor-not-allowed "
-        onClick={toggleArea}
-        disabled={disabled}
-      >
-        <span className="">{val.label}</span>
-      </button>
-    </div>
+
+    <button
+      className="inline-flex min-w-max mt-3.5 pr-3 py-2 hover:bg-gray-100 disabled:cursor-not-allowed "
+      onClick={toggleArea}
+      disabled={disabled}
+    >
+      <span className="">{val.label}</span>
+    </button>
   );
 }
 

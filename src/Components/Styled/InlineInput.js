@@ -78,13 +78,13 @@ const InlineInput = ({
   return (
     <>
       <div
-        className="invisible absolute px-1.5 font-notoJP font-thin whitespace-pre"
+        className="invisible fixed px-1.5 font-notoJP font-thin whitespace-pre"
         ref={span}
       >
         {inputVal ? inputVal : placeholder}
       </div>
       <div
-        className={`p-1 ${inline && 'inline-flex flex-wrap'}`}
+        className={`p-1 ${inline && 'inline-flex max-w-xxs sm:max-w-none flex-wrap'}`}
         style={inline && { width }}
       >
         <div className="relative">
@@ -145,7 +145,7 @@ const InlineInput = ({
 };
 
 const IInput = styled.input.attrs((props) => ({
-  className: `focus:outline-none text-gray-700 hover:bg-gray-100 focus:bg-blueGray-100 py-1 px-0.5 font-notoJP font-thin tracking-wide 
+  className: `focus:outline-none text-gray-700 hover:bg-gray-100 focus:bg-blueGray-100 py-1 px-0.5 font-notoJP font-thin tracking-wide
   ${props.inputCSS} 
   ${
     props.inline

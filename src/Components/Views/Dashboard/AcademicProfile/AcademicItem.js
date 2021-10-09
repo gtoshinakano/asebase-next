@@ -1,15 +1,23 @@
-import React, { useState }  from 'react';
+import React, { useState, useEffect }  from 'react';
 import InlineInput from '@Components/Styled/InlineInput';
 import { maskOnlyNumbers } from '@Utils/Helpers/masks';
 import { useQueryClient } from 'react-query';
 import StudyAreaToggle from './StudyAreaToggle';
+import moment from 'moment';
+import _ from 'lodash'
 
 
-const EducationalItem = ({items, onChange}) => {
+const AcademicItem = ({data, onChange, index}) => {
 
+  const [form, setForm] = useState(_form);
   const client = useQueryClient()
-  const {data} = client.getQueryData("handshake")
-  const user = client.getQueryData(["personal-profile", data.id])
+  const handshake = client.getQueryData("handshake")
+  const user = client.getQueryData(["personal-profile", handshake.data.id])
+
+  useEffect(() => setForm(data), [data])
+
+
+  
 
 
   const onGradChange= (e) => console.log(e)
@@ -17,11 +25,11 @@ const EducationalItem = ({items, onChange}) => {
   return (
     <div className="w-full flex flex-nowrap">
       <button
-        className="py-auto px-1 hover:bg-blueGray-200 bg-blueGray-100"
+        className="py-auto px-1.5 hover:bg-gray-200 text-gray-300 hover:text-gray-700"
       >
-        <i className="ri-add-box-fill"></i>
+        <i className="ri-add-box-fill text-lg"></i>
       </button>
-      <div className="flex-grow text-sm pl-1.5 pb-5">
+      <div className="flex-grow pl-o sm:pl-2 pb-5">
         <div>
           {user?.gender === "f" ? "👩‍🎓" : "👨‍🎓"} Ano de Conclusão: 
           <InlineInput
@@ -30,13 +38,14 @@ const EducationalItem = ({items, onChange}) => {
             //schema={schemas.PersonalProfile}
             name="year"
             mask={maskOnlyNumbers}
-            value={""}
+            value={form.year}
             onChange={onGradChange}
             maxLength={4}
+            options={getValidYears()}
           />
         </div>
         <div>
-          <StudyAreaToggle value={1} />
+          <StudyAreaToggle value={form.study_area} />
         </div>
         <div className="pt-3 sm:pt-0">
           🎓 Formação em: 
@@ -45,7 +54,7 @@ const EducationalItem = ({items, onChange}) => {
             placeholder="ex: Engenharia Elétrica"
             //schema={schemas.PersonalProfile}
             name="subject"
-            value={""}
+            value={form.subject}
             onChange={onGradChange}
           />
         </div>
@@ -53,22 +62,30 @@ const EducationalItem = ({items, onChange}) => {
           🏫 Instituição
           <InlineInput
             inline
-            placeholder="ex: Universidade de São Paulo"
+            placeholder="ex: Universidade de ..."
             //schema={schemas.PersonalProfile}
-            name="subject"
-            value={""}
+            name="institution_name"
+            value={form.institution_name}
             onChange={onGradChange}
-            maxLength={4}
           />
         </div>
       </div>
       <button
         className="py-auto px-1 text-red-700 hover:bg-red-50"
       >
-        <i className="ri-close-circle-fill"></i>
+        <i className="ri-close-circle-fill text-lg"></i>
       </button>
     </div>
   )
 }
 
-export default EducationalItem;
+export default AcademicItem;
+
+const _form = {
+  year: "",
+  study_area: 1,
+  subject: "",
+  institution_name: ""
+}
+
+const getValidYears = () => _.range(1920, parseInt(moment().format('YYYY')) + 5)

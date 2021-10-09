@@ -23,6 +23,7 @@ module.exports = {
       maxWidth: {
         '265px': '265px',
         '150px': '150px',
+        'xxs': '17rem',
       },
       screens: {
         print: { raw: 'print' },
