@@ -26,6 +26,12 @@ const AcademicItem = ({data, onChange, index}) => {
     onChange(newForm, index)
   }
 
+  const onNumberChange = (val, name) => {
+    const newForm = {...form, [name]: parseInt(val)}
+    setForm(newForm)
+    onChange(newForm, index)
+  }
+
   return (
     <div className={`w-full flex flex-nowrap ${hasError && "bg-red-50"}`}>
       <button
@@ -43,7 +49,7 @@ const AcademicItem = ({data, onChange, index}) => {
             name="year"
             mask={maskOnlyNumbers}
             value={form.year}
-            onChange={onSingleChange}
+            onChange={onNumberChange}
             maxLength={4}
             options={getValidYears()}
           />
