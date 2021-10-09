@@ -34,7 +34,7 @@ const AcademicItem = ({data, onChange, index}) => {
   }
 
   return (
-    <div className={`w-full flex flex-wrap`}>
+    <div className={`w-full flex flex-nowrap`}>
       <button
         className={`py-auto px-1.5 hover:bg-gray-200 text-gray-300 hover:text-gray-700`}
       >
@@ -73,7 +73,7 @@ const AcademicItem = ({data, onChange, index}) => {
           {error.subject.hasError && <ErrorDot />}
         </div>
         <div className="pt-3 sm:pt-3">
-          🏫 Instituição :
+          🏫 Instituição de Ensino:
           <InlineInput
             inline
             placeholder="ex: Universidade de São Paulo"
