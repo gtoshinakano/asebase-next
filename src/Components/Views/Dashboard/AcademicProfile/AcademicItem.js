@@ -9,7 +9,7 @@ import _ from 'lodash'
 import Blockquote from '@Components/Styled/BlockQuote';
 
 
-const AcademicItem = ({data, onChange, index}) => {
+const AcademicItem = ({data, onChange, onAdd, onRemove, index}) => {
 
   const [form, setForm] = useState(_form);
   const client = useQueryClient()
@@ -33,10 +33,16 @@ const AcademicItem = ({data, onChange, index}) => {
     onChange(newForm, index)
   }
 
+  const onAddNew = () => onAdd(_form, index)
+
+  const onRemoveItem = () => onRemove(index)
+
   return (
     <div className={`w-full flex flex-nowrap`}>
       <button
-        className={`py-auto px-1.5 hover:bg-gray-200 text-gray-300 hover:text-gray-700`}
+        className={`py-auto px-1.5 hover:bg-gray-200 text-gray-300 hover:text-gray-700 border-r-2 my-4`}
+        onClick={onAddNew}
+        type="button"
       >
         <i className="ri-add-box-fill text-lg"></i>
       </button>
@@ -88,6 +94,9 @@ const AcademicItem = ({data, onChange, index}) => {
       </div>
       <button
         className="py-auto px-1 text-red-700 hover:bg-red-50"
+        onClick={onRemoveItem}
+        type="button"
+        //disabled={index === 0}
       >
         <i className="ri-close-circle-fill text-lg"></i>
       </button>

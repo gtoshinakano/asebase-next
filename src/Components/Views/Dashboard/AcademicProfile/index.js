@@ -30,6 +30,23 @@ const AcademicProfile = () => {
     setForm(newForm)
   }
 
+  const onAdd = (val, index) => {
+    let newForm = [...form]
+    newForm.splice(index+1, 0, val)
+    const error = schemas.AcademicList.check(newForm)
+    let hasErr = error.array ? error.array.filter(item=> Object.values(item).filter(e=> e.hasError).length > 0).length > 0 : error.hasError
+    setHasError(hasErr)
+    setForm(newForm)
+  }
+
+  const onRemove = (index) => {
+    let newForm = [...form]
+    newForm.splice(index,1)
+    const error = schemas.AcademicList.check(newForm)
+    let hasErr = error.array ? error.array.filter(item=> Object.values(item).filter(e=> e.hasError).length > 0).length > 0 : error.hasError
+    setHasError(hasErr)
+    setForm(newForm)
+  }
 
   const onReset =  (e) => {
     setForm(academic?.data)
@@ -43,7 +60,7 @@ const AcademicProfile = () => {
 
   return (
     <>
-      <h2 className="font-semibold inline-flex align-middle pl-2 pb-4">
+      <h2 className="font-semibold inline-flex align-middle pt-3 pl-2 pb-4">
         <i className="ri-book-open-line mr-2 text-xl"></i> <span className="my-auto">Formação Acadêmica</span>
       </h2>
       <div className="flex flex-wrap pl-1">
@@ -53,6 +70,8 @@ const AcademicProfile = () => {
             data={item} 
             onChange={onAcademicChange} 
             index={index}
+            onAdd={onAdd}
+            onRemove={onRemove}
           />)}
       </div>
       <Transition
