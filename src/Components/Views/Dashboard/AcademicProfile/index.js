@@ -56,24 +56,37 @@ const AcademicProfile = () => {
     mutation.mutate({...form})
   }
 
+  const onInitForm = (e) => {
+    setForm([_item])
+    setHasError(true)
+  }
+
   if (academic.isLoading || academic.isFetching ) return <Skeleton width="100%" height={195} />
 
   return (
     <>
       <h2 className="font-semibold inline-flex align-middle pt-3 pl-2 pb-4">
-        <i className="ri-book-open-line mr-2 text-xl"></i> <span className="my-auto">Formação Acadêmica</span>
+        <i className="ri-book-open-line mr-2 text-xl"></i> <span className="my-auto text-xl">Formação Acadêmica</span>
       </h2>
-      <div className="flex flex-wrap pl-1">
-        {form.map((item, index) => 
-          <AcademicItem 
-            key={index} 
-            item={item} 
-            onChange={onAcademicChange} 
-            index={index}
-            onAdd={onAdd}
-            onRemove={onRemove}
-            data={form}
-          />)}
+      <div className="flex flex-wrap pl-1 w-full">
+        {form.length > 0 
+          ? form.map((item, index) => 
+            <AcademicItem 
+              key={index} 
+              item={item} 
+              onChange={onAcademicChange} 
+              index={index}
+              onAdd={onAdd}
+              onRemove={onRemove}
+              data={form}
+            />)
+          : <button 
+              className="ml-7 px-4 py-2 bg-blueGray-100 inline-flex font-thin hover:bg-blueGray-200"
+              onClick={onInitForm}
+            >
+            <i className="ri-edit-2-fill mr-3 text-sky-400 my-auto"></i> Preencher informações acadêmicas
+          </button>
+        }
       </div>
       <Transition
         show={hasChanged}
@@ -125,3 +138,10 @@ export default AcademicProfile;
 const _form = []
 
 const toPick = ["year", "study_area", "subject", "institution_name"]
+
+const _item = {
+  year: "",
+  study_area: 1,
+  subject: "",
+  institution_name: ""
+}
