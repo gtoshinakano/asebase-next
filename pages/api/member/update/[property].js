@@ -60,6 +60,8 @@ export default async (req, res) => {
             return await resIsNikkei(req.body, token.sub, res);
           case 'nikkei_info':
             return await resNikkeiInfo(req.body, token.sub, res)
+          case 'academic_profile':
+            return await resAcademicProfile(req.body, token.sub, res)
           default:
             return res.status(400).json({ serverMessage: 'Bad Request' });
         }
@@ -125,12 +127,10 @@ const resNikkeiInfo = async (body, sub, res) => {
     }else{
       await query('DELETE FROM japanese_origins WHERE user_id=?', [sub]);
       const {jpFamilyOrigins} = body
-      console.log(jpFamilyOrigins["0"])
       const promises = Object.keys(jpFamilyOrigins).map((key) => {
         const [jp_code] = _.filter(JAPAN_PROVINCES, (f)=> (f.name===jpFamilyOrigins[key]))
         return query('INSERT INTO japanese_origins VALUES(?, ?, ?)', [sub, jp_code.code, key])
       })
-      console.log(promises)
       await Promise.all(promises)
       return res.status(200).json({ log: 'Update Done' })
     }
@@ -138,5 +138,26 @@ const resNikkeiInfo = async (body, sub, res) => {
   catch(e) {
    return res.status(401).json({serverMessage: JSON.stringify(e)})
   }
-
 }
+const resAcademicProfile = async (body, sub, res) => {
+  try{
+    const error = schemas.AcademicList.check(body)
+    if(Object.values(error).filter(e=> e.hasError).length > 0 ) {
+      return res.status(401).json({...error})
+    }else{
+      await query('DELETE FROM academic_info WHERE user_id=?', [sub]);
+      console.log(body)
+      const promises =  Object.values(body).map((item) => {
+        return query('INSERT INTO academic_info VALUES("",?, ?, ?, ?, ?)', [ item.institution_name, sub, item.subject, item.year, item.study_area])
+      })
+      await Promise.all(promises)
+      return res.status(200).json({ log: 'Update Done' })
+    }
+  }
+  catch(e) {
+   return res.status(401).json({serverMessage: JSON.stringify(e)})
+  }
+}
+
+
+
