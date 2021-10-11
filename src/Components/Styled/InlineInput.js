@@ -21,7 +21,9 @@ const InlineInput = ({
   options,
   minSuggestionLength,
   onChange,
-  maxLength
+  maxLength,
+  min,
+  max
 }) => {
   const [width, setWidth] = useState(0);
   const [inputErr, setInputErr] = useState({ hasError: false });
@@ -40,7 +42,8 @@ const InlineInput = ({
 
   React.useEffect(() => setInputVal(value), [value]);
   React.useEffect(() => {
-    setWidth(span.current.offsetWidth);
+    const {offsetWidth} = span.current
+    setWidth(type==="number" ? offsetWidth+22 : offsetWidth);
   }, [inputVal, placeholder]);
 
   const valueChange = ({ target }) => {
@@ -72,7 +75,7 @@ const InlineInput = ({
     setInputVal(val);
     setInputErr(noError);
     if(mutationFn) mutate({ [name]: val });
-    if(onChange) onChange(val)
+    if(onChange) onChange(val, name)
   };
 
   return (
@@ -130,6 +133,8 @@ const InlineInput = ({
           inline={inline}
           width={width}
           maxLength={maxLength}
+          min={min}
+          max={max}
         />
         <AutoComplete
           inputVal={inputVal}

@@ -96,7 +96,7 @@ const NikkeiInfo = () => {
 
   return (
     <>
-      <div className="px-1 sm:w-11/12 lg:w-4/5 xl:w-1/2 flex-grow mx-auto flex flex-col overflow-hidden">
+      <div className="px-1 sm:w-11/12 lg:w-4/5 xl:w-1/2 flex-grow mx-auto flex flex-col overflow-hidden ">
         <div className="pl-1.5 mt-3 font-thin text-gray-700 pt-4">
           <Checkbox
             checked={data.is_nikkei === 1}
