@@ -5,6 +5,7 @@ import { getAcademicProfile } from '@Utils/DefaultQueries/UserQueries'
 import Skeleton from 'react-loading-skeleton';
 import * as schemas from '@Utils/Schemas/User'
 import { Transition } from '@headlessui/react';
+import { updateAcademicProfile } from '@Utils/DefaultQueries/Mutations';
 
 const AcademicProfile = () => {
 
@@ -14,7 +15,12 @@ const AcademicProfile = () => {
   const handshake = client.getQueryData("handshake")
   const queryKey = ["academic-profile", handshake?.data.id]
   const academic = useQuery(queryKey, getAcademicProfile, {staleTime: Infinity})
-  const mutation = useMutation()
+  const mutation = useMutation(updateAcademicProfile, {
+    onSuccess: () => {
+      client.invalidateQueries(queryKey)
+    }
+  })
+
 
   useEffect(() => setForm(academic?.data || []), [academic.data])
 
@@ -61,7 +67,7 @@ const AcademicProfile = () => {
     setHasError(true)
   }
 
-  if (academic.isLoading || academic.isFetching ) return <Skeleton width="100%" height={195} />
+  const isAwaiting = academic.isLoading || academic.isFetching || mutation.isLoading || mutation.isFetching
 
   return (
     <>
@@ -71,15 +77,20 @@ const AcademicProfile = () => {
       <div className="flex flex-wrap pl-1 w-full">
         {form.length > 0 
           ? form.map((item, index) => 
-            <AcademicItem 
-              key={index} 
-              item={item} 
-              onChange={onAcademicChange} 
-              index={index}
-              onAdd={onAdd}
-              onRemove={onRemove}
-              data={form}
-            />)
+            !isAwaiting 
+              ? <AcademicItem 
+                  key={index} 
+                  item={item} 
+                  onChange={onAcademicChange} 
+                  index={index}
+                  onAdd={onAdd}
+                  onRemove={onRemove}
+                  data={form}
+                />
+              : <div className="w-full pt-5 px-3" style={{height:222}} key={index}>
+                <Skeleton width="100%" height={188} className="" />
+              </div>
+            )
           : <button 
               className="ml-7 px-4 py-2 bg-blueGray-100 inline-flex font-thin hover:bg-blueGray-200"
               onClick={onInitForm}

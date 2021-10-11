@@ -59,3 +59,8 @@ export const updateNikkeiProfile = async (data) => {
   );
   return ret.data;
 };
+
+export const updateAcademicProfile = async body => {
+  const {data} = await axios.put(`${API_ADDRESS}/api/member/update/academic_profile`, body)
+  return data
+}
