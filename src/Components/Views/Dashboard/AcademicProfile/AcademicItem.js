@@ -37,11 +37,18 @@ const AcademicItem = ({data, onChange, onAdd, onRemove, index, item}) => {
 
   const onAddNew = () => onAdd(_form, index)
 
-  const onRemoveItem = () => onRemove(index)
+  const onRemoveItem = () => {
+    if(data.length > 1)
+      onRemove(index)
+    else{
+      setForm(_form)
+      onChange(form, index)
+    }
+  }
 
 
   return (
-    <div className={`w-full flex flex-nowrap pl-3 border focus-within:border-sky-400 border-white`}>
+    <div className={`w-full flex flex-nowrap px-3 border focus-within:border-sky-400 border-white`}>
       <button
         className={`py-auto px-0.5 md:px-1 bg-gray-100 hover:bg-gray-200 text-gray-300 hover:text-gray-700 border-r-2 my-4 disabled:cursor-not-allowed`}
         onClick={onAddNew}
@@ -104,7 +111,6 @@ const AcademicItem = ({data, onChange, onAdd, onRemove, index, item}) => {
         className="py-auto px-1 text-red-700 hover:bg-red-50 my-4"
         onClick={onRemoveItem}
         type="button"
-        //disabled={index === 0}
       >
         <i className="ri-close-circle-fill text-lg"></i>
       </button>
