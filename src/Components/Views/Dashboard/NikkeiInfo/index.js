@@ -101,8 +101,8 @@ const NikkeiInfo = () => {
           <Checkbox
             checked={data.is_nikkei === 1}
             labels={[
-              'Não possui ascendência japonesa',
-              'Possui ascendência japonesa',
+              '🗾 Não possui ascendência japonesa',
+              '🗾 Possui ascendência japonesa',
             ]}
             loading={isLoading}
             mutationFn={updateIsNikkei}

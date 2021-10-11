@@ -19,7 +19,7 @@ const AcademicProfile = () => {
   useEffect(() => setForm(academic?.data || []), [academic.data])
 
   const hasChanged = !_.isEqual(_.map(form, i=> _.pick(i, toPick)), _.map(academic?.data, i=>_.pick(i, toPick)))
-  console.log(hasChanged, _.map(form, i=> _.pick(i, toPick)), _.map(academic?.data, i=>_.pick(i, toPick)))
+  //console.log(hasChanged, _.map(form, i=> _.pick(i, toPick)), _.map(academic?.data, i=>_.pick(i, toPick)))
   
   const onAcademicChange = (val, index) => {
     let newForm = [...form]
@@ -67,11 +67,12 @@ const AcademicProfile = () => {
         {form.map((item, index) => 
           <AcademicItem 
             key={index} 
-            data={item} 
+            item={item} 
             onChange={onAcademicChange} 
             index={index}
             onAdd={onAdd}
             onRemove={onRemove}
+            data={form}
           />)}
       </div>
       <Transition

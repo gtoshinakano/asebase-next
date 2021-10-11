@@ -9,14 +9,14 @@ import _ from 'lodash'
 import Blockquote from '@Components/Styled/BlockQuote';
 
 
-const AcademicItem = ({data, onChange, onAdd, onRemove, index}) => {
+const AcademicItem = ({data, onChange, onAdd, onRemove, index, item}) => {
 
   const [form, setForm] = useState(_form);
   const client = useQueryClient()
   const handshake = client.getQueryData("handshake")
   const user = client.getQueryData(["personal-profile", handshake.data.id])
 
-  useEffect(() => setForm(data), [data])
+  useEffect(() => setForm(item), [item])
 
   const error = schemas.AcademicItem.check(form)
   const hasError = Object.values(error).filter(e=> e.hasError).length > 0
@@ -37,16 +37,20 @@ const AcademicItem = ({data, onChange, onAdd, onRemove, index}) => {
 
   const onRemoveItem = () => onRemove(index)
 
+  console.log(error.year)
+
   return (
-    <div className={`w-full flex flex-nowrap`}>
+    <div className={`w-full flex flex-nowrap pl-3`}>
       <button
-        className={`py-auto px-1.5 hover:bg-gray-200 text-gray-300 hover:text-gray-700 border-r-2 my-4`}
+        className={`py-auto px-0.5 md:px-1 bg-gray-100 hover:bg-gray-200 text-gray-300 hover:text-gray-700 border-r-2 my-4 disabled:cursor-not-allowed`}
         onClick={onAddNew}
+        disabled={data.length > 4}
         type="button"
       >
-        <i className="ri-add-box-fill text-lg"></i>
+        <i className={`ri-number-${index+1} text-blueGray-500 block text-lg `}></i>
+        <i className={`${data.length > 4 ? "ri-forbid-2-fill" : "ri-add-box-fill text-blueGray-700"} block text-lg `}></i>
       </button>
-      <div className="flex-grow sm:pl-2 pb-5">
+      <div className="flex-grow pl-2 pb-5">
         <div>
           {user?.gender === "f" ? "👩‍🎓" : "👨‍🎓"} Ano de Conclusão: 
           <InlineInput
@@ -55,7 +59,7 @@ const AcademicItem = ({data, onChange, onAdd, onRemove, index}) => {
             schema={schemas.AcademicItem}
             name="year"
             mask={maskOnlyNumbers}
-            value={form.year}
+            value={parseInt(form.year) || ""}
             onChange={onNumberChange}
             maxLength={4}
             options={getValidYears()}
@@ -93,7 +97,7 @@ const AcademicItem = ({data, onChange, onAdd, onRemove, index}) => {
         </div>
       </div>
       <button
-        className="py-auto px-1 text-red-700 hover:bg-red-50"
+        className="py-auto px-1 text-red-700 hover:bg-red-50 my-4"
         onClick={onRemoveItem}
         type="button"
         //disabled={index === 0}

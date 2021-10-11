@@ -47,7 +47,7 @@ const PersonalInfo = () => {
           <GenderInput value={data?.gender || null} queryKey={queryKey} />
         </div>
         <div className="pl-2 mt-3 inline font-thin text-gray-700">
-          Natural de
+        🌎 Natural de
           <InlineInput
             inline
             placeholder="Município"
@@ -78,7 +78,7 @@ const PersonalInfo = () => {
           , Brasil.
         </div>
         <div className="pl-2 mt-3 inline font-thin text-gray-700">
-          Nascido em
+        🎂 Nascido em
           <InlineInput
             inline
             placeholder="dd/mm/aaaa"
