@@ -150,7 +150,7 @@ const resAcademicProfile = async (body, sub, res) => {
       const promises =  Object.values(body).map((item) => {
         return query('INSERT INTO academic_info VALUES("",?, ?, ?, ?, ?)', [ item.institution_name, sub, item.subject, item.year, item.study_area])
       })
-      await Promise.all(promises)
+      await Promise.all(promises).then(resp=> console.log(resp)) 
       return res.status(200).json({ log: 'Update Done' })
     }
   }

@@ -14,7 +14,8 @@ async function get(req, res) {
     const result = await query(`
       SELECT institution_name, subject, year, study_area
       FROM  academic_info 
-      WHERE user_id=? 
+      WHERE user_id=?
+      ORDER BY year ASC
     `,[token.sub]);
     return res.status(200).json(result);
   } catch (e) {
