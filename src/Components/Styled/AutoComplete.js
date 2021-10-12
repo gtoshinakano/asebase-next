@@ -37,7 +37,7 @@ export default function AutoComplete({
                 <Listbox.Option
                   key={itemIdx}
                   className={({ active }) =>
-                    `${itemIdx===activeIndex ? 'text-amber-900 bg-amber-100' : 'text-gray-900'}
+                    `${itemIdx===activeIndex ? 'text-blueGray-900 bg-blueGray-200' : 'text-gray-900'}
                       cursor-default select-none relative block h-full
                       border-b border-warmGray-100 hover:bg-blueGray-100 hover:text-black font-light z-50  
                     `

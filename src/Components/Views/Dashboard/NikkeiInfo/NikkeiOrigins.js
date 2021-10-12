@@ -34,7 +34,7 @@ const NikkeiOrigins = ({form, error, originChange}) => {
               placeholder="Província"
               name={i}
               value={jpFamilyOrigins[i]}
-              minSuggestionLength={2}
+              minSuggestionLength={1}
               options={JAPAN_PROVINCES.map(i=> i.name)}
               onChange={(v) => originChange(v, i)}
             />
