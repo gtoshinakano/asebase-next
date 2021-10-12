@@ -25,13 +25,11 @@ const AcademicItem = ({data, onChange, onAdd, onRemove, index, item}) => {
       onRemove(index)
       client.invalidateQueries(queryKey)
       client.invalidateQueries(["academic-profile", uid])
-    },
-    
+    }, 
   })
 
   useEffect(() => setForm(item), [item])
   useEffect(() => setError(schemas.AcademicItem.check(form)), [form])
-  console.log(form)
 
   const hasError = Object.values(error).filter(e=> e.hasError).length > 0
 

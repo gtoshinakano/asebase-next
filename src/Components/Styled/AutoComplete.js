@@ -32,7 +32,7 @@ export default function AutoComplete({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="absolute w-full mt-1 overflow-auto font-notoJP bg-white shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none text-xs sm:text-sm ">
+            <Listbox.Options className="absolute w-full mt-1 overflow-auto font-notoJP bg-white shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none text-xs sm:text-sm">
               {options.map((item, itemIdx) => (
                 <Listbox.Option
                   key={itemIdx}
@@ -65,7 +65,7 @@ export default function AutoComplete({
 }
 
 const Container = styled.div.attrs((props) => ({
-  className: 'absolute pt-2 -ml-2.5 z-50',
+  className: 'absolute pt-2 -ml-2.5 z-50 min-w-150px',
 }))`
   width: ${(props) =>
     props.width + 120 > 240 ? '240px' : props.width + 50 + 'px'};

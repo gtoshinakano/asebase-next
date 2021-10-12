@@ -51,7 +51,6 @@ const InlineInput = ({
     const error = schema?.checkForField(name, { [name]: target.value }) || noError;
     setInputErr(error);
     setAcFocus(-1)
-    console.log("oi")
     let val = target.value;
     if (mask) val = mask(val);
     setInputVal(val);
@@ -83,7 +82,6 @@ const InlineInput = ({
   };
 
   const onKeyDown = ({keyCode, target}) => {
-    console.log(keyCode)
     if(keyCode === 40) setAcFocus(acFocus+1)
     if(keyCode === 38) setAcFocus(acFocus-1)
     if (keyCode === 13 && activeIndex > -1) onSuggestionSelect(opts[activeIndex]);
