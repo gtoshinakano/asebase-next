@@ -2,11 +2,12 @@ import React, { useState, useEffect }  from 'react';
 import InlineInput from '@Components/Styled/InlineInput';
 import { maskOnlyNumbers } from '@Utils/Helpers/masks';
 import * as schemas from '@Utils/Schemas/User'
-import { useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import StudyAreaToggle from './StudyAreaToggle';
 import moment from 'moment';
 import _ from 'lodash'
-import Blockquote from '@Components/Styled/BlockQuote';
+import Confirm from '@Components/Styled/Confirm';
+import { deleteAcademicProfile } from '@Utils/DefaultQueries/Delete';
 
 
 const AcademicItem = ({data, onChange, onAdd, onRemove, index, item}) => {
@@ -15,7 +16,18 @@ const AcademicItem = ({data, onChange, onAdd, onRemove, index, item}) => {
   const [error, setError] = useState(schemas.AcademicItem.check(form))
   const client = useQueryClient()
   const handshake = client.getQueryData("handshake")
-  const user = client.getQueryData(["personal-profile", handshake.data.id])
+  const uid = handshake.data.id || ""
+  const queryKey = ["personal-profile", uid]
+  const user = client.getQueryData(queryKey)
+  const mutation = useMutation(deleteAcademicProfile, {
+    mutationKey: "academic",
+    onSuccess: () => {
+      onRemove(index)
+      client.invalidateQueries(queryKey)
+      client.invalidateQueries(["academic-profile", uid])
+    },
+    
+  })
 
   useEffect(() => setForm(item), [item])
   useEffect(() => setError(schemas.AcademicItem.check(form)), [form])
@@ -37,15 +49,16 @@ const AcademicItem = ({data, onChange, onAdd, onRemove, index, item}) => {
 
   const onAddNew = () => onAdd(_form, index)
 
-  const onRemoveItem = () => {
+  const onRemoveItem = async () => {
     if(data.length > 1)
       onRemove(index)
     else{
-      setForm(_form)
-      onChange(form, index)
+      const res = await Confirm.show(_confirm)
+      if(res){
+        mutation.mutate()
+      }
     }
   }
-
 
   return (
     <div className={`w-full flex flex-nowrap px-3 border focus-within:border-sky-400 border-white`}>
@@ -132,3 +145,17 @@ const getValidYears = () => _.range(1920, parseInt(moment().format('YYYY')) + 5)
 const ErrorDot = ({msg}) => <div className="rounded-full h-1 w-1 ml-1 bg-red-500 inline-block transform -translate-y-3" title={msg}></div>
 
 const noError = { hasError: false };
+
+const _confirm ={
+  title: 'Tem certeza que quer apagar?',
+  message: 'ATENÇÃO: Seus dados preenchidos serão apagados',
+  confirmBtn: (
+  <div className="w-12 inline-flex">
+    <i className="ri-check-line mr-3"></i> Sim
+  </div>),
+  cancelBtn: (
+    <div className="w-12 inline-flex">
+      <i className="ri-delete-back-2-line mr-3"></i> Não
+    </div>
+  )
+}

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import AcademicItem from './AcademicItem';
-import { useQuery, useQueryClient, useMutation } from 'react-query';
+import { useQuery, useQueryClient, useMutation, useIsMutating } from 'react-query';
 import { getAcademicProfile } from '@Utils/DefaultQueries/UserQueries'
 import Skeleton from 'react-loading-skeleton';
 import * as schemas from '@Utils/Schemas/User'
@@ -20,6 +20,8 @@ const AcademicProfile = () => {
       client.invalidateQueries(queryKey)
     }
   })
+
+  const isMutatingAcademic = useIsMutating("academic")
 
 
   useEffect(() => setForm(academic?.data || []), [academic.data])
@@ -67,7 +69,7 @@ const AcademicProfile = () => {
     setHasError(true)
   }
 
-  const isAwaiting = academic.isLoading || academic.isFetching || mutation.isLoading || mutation.isFetching
+  const isAwaiting = academic.isLoading || academic.isFetching || mutation.isLoading || mutation.isFetching || isMutatingAcademic
 
   return (
     <>
@@ -100,7 +102,7 @@ const AcademicProfile = () => {
         }
       </div>
       <Transition
-        show={hasChanged}
+        show={hasChanged && !isAwaiting}
         enter="transition-opacity duration-100"
         enterFrom="opacity-0"
         enterTo="opacity-100"

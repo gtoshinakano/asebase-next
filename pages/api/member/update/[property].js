@@ -11,9 +11,9 @@ const secret = process.env.SECRET;
 export default async (req, res) => {
   const { property } = req.query;
   const token = await jwt.getToken({ req, secret });
+  const checkedUser = await getSessionUserInfoId(token.sub);
 
   if (req.method === 'PUT') {
-    const checkedUser = await getSessionUserInfoId(token.sub);
     if (!checkedUser.hasError) {
       try {
         switch (property) {
@@ -62,6 +62,22 @@ export default async (req, res) => {
             return await resNikkeiInfo(req.body, token.sub, res)
           case 'academic_profile':
             return await resAcademicProfile(req.body, token.sub, res)
+          default:
+            return res.status(400).json({ serverMessage: 'Bad Request' });
+        }
+      } catch (e) {
+        res.json({ errorMessage: e.message });
+      }
+    } else {
+      res.json({ errorMessage: 'Error checking credentials' });
+    }
+  } else if(req.method === 'DELETE'){
+    if (!checkedUser.hasError) {
+      try {
+        switch (property) {
+          case 'academic_profile':
+            await query('DELETE FROM academic_info WHERE user_id = ?', [token.sub])
+            return res.status(200).json({ log: 'Delete Done' });
           default:
             return res.status(400).json({ serverMessage: 'Bad Request' });
         }
@@ -158,6 +174,3 @@ const resAcademicProfile = async (body, sub, res) => {
    return res.status(401).json({serverMessage: JSON.stringify(e)})
   }
 }
-
-
-
