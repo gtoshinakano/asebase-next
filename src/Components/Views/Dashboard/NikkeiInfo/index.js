@@ -14,7 +14,7 @@ import NikkeiPicker from './NikkeiPicker';
 import NikkeiBranch from './NikkeiBranch';
 import NikkeiOrigins from './NikkeiOrigins';
 import { Transition } from '@headlessui/react';
-import Confirm from '@Styled/Confirm';
+import { RoundButton } from '@Components/Styled/Button';
 
 const NikkeiInfo = () => {
 
@@ -180,40 +180,36 @@ const NikkeiInfo = () => {
       </Transition>
       <Transition
         show={hasChanged}
-        enter="transition-opacity duration-100"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="transition-opacity duration-100"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
+        enter="transition duration-100 ease-out"
+        enterFrom="transform scale-95 opacity-0"
+        enterTo="transform scale-100 opacity-100"
+        leave="transition duration-75 ease-out"
+        leaveFrom="transform scale-100 opacity-100"
+        leaveTo="transform scale-95 opacity-0"
       >
-        <div className="w-full px-7 mt-7 sm:w-11/12 lg:w-4/5 xl:w-1/2 mx-auto flex flex-col">
-          <div className="ml-3 w-full flex flex-wrap px-1 justify-end">
+        <div className="w-full px-7 mt-5 mb-4 sm:w-11/12 lg:w-4/5 xl:w-1/2 mx-auto flex flex-col">
+          <div className="ml-3 w-full space-x-2 flex justify-end">
             {hasChanged &&
               <>
-                <button 
-                  className={`py-3 px-4 inline-flex tracking-widest bg-blueGray-300 text-black w-full sm:w-auto hover:bg-blueGray-200`}
-                  onClick={onReset} 
-                  type="button"
-                  disabled={mutation.isLoading}
+                <RoundButton
+                  className="text-sm min-w-90px"
+                  onClick={onReset}
+                  disabled={mutation.isLoading || isLoading || isFetching}
                 >
-                  <i className="ri-arrow-go-back-line mr-5 text-lg"></i>
-                  <span className="my-auto">
-                    Redefinir
-                  </span>
-                </button>
-                <button 
-                  className={`py-3 px-4 inline-flex tracking-widest
-                    ${hasError ? "bg-blueGray-200 font-thin text-gray-500 flex-grow cursor-not-allowed text-xs" : "bg-sky-500 font-semibold text-white hover:bg-sky-400"}
-                  `}
+                  <i className="ri-restart-line text-base text-amber-400 mr-2"></i>
+                  <span className="my-auto">Restaurar</span>
+                </RoundButton>
+                <RoundButton 
+                  className="text-sm min-w-90px"
                   onClick={onSubmit}
                   disabled={hasError || mutation.isLoading}
+                  isLoading={(mutation.isLoading || isLoading || isFetching ? true : false)}
+                  variant={hasError ? "error" : "secondary"}
+                  tooltip={hasError ? "Preencha os campos corretamente para poder salvar esta seção" : "osidfosidf"}
                 >
-                  <i className={`${hasError ? "ri-error-warning-fill" : mutation.isLoading || isLoading || isFetching ? "ri-loader-5-line animate-spin" :"ri-save-3-fill"} mr-5 text-lg`}></i>
-                  <span className="my-auto">
-                    {hasError ? "Preencha os campos corretamente para poder salvar esta seção" : "SALVAR"}
-                  </span>
-                </button>
+                  <i className={`${hasError ? "ri-error-warning-fill text-red-500" : mutation.isLoading || isLoading || isFetching ? "ri-loader-5-line animate-spin" :"ri-save-3-fill"} text-base mr-2 `}></i>
+                  <span className="my-auto">Salvar</span>
+                </RoundButton>
               </>
             }
           </div>

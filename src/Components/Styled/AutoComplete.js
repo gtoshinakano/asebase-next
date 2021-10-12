@@ -25,12 +25,12 @@ export default function AutoComplete({
           <Transition
             show={open}
             as={Fragment}
-            enter="transition ease-in duration-100"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="transition ease-in duration-100"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
+            enter="transition duration-100 ease-out"
+            enterFrom="transform scale-95 opacity-0"
+            enterTo="transform scale-100 opacity-100"
+            leave="transition duration-75 ease-out"
+            leaveFrom="transform scale-100 opacity-100"
+            leaveTo="transform scale-95 opacity-0"
           >
             <Listbox.Options className="absolute w-full mt-1 overflow-auto font-notoJP bg-white shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none text-xs sm:text-sm">
               {options.map((item, itemIdx) => (
@@ -44,7 +44,7 @@ export default function AutoComplete({
                   }
                   value={item}
                 >
-                  {({ selected, active }) => (
+                  {({ selected }) => (
                     <span
                       className={`${ selected ? 'font-medium' : 'font-thin' }
                       ${itemIdx===activeIndex ? "font-medium" : 'font-thin'}
@@ -65,9 +65,9 @@ export default function AutoComplete({
 }
 
 const Container = styled.div.attrs((props) => ({
-  className: 'absolute pt-2 -ml-2.5 z-50 min-w-150px',
+  className: 'absolute pt-2 -ml-2.5 z-50 min-w-90px',
 }))`
   width: ${(props) =>
-    props.width + 120 > 240 ? '240px' : props.width + 50 + 'px'};
+    props.width + 120 > 240 ? '150px' : props.width + 50 + 'px'};
 `;
 

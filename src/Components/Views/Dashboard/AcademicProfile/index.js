@@ -6,6 +6,7 @@ import Skeleton from 'react-loading-skeleton';
 import * as schemas from '@Utils/Schemas/User'
 import { Transition } from '@headlessui/react';
 import { updateAcademicProfile } from '@Utils/DefaultQueries/Mutations';
+import { RoundButton } from '@Components/Styled/Button';
 
 const AcademicProfile = () => {
 
@@ -73,7 +74,7 @@ const AcademicProfile = () => {
 
   return (
     <>
-      <h2 className="font-semibold inline-flex align-middle pt-3 pl-2 pb-4">
+      <h2 className="font-semibold inline-flex align-middle pt-7 pl-2 pb-4">
         <i className="ri-book-open-line mr-2 text-xl"></i> <span className="my-auto text-xl">Formação Acadêmica</span>
       </h2>
       <div className="flex flex-wrap pl-1 w-full">
@@ -103,43 +104,37 @@ const AcademicProfile = () => {
       </div>
       <Transition
         show={hasChanged && !isAwaiting}
-        enter="transition-opacity duration-100"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="transition-opacity duration-100"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
+        enter="transition duration-100 ease-out"
+        enterFrom="transform scale-95 opacity-0"
+        enterTo="transform scale-100 opacity-100"
+        leave="transition duration-75 ease-out"
+        leaveFrom="transform scale-100 opacity-100"
+        leaveTo="transform scale-95 opacity-0"
       >
-        <div className="w-full px-7 mt-7 sm:w-11/12 lg:w-4/5 xl:w-1/2 mx-auto flex flex-col">
-          <div className="ml-3 w-full flex flex-wrap px-1 justify-end">
-            {hasChanged &&
-              <>
-                <button 
-                  className={`py-3 px-4 inline-flex tracking-widest bg-blueGray-300 text-black w-full sm:w-auto hover:bg-blueGray-200`}
-                  onClick={onReset} 
-                  type="button"
-                  disabled={mutation.isLoading}
-                >
-                  <i className="ri-arrow-go-back-line mr-5 text-lg"></i>
-                  <span className="my-auto">
-                    Redefinir
-                  </span>
-                </button>
-                <button 
-                  className={`py-3 px-4 inline-flex tracking-widest
-                    ${hasError ? "bg-blueGray-200 font-thin text-gray-500 flex-grow cursor-not-allowed text-xs" : "bg-sky-500 font-semibold text-white hover:bg-sky-400"}
-                  `}
-                  onClick={onSubmit}
-                  disabled={hasError || mutation.isLoading}
-                >
-                  <i className={`${hasError ? "ri-error-warning-fill" : mutation.isLoading || academic.isLoading || academic.isFetching ? "ri-loader-5-line animate-spin" :"ri-save-3-fill"} mr-5 text-lg`}></i>
-                  <span className="my-auto">
-                    {hasError ? "Preencha os campos corretamente para poder salvar esta seção" : "SALVAR"}
-                  </span>
-                </button>
-              </>
-            }
-          </div>
+        <div className="pr-4 mt-3 w-full space-x-2 flex justify-end">
+          {hasChanged &&
+            <>
+            <RoundButton
+              className="text-sm min-w-90px"
+              onClick={onReset}
+              disabled={isAwaiting}
+            >
+              <i className="ri-restart-line text-base text-amber-400 mr-2"></i>
+              <span className="my-auto">Restaurar</span>
+            </RoundButton>
+            <RoundButton 
+              className="text-sm min-w-90px"
+              onClick={onSubmit}
+              disabled={hasError || isAwaiting}
+              isLoading={isAwaiting}
+              variant={hasError ? "error" : "secondary"}
+              tooltip={hasError ? "Preencha os campos corretamente para poder salvar esta seção" : "osidfosidf"}
+            >
+              <i className={`${hasError ? "ri-error-warning-fill text-red-500" : isAwaiting ? "ri-loader-5-line animate-spin" :"ri-save-3-fill"} text-base mr-2 `}></i>
+              <span className="my-auto">Salvar</span>
+            </RoundButton>
+          </>
+          }
         </div>
       </Transition>
     </>
