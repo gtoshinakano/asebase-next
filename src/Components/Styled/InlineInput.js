@@ -30,6 +30,7 @@ const InlineInput = ({
   const [inputVal, setInputVal] = useState(value);
   const [serverMsg, setServerMsg] = useState('');
   const [focused, setFocused] = useState(false);
+  const [acFocus, setAcFocus] = useState(-1);
   const client = useQueryClient();
 
   const { isLoading, mutate } = useMutation((data) => mutationFn(data), {
@@ -49,6 +50,8 @@ const InlineInput = ({
   const valueChange = ({ target }) => {
     const error = schema?.checkForField(name, { [name]: target.value }) || noError;
     setInputErr(error);
+    setAcFocus(-1)
+    console.log("oi")
     let val = target.value;
     if (mask) val = mask(val);
     setInputVal(val);
@@ -74,9 +77,22 @@ const InlineInput = ({
     setFocused(false);
     setInputVal(val);
     setInputErr(noError);
+    setAcFocus(-1)
     if(mutationFn) mutate({ [name]: val });
     if(onChange) onChange(val, name)
   };
+
+  const onKeyDown = ({keyCode, target}) => {
+    console.log(keyCode)
+    if(keyCode === 40) setAcFocus(acFocus+1)
+    if(keyCode === 38) setAcFocus(acFocus-1)
+    if (keyCode === 13 && activeIndex > -1) onSuggestionSelect(opts[activeIndex]);
+  }
+
+  const re = new RegExp(_.escapeRegExp(inputVal), 'i');
+  const matches = (result) => re.test(result);
+  const opts = minSuggestionLength === 0 ? options : _.filter(options, matches);
+  const activeIndex = acFocus % opts.length
 
   return (
     <>
@@ -124,6 +140,7 @@ const InlineInput = ({
           onChange={valueChange}
           onBlur={onInputBlur}
           onKeyUp={handleKeyPress}
+          onKeyDown={onKeyDown}
           onFocus={() => setFocused(true)}
           placeholder={placeholder}
           inputCSS={inputCSS}
@@ -143,6 +160,8 @@ const InlineInput = ({
           open={focused}
           onSelect={onSuggestionSelect}
           minSuggestionLength={minSuggestionLength}
+          focus={acFocus}
+          options={opts}
         />
       </div>
     </>

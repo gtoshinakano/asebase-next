@@ -10,13 +10,13 @@ export default function AutoComplete({
   open,
   onSelect,
   minSuggestionLength,
+  focus,
 }) {
-  const re = new RegExp(_.escapeRegExp(inputVal), 'i');
-  const isMatch = (result) => re.test(result);
 
-  const opts = minSuggestionLength === 0 ? options : _.filter(options, isMatch);
 
-  if (inputVal.length < minSuggestionLength || opts.length === 0) return '';
+  if (inputVal.length < minSuggestionLength || options.length === 0) return '';
+
+  const activeIndex = focus % options.length
 
   return (
     <div className="w-full">
@@ -33,11 +33,11 @@ export default function AutoComplete({
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute w-full mt-1 overflow-auto font-notoJP bg-white shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none text-xs sm:text-sm ">
-              {opts.map((item, itemIdx) => (
+              {options.map((item, itemIdx) => (
                 <Listbox.Option
                   key={itemIdx}
                   className={({ active }) =>
-                    `${active ? 'text-amber-900 bg-amber-100' : 'text-gray-900'}
+                    `${itemIdx===activeIndex ? 'text-amber-900 bg-amber-100' : 'text-gray-900'}
                       cursor-default select-none relative block h-full
                       border-b border-warmGray-100 hover:bg-blueGray-100 hover:text-black font-light z-50  
                     `
@@ -46,9 +46,9 @@ export default function AutoComplete({
                 >
                   {({ selected, active }) => (
                     <span
-                      className={`${
-                        selected ? 'font-medium' : 'font-thin'
-                      } block truncate cursor-pointer py-1.5 px-3`}
+                      className={`${ selected ? 'font-medium' : 'font-thin' }
+                      ${itemIdx===activeIndex ? "font-medium" : 'font-thin'}
+                      block truncate cursor-pointer py-1.5 px-3`}
                       onMouseDown={() => onSelect(item)}
                     >
                       {item}
@@ -70,3 +70,4 @@ const Container = styled.div.attrs((props) => ({
   width: ${(props) =>
     props.width + 120 > 240 ? '240px' : props.width + 50 + 'px'};
 `;
+
