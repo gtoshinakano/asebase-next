@@ -94,12 +94,16 @@ const NikkeiInfo = () => {
 
   if (isLoading) return (<NikkeiProfileSkeleton  />)
 
+  const isAwaiting = isLoading || mutation.isLoading || mutation.isFetching || isFetching
+
+  const { is_nikkei } = data
+
   return (
     <>
       <div className="px-1 sm:w-11/12 lg:w-4/5 xl:w-1/2 flex-grow mx-auto flex flex-col overflow-hidden ">
         <div className="pl-1.5 mt-3 font-thin text-gray-700 pt-4">
           <Checkbox
-            checked={data.is_nikkei === 1}
+            checked={is_nikkei === 1 && !isAwaiting}
             labels={[
               '🗾 Não possui ascendência japonesa',
               '🗾 Possui ascendência japonesa',
@@ -127,13 +131,13 @@ const NikkeiInfo = () => {
           />
         </div>
         <Transition
-          show={data.is_nikkei === 1}
-          enter="transition duration-100"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="transition duration-100"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
+          show={is_nikkei === 1 && !isAwaiting}
+          enter="transition duration-100 transform"
+          enterFrom="opacity-0 scale-90"
+          enterTo="opacity-100 scale-100"
+          leave="transition duration-100 transform"
+          leaveFrom="opacity-100 scale-100"
+          leaveTo="opacity-0 scale-90"
         >
           <div className="ml-4 pl-3 flex flex-wrap">
             <NikkeiPicker
@@ -150,7 +154,7 @@ const NikkeiInfo = () => {
         </Transition>
       </div>
       <Transition
-        show={data.is_nikkei === 1}
+        show={is_nikkei === 1 && !isAwaiting}
         enter="transition-opacity duration-100"
         enterFrom="opacity-0"
         enterTo="opacity-100"
