@@ -42,10 +42,10 @@ const NikkeiButton = ({ node, onSelect, formValue, hasError }) => {
   return (
     <div className="">
       <button
-        className={`py-1.5 px-1.5 min-w-90px whitespace-nowrap mx-1 rounded-lg text-sm shadow-lg hover:bg-sky-200 focus:bg-sky-600 focus:text-white inline-flex items-center justify-center hover:text-black
+        className={`py-1.5 px-1.5 min-w-90px whitespace-nowrap mx-1 rounded-lg text-sm shadow-lg focus:bg-sky-600 focus:text-white inline-flex items-center justify-center transition duration-75 ease-in-out transform hover:scale-110
           ${
             node.selected
-              ? 'bg-sky-500 text-white ring-2 ring-offset-2 ring-offset-sky-300 ring-white ring-opacity-60'
+              ? 'bg-sky-500 text-white ring-2 ring-offset-2 ring-offset-sky-500 ring-white ring-opacity-60'
               : 'font-extralight bg-white text-black'
           }
           ${

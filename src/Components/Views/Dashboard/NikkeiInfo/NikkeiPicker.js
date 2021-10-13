@@ -39,9 +39,9 @@ const NikkeiPicker = ({ selected, onSelect, generations }) => {
                   ${
                     generation.generation === 1
                       ? 'bg-gray-200 cursor-not-allowed text-warmGray-400'
-                      : 'hover:bg-sky-100'
+                      : 'hover:bg-sky-100 transition duration-75 ease-in-out transform hover:scale-110'
                   }
-                  w-full sm:w-1/2 lg:w-1/6 ml-1 mr-2 relative rounded-lg shadow-lg pl-4 pr-3 py-3 cursor-pointer flex focus:outline-none`
+                  w-full sm:w-1/2 lg:w-1/6 ml-1 mr-2 relative rounded-lg shadow-lg pl-4 pr-3 py-3 cursor-pointer flex focus:outline-none `
                 }
                 disabled={generation.generation === 1}
               >

@@ -8,7 +8,7 @@ import Blockquote from '@Styled/BlockQuote';
 const NikkeiOrigins = ({form, error, originChange}) => {
   const{jpFamilyMembers, jpFamilyOrigins} = form
   return (
-    <div className="ml-4 pl-3 flex flex-wrap">
+    <div className="border border-white focus-within:border-sky-400 pl-7 pb-3 flex flex-wrap">
       <h2 className="p-2 mb-1">
         3. De qual ou quais províncias eles vieram?
       </h2>

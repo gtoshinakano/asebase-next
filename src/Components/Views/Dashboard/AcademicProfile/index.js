@@ -77,7 +77,7 @@ const AcademicProfile = () => {
       <h2 className="font-semibold inline-flex align-middle pt-7 pl-2 pb-4">
         <i className="ri-book-open-line mr-2 text-xl"></i> <span className="my-auto text-xl">Formação Acadêmica</span>
       </h2>
-      <div className="flex flex-wrap pl-1 w-full">
+      <div className="flex flex-wrap px-1 w-full">
         {form.length > 0 
           ? form.map((item, index) => 
             !isAwaiting 

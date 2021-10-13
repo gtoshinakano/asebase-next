@@ -61,7 +61,7 @@ const AcademicItem = ({data, onChange, onAdd, onRemove, index, item}) => {
   return (
     <div className={`w-full flex flex-nowrap px-3 border focus-within:border-sky-400 border-white`}>
       <button
-        className={`py-auto px-0.5 md:px-1 bg-gray-100 hover:bg-gray-200 text-gray-300 hover:text-gray-700 border-r-2 my-4 disabled:cursor-not-allowed`}
+        className={`py-auto px-0.5 md:px-1 bg-gray-100 hover:bg-gray-200 text-gray-300 hover:text-gray-700 border-r-2 my-4 disabled:cursor-not-allowed transition duration-40 ease-in-out transform hover:scale-110`}
         onClick={onAddNew}
         disabled={data.length > 4}
         type="button"
@@ -119,7 +119,7 @@ const AcademicItem = ({data, onChange, onAdd, onRemove, index, item}) => {
         </div>
       </div>
       <button
-        className="py-auto px-1 text-red-700 hover:bg-red-50 my-4"
+        className="py-auto px-1 text-red-700 hover:bg-red-50 my-4 transition duration-75 ease-in-out transform hover:scale-110"
         onClick={onRemoveItem}
         type="button"
       >
