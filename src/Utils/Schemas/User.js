@@ -6,6 +6,7 @@ import {
   ObjectType,
   ArrayType,
   MixedType,
+  BooleanType,
 } from 'schema-typed';
 import moment from 'moment';
 import br_states from '@Utils/StaticData/br_states.json';
@@ -67,3 +68,13 @@ export const AcademicItem = SchemaModel({
 })
 
 export const AcademicList = ArrayType().isRequired("obrig").of(AcademicItem)
+
+export const ProfessionalItem = SchemaModel({
+  start_year: NumberType("Não é um número").isRequired("Campo obrigatório").range(1920, parseInt(moment().format('YYYY')) + 5, "Ano fora do intervalo válido"),
+  end_year: NumberType("Não é um número").isRequired("Campo obrigatório").range(1920, parseInt(moment().format('YYYY')) + 5, "Ano fora do intervalo válido"),
+  position: StringType().isRequired("Campo obrigatório"),
+  company_name: StringType().isRequired("Campo obrigatório"),
+  current_job: BooleanType().isRequired("Error current_job")
+})
+
+export const ProfessionalList = ArrayType().isRequired("obrig").of(ProfessionalItem)

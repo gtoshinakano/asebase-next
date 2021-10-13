@@ -62,6 +62,8 @@ export default async (req, res) => {
             return await resNikkeiInfo(req.body, token.sub, res)
           case 'academic_profile':
             return await resAcademicProfile(req.body, token.sub, res)
+          case 'professional_profile': 
+            return await resProfessionalProfile(req.body, token.sub, res)
           default:
             return res.status(400).json({ serverMessage: 'Bad Request' });
         }
@@ -78,6 +80,9 @@ export default async (req, res) => {
           case 'academic_profile':
             await query('DELETE FROM academic_info WHERE user_id = ?', [token.sub])
             return res.status(200).json({ log: 'Delete Done' });
+          case 'professional_profile':
+              await query('DELETE FROM professional_data WHERE user_id = ?', [token.sub])
+              return res.status(200).json({ log: 'Delete Done' });
           default:
             return res.status(400).json({ serverMessage: 'Bad Request' });
         }
@@ -155,6 +160,7 @@ const resNikkeiInfo = async (body, sub, res) => {
    return res.status(401).json({serverMessage: JSON.stringify(e)})
   }
 }
+
 const resAcademicProfile = async (body, sub, res) => {
   try{
     const error = schemas.AcademicList.check(body)
@@ -162,9 +168,29 @@ const resAcademicProfile = async (body, sub, res) => {
       return res.status(401).json({...error})
     }else{
       await query('DELETE FROM academic_info WHERE user_id=?', [sub]);
-      console.log(body)
       const promises =  Object.values(body).map((item) => {
         return query('INSERT INTO academic_info VALUES("",?, ?, ?, ?, ?)', [ item.institution_name, sub, item.subject, item.year, item.study_area])
+      })
+      await Promise.all(promises).then(resp=> console.log(resp)) 
+      return res.status(200).json({ log: 'Update Done' })
+    }
+  }
+  catch(e) {
+   return res.status(401).json({serverMessage: JSON.stringify(e)})
+  }
+}
+
+const resProfessionalProfile = async (body, sub, res) => {
+  try{
+    const error = schemas.ProfessionalList.check(body)
+    if(Object.values(error).filter(e=> e.hasError).length > 0 ) {
+      return res.status(401).json({...error})
+    }else{
+      await query('DELETE FROM professional_data WHERE user_id=?', [sub]);
+      console.log(body)
+      const promises =  Object.values(body).map((item) => {
+        return query('INSERT INTO professional_data VALUES("",?, ?, ?, ?, ?, ?)', 
+        [ item.start_year, item.end_year, item.position, item.company_name, item.current_job, sub])
       })
       await Promise.all(promises).then(resp=> console.log(resp)) 
       return res.status(200).json({ log: 'Update Done' })

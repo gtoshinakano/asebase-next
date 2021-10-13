@@ -6,6 +6,8 @@ import { useSession } from 'next-auth/client';
 import Skeleton from 'react-loading-skeleton';
 import useOnScreen from '@Components/Hooks/useOnScreen';
 import AcademicProfile from './AcademicProfile';
+import ExchangeInfo from './ExchangeInfo';
+import ProfessionalInfo from './ProfessionalProfile';
 
 const DashboardView = () => {
   const [session, loading] = useSession();
@@ -32,7 +34,16 @@ const DashboardView = () => {
         </div>
       </div>
       <div className="w-full sm:w-11/12 lg:w-4/5 xl:w-1/2 mx-auto pt-2 flex flex-col">
-        <AcademicProfile />
+        {session && !loading
+          ? <AcademicProfile />
+          : <Skeleton className="w-full h-44" />
+        }
+      </div>
+      <div className="w-full sm:w-11/12 lg:w-4/5 xl:w-1/2 mx-auto pt-2 flex flex-col">
+        <ProfessionalInfo />
+      </div>
+      <div className="w-full sm:w-11/12 lg:w-4/5 xl:w-1/2 mx-auto pt-2 flex flex-col">
+        <ExchangeInfo />
       </div>
     </>
   );
