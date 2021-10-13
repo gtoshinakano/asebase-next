@@ -63,7 +63,7 @@ const Checkbox = ({
           <i className="ri-checkbox-blank-line"></i>
         )}
       </StyledCheckbox>
-      <label htmlFor={name} className={`pt-1`}>
+      <label htmlFor={name} className={`p-1 pr-4 ${!isLoading && "hover:bg-gray-100"} transition duration-200 ease-in-out transform hover:scale-95`}>
         {isLoading ? (
           <Skeleton width={250} height={20} />
         ) : isChecked ? (

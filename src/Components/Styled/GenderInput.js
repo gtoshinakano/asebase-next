@@ -24,32 +24,32 @@ const GenderInput = ({ value, queryKey }) => {
       </span>
       {inputVal === null && (
         <button
-          className="text-xl inline-flex min-w-max font-thin hover:bg-gray-100 p-1 print:hidden disabled:cursor-not-allowed"
+          className="text-xl inline-flex min-w-max font-thin hover:bg-gray-100 pl-2 pr-3 transition duration-200 py-1.5  print:hidden disabled:cursor-not-allowed"
           onClick={toggleGender}
           disabled={isLoading}
         >
-          <span className="ml-1 mr-2 w-7">🧍</span>{' '}
-          <span className="border-b print:border-b-0">Indefinido</span>
+          <span className="mr-2 w-7">🧍</span>{' '}
+          <span className="">Indefinido</span>
         </button>
       )}
       {inputVal === 'm' && (
         <button
-          className="text-xl inline-flex min-w-max font-thin hover:bg-gray-100 p-1 disabled:cursor-not-allowed"
+          className="text-xl inline-flex min-w-max font-thin hover:bg-gray-100 pl-2 pr-3 transition duration-200 py-1.5  disabled:cursor-not-allowed"
           onClick={toggleGender}
           disabled={isLoading}
         >
-          <span className="ml-1 mr-2 w-7">🧍‍♂️</span>{' '}
-          <span className="border-b print:border-b-0">Masculino</span>
+          <span className="mr-2 w-7">🧍‍♂️</span>{' '}
+          <span className="">Masculino</span>
         </button>
       )}
       {inputVal === 'f' && (
         <button
-          className="text-xl inline-flex min-w-max font-thin hover:bg-gray-100 p-1 disabled:cursor-not-allowed"
+          className="text-xl inline-flex min-w-max font-thin hover:bg-gray-100 pl-2 pr-3 transition duration-200 py-1.5  disabled:cursor-not-allowed"
           onClick={toggleGender}
           disabled={isLoading}
         >
-          <span className="ml-1 mr-2 w-7">🧍‍♀️</span>{' '}
-          <span className="border-b print:border-b-0">Feminino</span>
+          <span className="mr-2 w-7">🧍‍♀️</span>{' '}
+          <span className="">Feminino</span>
         </button>
       )}
     </div>
