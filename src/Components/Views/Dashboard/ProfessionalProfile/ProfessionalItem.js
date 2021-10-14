@@ -7,9 +7,10 @@ import moment from 'moment';
 import _ from 'lodash'
 import Confirm from '@Components/Styled/Confirm';
 import { deleteProfessionalProfile } from '@Utils/DefaultQueries/Delete';
+import Checkbox from '@Components/Styled/Checkbox';
 
 
-const ProfessionalItem = ({data, onChange, onAdd, onRemove, index, item}) => {
+const ProfessionalItem = ({data, onChange, onCurrentChange, onAdd, onRemove, index, item}) => {
 
   const [form, setForm] = useState(_form);
   const [error, setError] = useState(schemas.ProfessionalItem.check(form))
@@ -30,11 +31,19 @@ const ProfessionalItem = ({data, onChange, onAdd, onRemove, index, item}) => {
   useEffect(() => setError(schemas.ProfessionalItem.check(form)), [form])
 
   const hasError = Object.values(error).filter(e=> e.hasError).length > 0
+  const hasCurrent = data.filter(i => i.current_job).length > 0
 
   const onSingleChange = (val, name) => {
     const newForm = {...form, [name]: val}
     setForm(newForm)
     onChange(newForm, index)
+    console.log(val, index)
+  }
+
+  const onCurrentJobChange = (val, name) => {
+    const newForm = {...form, [name]: val, end_year: val ? parseInt(moment().format("YYYY")) : ""}
+    setForm(newForm)
+    onCurrentChange(newForm, index)
   }
 
   const onNumberChange = (val, name) => {
@@ -99,14 +108,28 @@ const ProfessionalItem = ({data, onChange, onAdd, onRemove, index, item}) => {
             type="number"
             min={1920}
             max={parseInt(moment().format('YYYY')) + 5}
+            disabled={form.current_job}
           />
           {error?.end_year.hasError && <ErrorDot msg={error.end_year?.errorMessage || ""} />}
+          { (form.current_job && hasCurrent) || (!hasCurrent)
+            ? <div className="inline ml-1.5">
+                <Checkbox  
+                  name="current_job"
+                  checked={form.current_job}
+                  labels={["Atual", "Atual"]}
+                  onChange={onCurrentJobChange}
+                  id={index+"index"}
+                />
+              </div>
+            : ""
+            
+          }
         </div>
         <div className="pt-3 sm:pt-1.5">
         👩‍🚀 Cargo/Posição
           <InlineInput
             inline
-            placeholder="ex: Engenharia Elétrica"
+            placeholder="ex: Engenheiro Elétrico"
             schema={schemas.ProfessionalItem}
             name="position"
             value={form.position}
@@ -119,7 +142,7 @@ const ProfessionalItem = ({data, onChange, onAdd, onRemove, index, item}) => {
         🏢 Empresa:
           <InlineInput
             inline
-            placeholder="ex: Universidade de São Paulo"
+            placeholder="ex: Empresa"
             schema={schemas.ProfessionalItem}
             name="company_name"
             value={form.company_name}

@@ -16,6 +16,7 @@ const InlineInput = ({
   name,
   onMessageClick,
   loading,
+  disabled,
   inline,
   mask,
   options,
@@ -144,7 +145,7 @@ const InlineInput = ({
           inputCSS={inputCSS}
           value={inputVal}
           error={inputErr}
-          disabled={isLoading || loading}
+          disabled={disabled || isLoading || loading}
           inline={inline}
           width={width}
           maxLength={maxLength}
@@ -167,7 +168,7 @@ const InlineInput = ({
 };
 
 const IInput = styled.input.attrs((props) => ({
-  className: `focus:outline-none text-gray-700 hover:bg-gray-100 focus:bg-blueGray-100 py-1 px-0.5 font-notoJP font-thin tracking-wide transition-colors duration-200 ease-in-out
+  className: `focus:outline-none text-gray-700 hover:bg-gray-100 focus:bg-blueGray-100 py-1 px-0.5 font-notoJP font-thin tracking-wide transition-colors duration-200 ease-in-out disabled:cursor-not-allowed disabled:bg-trueGray-100
   ${props.inputCSS} 
   ${
     props.inline

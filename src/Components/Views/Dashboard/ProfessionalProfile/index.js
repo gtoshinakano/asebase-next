@@ -29,7 +29,7 @@ const ProfessionalProfile = () => {
   useEffect(() => setForm(professional?.data || []), [professional.data])
 
   const hasChanged = !_.isEqual(_.map(form, i=> _.pick(i, toPick)), _.map(professional?.data, i=>_.pick(i, toPick)))
-  console.log(hasChanged, _.map(form, i=> _.pick(i, toPick)), _.map(professional?.data, i=>_.pick(i, toPick)))
+  console.log(hasChanged, _.map(form, i=> _.pick(i, toPick)), _.map(professional?.data, i=>_.pick(i, toPick)), hasError)
   
   const onProfessionalChange = (val, index) => {
     let newForm = [...form]
@@ -38,6 +38,18 @@ const ProfessionalProfile = () => {
     let hasErr = error.array.filter(item=> Object.values(item).filter(e=> e.hasError).length > 0).length > 0
     setHasError(hasErr)
     setForm(newForm)
+    console.log(error)
+  }
+
+  const onCurrentChange = (val, index) => {
+    let reseted = [...form].map(i=> ({...i, current_job: false}))
+    let newForm = reseted
+    newForm.splice(index, 1, val)
+    const error = schemas.ProfessionalList.check(newForm)
+    let hasErr = error.array.filter(item=> Object.values(item).filter(e=> e.hasError).length > 0).length > 0
+    setHasError(hasErr)
+    setForm(newForm)
+    console.log(schemas.ProfessionalList.check(newForm))
   }
 
   const onAdd = (val, index) => {
@@ -86,14 +98,15 @@ const ProfessionalProfile = () => {
               ? <ProfessionalItem 
                   key={index} 
                   item={item} 
-                  onChange={onProfessionalChange} 
+                  onChange={onProfessionalChange}
+                  onCurrentChange={onCurrentChange}
                   index={index}
                   onAdd={onAdd}
                   onRemove={onRemove}
                   data={form}
                 />
-              : <div className="w-full pt-5 px-3" style={{height:222}} key={index}>
-                <Skeleton width="100%" height={166} className="" />
+              : <div className="w-full pt-3 px-3" style={{height:166}} key={index}>
+                <Skeleton width="100%" height={135} className="" />
               </div>
             )
           : <button 
