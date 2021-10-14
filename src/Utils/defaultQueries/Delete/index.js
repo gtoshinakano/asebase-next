@@ -11,3 +11,8 @@ export const deleteProfessionalProfile = async () => {
   const {data} = await axios.delete(`${API_ADDRESS}/api/member/update/professional_profile`)
   return data
 }
+
+export const deleteExchangeProfile = async () => {
+  const {data} = await axios.delete(`${API_ADDRESS}/api/member/update/exchange_profile`)
+  return data
+}

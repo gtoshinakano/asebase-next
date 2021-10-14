@@ -27,3 +27,10 @@ export const getProfessionalProfile = async () => {
   );
   return ret.data;
 };
+
+export const getExchangeProfile = async () => {
+  const ret = await axios.get(
+    `${process.env.NEXT_PUBLIC_API_ADDRESS}/api/member/profiles/exchange`
+  );
+  return ret.data;
+};

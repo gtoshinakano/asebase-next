@@ -77,3 +77,20 @@ export const ProfessionalItem = SchemaModel({
 })
 
 export const ProfessionalList = ArrayType().isRequired("obrig").of(ProfessionalItem)
+
+export const ExchangeItem = SchemaModel({
+  year: NumberType("Não é um número").isRequired("Campo obrigatório").range(1920, parseInt(moment().format('YYYY')) + 5, "Ano fora do intervalo válido"),
+  type: StringType().isRequired("Campo obrigatório"),
+  started_in: StringType().isRequired("Campo obrigatório"),
+  ended_in: StringType().isRequired("Campo obrigatório"),
+  university_name: StringType(),
+  company_name: StringType(),
+  organization_id: NumberType().isRequired(),
+  exchange_title: StringType().isRequired(),
+  study_area: NumberType(),
+  study_description: StringType().isRequired("Campo obrigatório"),
+  exchange_url: StringType().isURL("URL Inválida"),
+  exchange_name: StringType() 
+})
+
+export const ExchangeList = ArrayType().isRequired("obrig").of(ExchangeItem)

@@ -69,3 +69,8 @@ export const updateProfessionalProfile = async body => {
   const {data} = await axios.put(`${API_ADDRESS}/api/member/update/professional_profile`, body)
   return data
 }
+
+export const updateExchangeProfile = async body => {
+  const {data} = await axios.put(`${API_ADDRESS}/api/member/update/exchange_profile`, body)
+  return data
+}
