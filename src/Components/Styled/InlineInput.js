@@ -154,7 +154,6 @@ const InlineInput = ({
         />
         <AutoComplete
           inputVal={inputVal}
-          options={options}
           width={width}
           open={focused}
           onSelect={onSuggestionSelect}

@@ -2434,6 +2434,12 @@ export const AREAS = [
   { label: '🔬 Biológicas', value: 3 },
 ];
 
+export const EXCHANGE_TYPES = [
+  { label: '👨‍🏫 Bolsa de Estudos', value: 1 },
+  { label: '👷‍♂️ Bolsa de Estágio', value: 2 },
+  { label: '🎭 Bolsa Cultural', value: 3 },
+];
+
 export const PLACEHOLDERS = {
   PT_givenName: 'Meu nome',
   JP_givenName: '名',

@@ -3,7 +3,8 @@ import InlineInput from '@Components/Styled/InlineInput';
 import { maskOnlyNumbers } from '@Utils/Helpers/masks';
 import * as schemas from '@Utils/Schemas/User'
 import { useMutation, useQueryClient } from 'react-query';
-import StudyAreaToggle from './StudyAreaToggle';
+import {TripleToggle} from '@Styled/TripleToggle';
+import {AREAS} from '@Utils/StaticData/json-data'
 import moment from 'moment';
 import _ from 'lodash'
 import Confirm from '@Components/Styled/Confirm';
@@ -89,7 +90,7 @@ const AcademicItem = ({data, onChange, onAdd, onRemove, index, item}) => {
           {error?.year.hasError && <ErrorDot msg={error.year?.errorMessage || ""} />}
         </div>
         <div>
-          <StudyAreaToggle value={form.study_area} onChange={onSingleChange} name="study_area" />
+          <TripleToggle value={form.study_area} onChange={onSingleChange} name="study_area" options={AREAS} />
         </div>
         <div className="pt-3 sm:pt-1.5">
           🎓 Formação em: 

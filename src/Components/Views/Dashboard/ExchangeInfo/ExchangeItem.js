@@ -3,11 +3,12 @@ import InlineInput from '@Components/Styled/InlineInput';
 import { maskOnlyNumbers } from '@Utils/Helpers/masks';
 import * as schemas from '@Utils/Schemas/User'
 import { useMutation, useQueryClient } from 'react-query';
-import StudyAreaToggle from '../AcademicProfile/StudyAreaToggle';
+import {TripleToggle} from '@Styled/TripleToggle';
 import moment from 'moment';
 import _ from 'lodash'
 import Confirm from '@Components/Styled/Confirm';
 import { deleteAcademicProfile } from '@Utils/DefaultQueries/Delete';
+import { AREAS, EXCHANGE_TYPES, JAPAN_PROVINCES } from '@Utils/StaticData/json-data';
 
 
 const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
@@ -70,10 +71,10 @@ const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
       </button>
       <div className="flex-grow pl-2 pb-5">
         <div>
-          Ano de Conclusão: 
+          🌟
           <InlineInput
             inline
-            placeholder="ano de formação"
+            placeholder="Ano Fiscal Japonês"
             schema={schemas.ExchangeItem}
             name="year"
             mask={maskOnlyNumbers}
@@ -83,12 +84,70 @@ const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
             options={getValidYears()}
             type="number"
             min={1920}
-            max={parseInt(moment().format('YYYY')) + 5}
+            max={thisYear + 5}
           />
           {error?.year.hasError && <ErrorDot msg={error.year?.errorMessage || ""} />}
+          <InlineInput 
+            inline
+            placeholder="Província"
+            name={"province_name"}
+            value={form.province_name}
+            minSuggestionLength={1}
+            options={JAPAN_PROVINCES.map(i=> i.name)}
+            onChange={onSingleChange}
+          />
+        </div>
+        <div className="pt-3 sm:pt-1.5">
+          📅 Início em
+          <InlineInput 
+            inline
+            placeholder="Mês"
+            name={"started_in"}
+            value={form.started_in}
+            type="number"
+            min="1"
+            max="12"
+            onChange={onSingleChange}
+          />de
+          <InlineInput 
+            inline
+            placeholder="Ano"
+            name={"started_year"}
+            value={form.started_year}
+            type="number"
+            min={form.year  || 1920}
+            max={thisYear + 5}
+            onChange={onSingleChange}
+          />
+        </div>
+        <div className="pt-3 sm:pt-1.5">
+          📅 Término em
+          <InlineInput 
+            inline
+            placeholder="Mês"
+            name={"ended_in"}
+            value={form.ended_in}
+            type="number"
+            min={form.started_year === form.ended_year ? form.started_in : 1}
+            max="12"
+            onChange={onSingleChange}
+          />de
+          <InlineInput 
+            inline
+            placeholder="Ano"
+            name={"ended_year"}
+            value={form.ended_year}
+            type="number"
+            min={form.year || 1920}
+            max={thisYear + 5}
+            onChange={onSingleChange}
+          />
         </div>
         <div>
-          <StudyAreaToggle value={form?.study_area || 1} onChange={onSingleChange} name="study_area" />
+          <TripleToggle value={form?.type || 1} onChange={onSingleChange} name="type" options={EXCHANGE_TYPES} />
+        </div>
+        <div>
+          <TripleToggle value={form?.study_area || 1} onChange={onSingleChange} name="study_area" options={AREAS} />
         </div>
         <div className="pt-3 sm:pt-1.5">
           🎓 Formação em: 
@@ -132,9 +191,11 @@ export default ExchangeItem;
 
 const _form = {
   year: "",
-  type: "",
+  type: 1,
   started_in: "",
+  started_year: "",
   ended_in: "",
+  ended_year: "",
   university_name: "",
   company_name: "",
   organization_id: "",
@@ -142,7 +203,8 @@ const _form = {
   study_area: 1,
   study_description: "",
   exchange_url: "",
-  exchange_name: "" 
+  exchange_name: "",
+  province_name: ""
 }
 
 const getValidYears = () => _.range(1920, parseInt(moment().format('YYYY')) + 5)
@@ -164,3 +226,10 @@ const _confirm ={
     </div>
   )
 }
+
+const RenderYearIcons = () => {
+
+  
+}
+
+const thisYear = parseInt(moment().format('YYYY'))

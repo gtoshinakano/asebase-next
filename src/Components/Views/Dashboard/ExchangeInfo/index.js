@@ -145,13 +145,15 @@ export default ExchangeInfo;
 
 const _form = []
 
-const toPick = ["year", "type", "started_in", "ended_in", "university_name", "company_name", "organization_id", "exchange_title", "study_area", "study_description", "exchange_url", "exchange_name", "province_code"]
+const toPick = ["year", "type", "started_in", "ended_in", "university_name", "company_name", "organization_id", "exchange_title", "study_area", "study_description", "exchange_url", "exchange_name", "province_name"]
 
 const _item = {
   year: "",
-  type: "",
+  type: 1,
   started_in: "",
+  started_year: "",
   ended_in: "",
+  ended_year: "",
   university_name: "",
   company_name: "",
   organization_id: "",
@@ -159,5 +161,6 @@ const _item = {
   study_area: 1,
   study_description: "",
   exchange_url: "",
-  exchange_name: "" 
+  exchange_name: "",
+  province_name: "Japão" 
 }
