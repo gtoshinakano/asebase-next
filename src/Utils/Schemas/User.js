@@ -13,6 +13,8 @@ import br_states from '@Utils/StaticData/br_states.json';
 import _ from 'lodash';
 import {JAPAN_PROVINCES} from '@Utils/StaticData/json-data'
 
+const thisYear = parseInt(moment().format('YYYY'))
+
 export const Session = SchemaModel({
   name: StringType()
     .isRequired('Campo obrigatório')
@@ -61,7 +63,7 @@ export const NikkeiProfile = SchemaModel({
 export const generationLengths = [0,1,1,3,5,7]
 
 export const AcademicItem = SchemaModel({
-  year: NumberType("Não é um número").isRequired("Campo obrigatório").range(1920, parseInt(moment().format('YYYY')) + 5, "Ano fora do intervalo válido"),
+  year: NumberType("Não é um número").isRequired("Campo obrigatório").range(1920, thisYear + 5, "Ano fora do intervalo válido"),
   study_area: NumberType().range(1,3,"Algo errado aconteceu"),
   subject: StringType().isRequired("Campo obrigatório"),
   institution_name: StringType().isRequired("Campo obrigatório")
@@ -70,8 +72,8 @@ export const AcademicItem = SchemaModel({
 export const AcademicList = ArrayType().isRequired("obrig").of(AcademicItem)
 
 export const ProfessionalItem = SchemaModel({
-  start_year: NumberType("Não é um número").isRequired("Campo obrigatório").range(1920, parseInt(moment().format('YYYY')) + 5, "Ano fora do intervalo válido"),
-  end_year: NumberType("Não é um número").isRequired("Campo obrigatório").range(1920, parseInt(moment().format('YYYY')) + 5, "Ano fora do intervalo válido"),
+  start_year: NumberType("Não é um número").isRequired("Campo obrigatório").range(1920, thisYear + 5, "Ano fora do intervalo válido"),
+  end_year: NumberType("Não é um número").isRequired("Campo obrigatório").range(1920, thisYear + 5, "Ano fora do intervalo válido"),
   position: StringType().isRequired("Campo obrigatório"),
   company_name: StringType().isRequired("Campo obrigatório"),
 })
@@ -79,18 +81,22 @@ export const ProfessionalItem = SchemaModel({
 export const ProfessionalList = ArrayType().isRequired("obrig").of(ProfessionalItem)
 
 export const ExchangeItem = SchemaModel({
-  year: NumberType("Não é um número").isRequired("Campo obrigatório").range(1920, parseInt(moment().format('YYYY')) + 5, "Ano fora do intervalo válido"),
+  year: NumberType("Não é um número").isRequired("Campo obrigatório").range(1920, thisYear + 5, "Ano fora do intervalo válido"),
   type: StringType().isRequired("Campo obrigatório"),
-  started_in: StringType().isRequired("Campo obrigatório"),
-  ended_in: StringType().isRequired("Campo obrigatório"),
-  university_name: StringType(),
-  company_name: StringType(),
-  organization_id: NumberType().isRequired(),
-  exchange_title: StringType().isRequired(),
+  started_in: NumberType().range(1,12, "Mês inexistente").isRequired("Campo obrigatório"),
+  started_year: NumberType().range(1920, thisYear + 5, "Ano fora do intervalo válido").isRequired("Campo obrigatório"),
+  ended_in: NumberType().range(1,12, "Mês inexistente").isRequired("Campo obrigatório"),
+  ended_year: NumberType().range(1920, thisYear + 5, "Ano fora do intervalo válido").isRequired("Campo obrigatório"),
+  org_name: StringType(),
+  org_exch_ref: StringType(),
+  org_exch_title: StringType(),
+  exchange_place: StringType().isRequired("Campo obrigatório"),
   study_area: NumberType(),
-  study_description: StringType().isRequired("Campo obrigatório"),
-  exchange_url: StringType().isURL("URL Inválida"),
-  exchange_name: StringType() 
+  study_title: StringType(),
+  study_url: StringType().isURL("Não é um endereço válido"),
+  province_name: StringType().isRequired("Campo obrigatório").addRule((val) => {
+    return JAPAN_PROVINCES.map(i=> i.name).includes(val)
+  }, "Província inválida")
 })
 
 export const ExchangeList = ArrayType().isRequired("obrig").of(ExchangeItem)

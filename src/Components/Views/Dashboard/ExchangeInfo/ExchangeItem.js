@@ -7,7 +7,7 @@ import {TripleToggle} from '@Styled/TripleToggle';
 import moment from 'moment';
 import _ from 'lodash'
 import Confirm from '@Components/Styled/Confirm';
-import { deleteAcademicProfile } from '@Utils/DefaultQueries/Delete';
+import { deleteExchangeProfile } from '@Utils/DefaultQueries/Delete';
 import { AREAS, EXCHANGE_TYPES, JAPAN_PROVINCES } from '@Utils/StaticData/json-data';
 import { _item } from '.';
 
@@ -17,13 +17,13 @@ const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
   const _form = _item
 
   const [form, setForm] = useState(_form);
-  const [error, setError] = useState(schemas.AcademicItem.check(form))
+  const [error, setError] = useState(schemas.ExchangeItem.check(form))
   const client = useQueryClient()
   const handshake = client.getQueryData("handshake")
   const uid = handshake.data.id || ""
   const queryKey = ["personal-profile", uid]
-  const mutation = useMutation(deleteAcademicProfile, {
-    mutationKey: "academic",
+  const mutation = useMutation(deleteExchangeProfile, {
+    mutationKey: "exchange",
     onSuccess: () => {
       onRemove(index)
       client.invalidateQueries(queryKey)
@@ -32,7 +32,7 @@ const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
   })
 
   useEffect(() => setForm(item), [item])
-  useEffect(() => setError(schemas.AcademicItem.check(form)), [form])
+  useEffect(() => setError(schemas.ExchangeItem.check(form)), [form])
 
   const hasError = Object.values(error).filter(e=> e.hasError).length > 0
 
@@ -90,6 +90,10 @@ const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
             max={thisYear + 5}
           />
           {error?.year.hasError && <ErrorDot msg={error.year?.errorMessage || ""} />}
+          { error && error.province_name.hasError
+            ? <img src={`/assets/img/jp-flags/Flag_of_Japão_Prefecture.svg`} className={flag_css} />
+            : <img src={`/assets/img/jp-flags/Flag_of_${form.province_name}_Prefecture.svg`} className={flag_css} />
+          }
           <InlineInput 
             inline
             placeholder="Província"
@@ -204,8 +208,8 @@ const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
             inline
             placeholder="Título ou Assunto do estudo"
             schema={schemas.ExchangeItem}
-            name="org_exch_title"
-            value={form.org_exch_title}
+            name="study_title"
+            value={form.study_title}
             onChange={onSingleChange}
             maxLength={150}
           />
@@ -262,5 +266,7 @@ const RenderYearIcons = () => {
 
   
 }
+
+const flag_css = "inline w-6 h-4 mx-2.5"
 
 const thisYear = parseInt(moment().format('YYYY'))

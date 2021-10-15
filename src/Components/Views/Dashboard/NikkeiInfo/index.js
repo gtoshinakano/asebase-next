@@ -112,6 +112,7 @@ const NikkeiInfo = () => {
             mutationFn={updateIsNikkei}
             invalidate={queryKey}
             name="is_nikkei"
+            id="is_nikkei_checkbox"
             confirm={{
               when: true,
               title: 'Deseja realmente realizar esta alteração?',
