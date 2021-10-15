@@ -145,22 +145,21 @@ export default ExchangeInfo;
 
 const _form = []
 
-const toPick = ["year", "type", "started_in", "ended_in", "university_name", "company_name", "organization_id", "exchange_title", "study_area", "study_description", "exchange_url", "exchange_name", "province_name"]
-
-const _item = {
+export const _item = {
   year: "",
   type: 1,
   started_in: "",
   started_year: "",
   ended_in: "",
   ended_year: "",
-  university_name: "",
-  company_name: "",
-  organization_id: "",
-  exchange_title: "",
+  org_name: "",
+  org_exch_ref: "",
+  org_exch_title: "",
+  exchange_place: "",
   study_area: 1,
-  study_description: "",
-  exchange_url: "",
-  exchange_name: "",
-  province_name: "Japão" 
+  study_title: "",
+  study_url: "",
+  province_name: "Japão"
 }
+
+const toPick = Object.keys(_item)

@@ -9,9 +9,12 @@ import _ from 'lodash'
 import Confirm from '@Components/Styled/Confirm';
 import { deleteAcademicProfile } from '@Utils/DefaultQueries/Delete';
 import { AREAS, EXCHANGE_TYPES, JAPAN_PROVINCES } from '@Utils/StaticData/json-data';
+import { _item } from '.';
 
 
 const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
+
+  const _form = _item
 
   const [form, setForm] = useState(_form);
   const [error, setError] = useState(schemas.AcademicItem.check(form))
@@ -146,34 +149,78 @@ const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
         <div>
           <TripleToggle value={form?.type || 1} onChange={onSingleChange} name="type" options={EXCHANGE_TYPES} />
         </div>
+      
+        <div className="pt-3 sm:pt-1.5">
+        🏰 Entidade Organizadora:
+          <InlineInput
+            inline
+            placeholder="ex: JICA, Governo de Província, etc."
+            schema={schemas.ExchangeItem}
+            name="org_name"
+            value={form.org_name}
+            onChange={onSingleChange}
+            maxLength={150}
+          />
+        </div>
+        <div className="pt-3 sm:pt-1.5">
+          🎫 
+          <InlineInput
+            inline
+            placeholder="Cód."
+            schema={schemas.ExchangeItem}
+            name="org_exch_ref"
+            value={form.org_exch_ref}
+            onChange={onSingleChange}
+            maxLength={150}
+          />
+          <InlineInput
+            inline
+            placeholder="Nome do Programa"
+            schema={schemas.ExchangeItem}
+            name="org_exch_title"
+            value={form.org_exch_title}
+            onChange={onSingleChange}
+            maxLength={150}
+          />
+        </div>
+        <div className="pt-6 sm:pt-1.5">
+          {form.type ===1 ? "🏫 Instituição de Ensino" : form.type ===2 ? "🏦 Empresa" : "🏨 Local"}  
+          <InlineInput
+            inline
+            placeholder="frequentado(a) no Japão"
+            schema={schemas.ExchangeItem}
+            name="exchange_place"
+            value={form.exchange_place}
+            onChange={onSingleChange}
+            maxLength={150}
+          />
+        </div>
         <div>
           <TripleToggle value={form?.study_area || 1} onChange={onSingleChange} name="study_area" options={AREAS} />
         </div>
-        <div className="pt-3 sm:pt-1.5">
-          🎓 Formação em: 
+        <div>
+          📄
           <InlineInput
             inline
-            placeholder="ex: Engenharia Elétrica"
+            placeholder="Título ou Assunto do estudo"
             schema={schemas.ExchangeItem}
-            name="organization_id"
-            value={form.organization_id}
+            name="org_exch_title"
+            value={form.org_exch_title}
             onChange={onSingleChange}
             maxLength={150}
           />
-          {error.subject.hasError && <ErrorDot />}
         </div>
-        <div className="pt-3 sm:pt-3">
-          🏫 Instituição de Ensino:
+        <div className="pt-3 sm:pt-1.5">
+          🔗
           <InlineInput
             inline
-            placeholder="ex: Universidade de São Paulo"
+            placeholder="Link para referência"
             schema={schemas.ExchangeItem}
-            name="university_name"
-            value={form.university_name}
+            name="study_url"
+            value={form.study_url}
             onChange={onSingleChange}
             maxLength={150}
           />
-          {error.institution_name.hasError && <ErrorDot />}
         </div>
       </div>
       <button
@@ -189,23 +236,7 @@ const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
 
 export default ExchangeItem;
 
-const _form = {
-  year: "",
-  type: 1,
-  started_in: "",
-  started_year: "",
-  ended_in: "",
-  ended_year: "",
-  university_name: "",
-  company_name: "",
-  organization_id: "",
-  exchange_title: "",
-  study_area: 1,
-  study_description: "",
-  exchange_url: "",
-  exchange_name: "",
-  province_name: ""
-}
+
 
 const getValidYears = () => _.range(1920, parseInt(moment().format('YYYY')) + 5)
 

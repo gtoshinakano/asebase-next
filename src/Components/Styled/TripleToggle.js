@@ -15,7 +15,7 @@ const TripleToggle = ({disabled, value, onChange, name, options}) => {
   return (
 
     <button
-      className="inline-flex min-w-max mt-4 pr-3 py-2 hover:bg-gray-100 disabled:cursor-not-allowed "
+      className="inline-flex min-w-max mt-4 pr-3 py-2 hover:bg-gray-100 disabled:cursor-not-allowed transform duration-100"
       onClick={toggle}
       disabled={disabled}
       type="button"
