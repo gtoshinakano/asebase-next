@@ -34,18 +34,18 @@ const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
   useEffect(() => setForm(item), [item])
   useEffect(() => setError(schemas.ExchangeItem.check(form)), [form])
 
-  const hasError = Object.values(error).filter(e=> e.hasError).length > 0
-
   const onSingleChange = (val, name) => {
     const newForm = {...form, [name]: val}
     setForm(newForm)
     onChange(newForm, index)
+    setError(schemas.ExchangeItem.check(newForm))
   }
 
   const onNumberChange = (val, name) => {
     const newForm = {...form, [name]: parseInt(val)}
     setForm(newForm)
     onChange(newForm, index)
+    setError(schemas.ExchangeItem.check(newForm))
   }
 
   const onAddNew = () => onAdd(_form, index)
@@ -60,6 +60,7 @@ const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
       }
     }
   }
+  console.log(error.ended_in.hasError)
 
   return (
     <div className={`w-full flex flex-nowrap px-3 border focus-within:border-sky-400 border-white`}>
@@ -103,6 +104,7 @@ const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
             options={JAPAN_PROVINCES.map(i=> i.name)}
             onChange={onSingleChange}
           />
+          {error?.province_name.hasError && <ErrorDot msg={error.province_name?.errorMessage || ""} />}
         </div>
         <div className="pt-3 sm:pt-1.5">
           📅 Início em
@@ -126,6 +128,8 @@ const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
             max={thisYear + 5}
             onChange={onSingleChange}
           />
+          {error.started_in.hasError && <ErrorDot msg={error.started_in?.errorMessage || ""} />}
+          {error.started_year.hasError && <ErrorDot msg={error.started_year?.errorMessage || ""} />}
         </div>
         <div className="pt-3 sm:pt-1.5">
           📅 Término em
@@ -145,10 +149,12 @@ const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
             name={"ended_year"}
             value={form.ended_year}
             type="number"
-            min={form.year || 1920}
+            min={form.started_year || 1920}
             max={thisYear + 5}
             onChange={onSingleChange}
           />
+          {error.ended_in.hasError && <ErrorDot msg={error.ended_in.errorMessage || ""} />}
+          {error.ended_year.hasError && <ErrorDot msg={error.ended_year.errorMessage || ""} />}
         </div>
         <div>
           <TripleToggle value={form?.type || 1} onChange={onSingleChange} name="type" options={EXCHANGE_TYPES} />
@@ -165,6 +171,7 @@ const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
             onChange={onSingleChange}
             maxLength={150}
           />
+          {error.org_name.hasError && <ErrorDot msg={error.org_name.errorMessage || ""} />}
         </div>
         <div className="pt-3 sm:pt-1.5">
           🎫 
@@ -198,6 +205,7 @@ const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
             onChange={onSingleChange}
             maxLength={150}
           />
+          {error.exchange_place.hasError && <ErrorDot msg={error.exchange_place.errorMessage || ""} />}
         </div>
         <div>
           <TripleToggle value={form?.study_area || 1} onChange={onSingleChange} name="study_area" options={AREAS} />
@@ -213,6 +221,7 @@ const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
             onChange={onSingleChange}
             maxLength={150}
           />
+          {error.study_title.hasError && <ErrorDot msg={error.study_title.errorMessage || ""} />}
         </div>
         <div className="pt-3 sm:pt-1.5">
           🔗
@@ -267,6 +276,6 @@ const RenderYearIcons = () => {
   
 }
 
-const flag_css = "inline w-6 h-4 mx-2.5"
+const flag_css = "inline w-6 h-4 mx-2.5 border border-gray-600"
 
 const thisYear = parseInt(moment().format('YYYY'))

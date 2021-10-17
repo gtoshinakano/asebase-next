@@ -80,19 +80,28 @@ export const ProfessionalItem = SchemaModel({
 
 export const ProfessionalList = ArrayType().isRequired("obrig").of(ProfessionalItem)
 
+const startedYearValid = (val, data) => parseInt(val) >= parseInt(data.year)
+
+const endedYearValid = (val,data) => parseInt(val) >= parseInt(data.started_year)
+
+const endedInValid = (val,data) => {
+  console.log((parseInt(data.started_year) === parseInt(data.started_year) && parseInt(val) >= parseInt(data.started_in)) || parseInt(data.started_year) > parseInt(data.started_year),parseInt(data.started_year),  parseInt(data.started_year),parseInt(val) ,parseInt(data.started_in), data)
+  return (parseInt(data.started_year) === parseInt(data.started_year) && parseInt(val) >= parseInt(data.started_in)) || parseInt(data.started_year) > parseInt(data.started_year)
+}
+
 export const ExchangeItem = SchemaModel({
   year: NumberType("Não é um número").isRequired("Campo obrigatório").range(1920, thisYear + 5, "Ano fora do intervalo válido"),
   type: StringType().isRequired("Campo obrigatório"),
   started_in: NumberType().range(1,12, "Mês inexistente").isRequired("Campo obrigatório"),
-  started_year: NumberType().range(1920, thisYear + 5, "Ano fora do intervalo válido").isRequired("Campo obrigatório"),
-  ended_in: NumberType().range(1,12, "Mês inexistente").isRequired("Campo obrigatório"),
-  ended_year: NumberType().range(1920, thisYear + 5, "Ano fora do intervalo válido").isRequired("Campo obrigatório"),
+  started_year: NumberType().range(1920, thisYear + 5, "Ano fora do intervalo válido").isRequired("Campo obrigatório").addRule(startedYearValid, "Ano Invalido"),
+  ended_in: NumberType().addRule(endedInValid, "Mês inválido").range(1,12, "Mês inexistente").isRequired("Campo obrigatório"),
+  ended_year: NumberType().range(1920, thisYear + 5, "Ano fora do intervalo válido").isRequired("Campo obrigatório").addRule(endedYearValid, "Ano inválido"),
   org_name: StringType(),
   org_exch_ref: StringType(),
   org_exch_title: StringType(),
   exchange_place: StringType().isRequired("Campo obrigatório"),
   study_area: NumberType(),
-  study_title: StringType(),
+  study_title: StringType().isRequired("Campo obrigatório"),
   study_url: StringType().isURL("Não é um endereço válido"),
   province_name: StringType().isRequired("Campo obrigatório").addRule((val) => {
     return JAPAN_PROVINCES.map(i=> i.name).includes(val)
