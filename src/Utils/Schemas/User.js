@@ -85,7 +85,6 @@ const startedYearValid = (val, data) => parseInt(val) >= parseInt(data.year)
 const endedYearValid = (val,data) => parseInt(val) >= parseInt(data.started_year)
 
 const endedInValid = (val,data) => {
-  console.log((parseInt(data.started_year) === parseInt(data.started_year) && parseInt(val) >= parseInt(data.started_in)) || parseInt(data.started_year) > parseInt(data.started_year),parseInt(data.started_year),  parseInt(data.started_year),parseInt(val) ,parseInt(data.started_in), data)
   return (parseInt(data.started_year) === parseInt(data.started_year) && parseInt(val) >= parseInt(data.started_in)) || parseInt(data.started_year) > parseInt(data.started_year)
 }
 
@@ -96,7 +95,7 @@ export const ExchangeItem = SchemaModel({
   started_year: NumberType().range(1920, thisYear + 5, "Ano fora do intervalo válido").isRequired("Campo obrigatório").addRule(startedYearValid, "Ano Invalido"),
   ended_in: NumberType().addRule(endedInValid, "Mês inválido").range(1,12, "Mês inexistente").isRequired("Campo obrigatório"),
   ended_year: NumberType().range(1920, thisYear + 5, "Ano fora do intervalo válido").isRequired("Campo obrigatório").addRule(endedYearValid, "Ano inválido"),
-  org_name: StringType(),
+  org_name: StringType().isRequired("Campo obrigatório"),
   org_exch_ref: StringType(),
   org_exch_title: StringType(),
   exchange_place: StringType().isRequired("Campo obrigatório"),

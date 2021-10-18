@@ -60,7 +60,7 @@ const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
       }
     }
   }
-  console.log(error.ended_in.hasError)
+
 
   return (
     <div className={`w-full flex flex-nowrap px-3 border focus-within:border-sky-400 border-white`}>
@@ -70,8 +70,7 @@ const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
         disabled={data.length > 4}
         type="button"
       >
-        <i className={`ri-number-${index+1} text-blueGray-500 block text-lg `}></i>
-        <i className={`${data.length > 4 ? "ri-forbid-2-fill" : "ri-add-box-fill text-blueGray-700"} block text-lg `}></i>
+        {makeYearIndex(index, form.year, error?.year.hasError, data)}
       </button>
       <div className="flex-grow pl-2 pb-5">
         <div>
@@ -234,6 +233,7 @@ const ExchangeItem = ({data, onChange, onAdd, onRemove, index, item}) => {
             onChange={onSingleChange}
             maxLength={150}
           />
+          {error.study_url.hasError && <ErrorDot msg={error.study_url.errorMessage || ""} />}
         </div>
       </div>
       <button
@@ -271,11 +271,18 @@ const _confirm ={
   )
 }
 
-const RenderYearIcons = () => {
-
-  
-}
-
 const flag_css = "inline w-6 h-4 mx-2.5 border border-gray-600"
 
 const thisYear = parseInt(moment().format('YYYY'))
+
+const makeYearIndex = (index, year, hasError, data) => {
+  return (
+    <>
+      { hasError 
+        ? <i className={`ri-number-${index+1} text-blueGray-500 block text-lg `}></i>
+        : [...year+""].map((num, index) => <i className={`ri-number-${num} text-blueGray-500 block text-lg `} key={num+"-"+index}></i>)
+      }
+      <i className={`${data.length > 4 ? "ri-forbid-2-fill" : "ri-add-box-fill text-blueGray-700"} block text-lg `}></i>
+    </>
+  )
+}

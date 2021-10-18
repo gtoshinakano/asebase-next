@@ -29,7 +29,7 @@ const ProfessionalProfile = () => {
   useEffect(() => setForm(professional?.data || []), [professional.data])
 
   const hasChanged = !_.isEqual(_.map(form, i=> _.pick(i, toPick)), _.map(professional?.data, i=>_.pick(i, toPick)))
-  console.log(hasChanged, _.map(form, i=> _.pick(i, toPick)), _.map(professional?.data, i=>_.pick(i, toPick)), hasError)
+  //console.log(hasChanged, _.map(form, i=> _.pick(i, toPick)), _.map(professional?.data, i=>_.pick(i, toPick)), hasError)
   
   const onProfessionalChange = (val, index) => {
     let newForm = [...form]
