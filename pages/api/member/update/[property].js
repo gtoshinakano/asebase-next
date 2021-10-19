@@ -1,4 +1,4 @@
-import { query } from '@lib/db';
+import { query, insertId } from '@lib/db';
 import { getSessionUserInfoId } from '@Helpers';
 import * as schemas from '@Utils/Schemas/User'
 import jwt from 'next-auth/jwt';
@@ -64,6 +64,8 @@ export default async (req, res) => {
             return await resAcademicProfile(req.body, token.sub, res)
           case 'professional_profile': 
             return await resProfessionalProfile(req.body, token.sub, res)
+          case 'exchange_profile':
+            return await resExchangeInfo(req.body, token.sub, res)
           default:
             return res.status(400).json({ serverMessage: 'Bad Request' });
         }
@@ -187,7 +189,6 @@ const resProfessionalProfile = async (body, sub, res) => {
       return res.status(401).json({...error})
     }else{
       await query('DELETE FROM professional_data WHERE user_id=?', [sub]);
-      console.log(body)
       const promises =  Object.values(body).map((item) => {
         return query('INSERT INTO professional_data VALUES("",?, ?, ?, ?, ?, ?)', 
         [ item.start_year, item.end_year, item.position, item.company_name, item.current_job, sub])
@@ -199,4 +200,39 @@ const resProfessionalProfile = async (body, sub, res) => {
   catch(e) {
    return res.status(401).json({serverMessage: JSON.stringify(e)})
   }
+}
+
+const resExchangeInfo = async (body, sub, res) => {
+  const error = schemas.ExchangeList.check(body)
+  if(Object.values(error).filter(e=> e.hasError).length > 0 ) {
+    return res.status(401).json({...error})
+  }else{
+    try{
+      console.log(body)
+      await query('DELETE FROM exchange WHERE user_id=?', [sub]);
+      let promises = []
+      Object.values(body).forEach(async item => {
+        const searchOrg = await query("SELECT id FROM organization WHERE org_name=?", [item.org_name])
+        let org_id
+        if(searchOrg.length === 1) org_id = searchOrg[0].id
+        else{
+          org_id = await insertId(
+            'INSERT INTO organization VALUES("", ?, ?, ?, ?)',
+            [item.org_name, '', '', '']
+          );
+        }
+        const [p_code] = _.filter(JAPAN_PROVINCES, (f) => (f.name===item.province_name))
+        promises.push(query('INSERT INTO exchange VALUES("", ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+          [sub, p_code.code, item.year, item.type, item.started_in, item.started_year, item.ended_in, item.ended_year, item.exchange_place, org_id, item.study_area, item.study_title, item.study_url, item.exchange_url, item.org_exch_ref, item.org_exch_title])
+        )
+      })
+      await Promise.all(promises).then(resp=> console.log(resp)) 
+      return res.status(200).json({ log: 'Update Done' })
+    }
+    catch(e){
+      console.log(e)
+      return res.status(401).json({serverMessage: JSON.stringify(e)})
+    }
+  }
+  
 }

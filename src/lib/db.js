@@ -27,7 +27,7 @@ export async function query(q, values) {
 
 export async function insertId(q, values) {
   try {
-    const results = await db.query(q, values).query((r) => r.insertId);
+    const results = await db.query(q, values).then((r) => r.insertId);
     await db.end();
     return results;
   } catch (e) {
