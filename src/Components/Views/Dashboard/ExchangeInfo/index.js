@@ -17,8 +17,9 @@ const ExchangeInfo = () => {
   const queryKey = ["exchange-profile", handshake?.data.id]
   const exchange = useQuery(queryKey, getExchangeProfile, {staleTime: Infinity})
   const mutation = useMutation(updateExchangeProfile, {
-    onSuccess: () => {
-      client.invalidateQueries(queryKey)
+    onSuccess: (e) => {
+      //console.log(queryKey, e)
+      client.setQueryData(queryKey, e.data)
     }
   })
 
@@ -90,8 +91,8 @@ const ExchangeInfo = () => {
                   onRemove={onRemove}
                   data={form}
                 />
-              : <div className="w-full pt-5 px-3" style={{height:222}} key={index}>
-                <Skeleton width="100%" height={188} className="" />
+              : <div className="w-full pt-5 px-3" style={{height:472}} key={index}>
+                <Skeleton width="100%" height={438} className="" />
               </div>
             )
           : <button 

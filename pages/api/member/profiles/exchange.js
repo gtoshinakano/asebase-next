@@ -18,7 +18,6 @@ async function get(req, res) {
       ORDER BY e.year ASC
     `,[token.sub]);
 
-    console.log(result)
     const toRet = result.map((i) => ({
       year: i.year,
       type: i.type,
@@ -35,7 +34,6 @@ async function get(req, res) {
       study_url: i.study_url,
       province_name: i.province_name      
     }))
-    console.log(toRet)
 
     return res.status(200).json(toRet);
   } catch (e) {

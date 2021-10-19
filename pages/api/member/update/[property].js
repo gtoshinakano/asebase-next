@@ -208,7 +208,6 @@ const resExchangeInfo = async (body, sub, res) => {
     return res.status(401).json({...error})
   }else{
     try{
-      console.log(body)
       await query('DELETE FROM exchange WHERE user_id=?', [sub]);
       let promises = []
       Object.values(body).forEach(async item => {
@@ -226,8 +225,10 @@ const resExchangeInfo = async (body, sub, res) => {
           [sub, p_code.code, item.year, item.type, item.started_in, item.started_year, item.ended_in, item.ended_year, item.exchange_place, org_id, item.study_area, item.study_title, item.study_url, item.exchange_url, item.org_exch_ref, item.org_exch_title])
         )
       })
-      await Promise.all(promises).then(resp=> console.log(resp)) 
-      return res.status(200).json({ log: 'Update Done' })
+      return await Promise.all(promises).then(() => {
+        res.status(200).json({ log: 'Update Done', data: Object.values(body) })
+      }) 
+
     }
     catch(e){
       console.log(e)
