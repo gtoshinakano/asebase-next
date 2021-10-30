@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import Checkbox from '@Components/Styled/Checkbox';
-import { useQuery, useIsMutating, useMutation, useQueryClient } from 'react-query';
+import {
+  useQuery,
+  useIsMutating,
+  useMutation,
+  useQueryClient,
+} from 'react-query';
 import Skeleton from 'react-loading-skeleton';
-import { updateIsNikkei, updateNikkeiProfile } from '@Utils/DefaultQueries/Mutations';
-import { getNikkeiProfile } from '@Utils/DefaultQueries/UserQueries'
+import {
+  updateIsNikkei,
+  updateNikkeiProfile,
+} from '@Utils/DefaultQueries/Mutations';
+import { getNikkeiProfile } from '@Utils/DefaultQueries/UserQueries';
 import {
   newItemsBySelected,
-  getOptsByGeneration
+  getOptsByGeneration,
 } from '@Utils/StaticData/family-data';
 import 'react-orgchart/index.css';
-import * as schemas from '@Utils/Schemas/User'
+import * as schemas from '@Utils/Schemas/User';
 import NikkeiPicker from './NikkeiPicker';
 import NikkeiBranch from './NikkeiBranch';
 import NikkeiOrigins from './NikkeiOrigins';
@@ -17,27 +25,30 @@ import { Transition } from '@headlessui/react';
 import { RoundButton } from '@Components/Styled/Button';
 
 const NikkeiInfo = () => {
-
   const [form, setForm] = useState(_form);
-  const client = useQueryClient()
+  const client = useQueryClient();
   const handshake = useQuery('handshake');
   const uid = handshake.data?.data.uid || '';
   const queryKey = ['personal-profile', uid];
-  const nikkeiQueryKey = ["nikkei-profile", uid]
-  const { data, isLoading, isFetching } = useQuery(queryKey, { staleTime: Infinity });
+  const nikkeiQueryKey = ['nikkei-profile', uid];
+  const { data, isLoading, isFetching } = useQuery(queryKey, {
+    staleTime: Infinity,
+  });
 
   const { jpFamilyMembers, jp_generation } = form;
 
-  const nikkei = useQuery(nikkeiQueryKey, getNikkeiProfile, {staleTime: Infinity})
+  const nikkei = useQuery(nikkeiQueryKey, getNikkeiProfile, {
+    staleTime: Infinity,
+  });
 
-  useEffect(() => setForm(nikkei.data || _form), [nikkei.data])
+  useEffect(() => setForm(nikkei.data || _form), [nikkei.data]);
 
   const mutation = useMutation(updateNikkeiProfile, {
     onSuccess: () => {
-      client.invalidateQueries(queryKey)
-      client.invalidateQueries(nikkeiQueryKey)
-    }
-  })
+      client.invalidateQueries(queryKey);
+      client.invalidateQueries(nikkeiQueryKey);
+    },
+  });
 
   const familyTree = newItemsBySelected(
     jpFamilyMembers,
@@ -71,10 +82,12 @@ const NikkeiInfo = () => {
     setForm(newForm);
   };
 
-  const error = schemas.NikkeiProfile.check(form)
-  const hasError = Object.values(schemas.NikkeiProfile.check(form)).filter(e=> e.hasError).length > 0
+  const error = schemas.NikkeiProfile.check(form);
+  const hasError =
+    Object.values(schemas.NikkeiProfile.check(form)).filter((e) => e.hasError)
+      .length > 0;
 
-  const hasChanged = !_.isEqual(form, nikkei.data)
+  const hasChanged = !_.isEqual(form, nikkei.data);
 
   const handleOriginChange = (v, member) => {
     const newForm = {
@@ -84,19 +97,20 @@ const NikkeiInfo = () => {
     setForm(newForm);
   };
 
-  const onReset =  (e) => {
-    setForm(nikkei.data)
-  }
+  const onReset = (e) => {
+    setForm(nikkei.data);
+  };
 
   const onSubmit = (e) => {
-    mutation.mutate({...form})
-  }
+    mutation.mutate({ ...form });
+  };
 
-  if (isLoading) return (<NikkeiProfileSkeleton  />)
+  if (isLoading) return <NikkeiProfileSkeleton />;
 
-  const isAwaiting = isLoading || mutation.isLoading || mutation.isFetching || isFetching
+  const isAwaiting =
+    isLoading || mutation.isLoading || mutation.isFetching || isFetching;
 
-  const { is_nikkei } = data
+  const { is_nikkei } = data;
 
   return (
     <>
@@ -143,10 +157,7 @@ const NikkeiInfo = () => {
           <div className="ml-4 pl-3 flex flex-wrap">
             <NikkeiPicker
               selected={
-                _.filter(
-                  generations,
-                  (g) => g.generation === jp_generation
-                )[0]
+                _.filter(generations, (g) => g.generation === jp_generation)[0]
               }
               onSelect={generationSelect}
               generations={generations}
@@ -163,24 +174,31 @@ const NikkeiInfo = () => {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div className={`w-full overflow-x-scroll p-3 pb-6 bg-gray-100
-            ${jpFamilyMembers.length>0 && error.jpFamilyMembers.hasError && "border border-l-0 border-r-0 border-red-400 space-x-2"}
+        <div
+          className={`w-full overflow-x-scroll p-3 pb-6 bg-gray-100
+            ${
+              jpFamilyMembers.length > 0 &&
+              error.jpFamilyMembers.hasError &&
+              'border border-l-0 border-r-0 border-red-400 space-x-2'
+            }
           `}
         >
-          <NikkeiBranch 
-            jpFamilyMembers={jpFamilyMembers} 
-            error={error} 
-            familyTree={familyTree} 
+          <NikkeiBranch
+            jpFamilyMembers={jpFamilyMembers}
+            error={error}
+            familyTree={familyTree}
             familySelect={familySelect}
             form={form}
           />
         </div>
         <div className="mt-3 px-1 sm:w-11/12 lg:w-4/5 xl:w-1/2 flex-grow mx-auto flex flex-col">
-          {jpFamilyMembers.length > 0 && <NikkeiOrigins 
-            form={form}
-            error={error}
-            originChange={handleOriginChange}
-          />}
+          {jpFamilyMembers.length > 0 && (
+            <NikkeiOrigins
+              form={form}
+              error={error}
+              originChange={handleOriginChange}
+            />
+          )}
         </div>
       </Transition>
       <Transition
@@ -194,7 +212,7 @@ const NikkeiInfo = () => {
       >
         <div className="w-full px-7 mt-5 mb-4 sm:w-11/12 lg:w-4/5 xl:w-1/2 mx-auto flex flex-col">
           <div className="ml-3 w-full space-x-2 flex justify-end">
-            {hasChanged &&
+            {hasChanged && (
               <>
                 <RoundButton
                   className="text-sm min-w-90px"
@@ -204,22 +222,36 @@ const NikkeiInfo = () => {
                   <i className="ri-restart-line text-base text-amber-400 mr-2"></i>
                   <span className="my-auto">Restaurar</span>
                 </RoundButton>
-                <RoundButton 
+                <RoundButton
                   className="text-sm min-w-90px"
                   onClick={onSubmit}
                   disabled={hasError || mutation.isLoading}
-                  isLoading={(mutation.isLoading || isLoading || isFetching ? true : false)}
-                  variant={hasError ? "error" : "secondary"}
-                  tooltip={hasError ? "Preencha os campos corretamente para poder salvar esta seção" : "osidfosidf"}
+                  isLoading={
+                    mutation.isLoading || isLoading || isFetching ? true : false
+                  }
+                  variant={hasError ? 'error' : 'secondary'}
+                  tooltip={
+                    hasError
+                      ? 'Preencha os campos corretamente para poder salvar esta seção'
+                      : 'osidfosidf'
+                  }
                 >
-                  <i className={`${hasError ? "ri-error-warning-fill text-red-500" : mutation.isLoading || isLoading || isFetching ? "ri-loader-5-line animate-spin" :"ri-save-3-fill"} text-base mr-2 `}></i>
+                  <i
+                    className={`${
+                      hasError
+                        ? 'ri-error-warning-fill text-red-500'
+                        : mutation.isLoading || isLoading || isFetching
+                        ? 'ri-loader-5-line animate-spin'
+                        : 'ri-save-3-fill'
+                    } text-base mr-2 `}
+                  ></i>
                   <span className="my-auto">Salvar</span>
                 </RoundButton>
               </>
-            }
+            )}
           </div>
         </div>
-      </Transition>  
+      </Transition>
     </>
   );
 };
@@ -270,11 +302,12 @@ const NikkeiProfileSkeleton = () => (
     <Skeleton className="w-full h-12 mt-2" />
     <Skeleton width="35%" className="block w-1/4 h-8 mt-4" />
     <br />
-    <Skeleton width="50%"className="block w-full h-8 my-3" />
+    <Skeleton width="50%" className="block w-full h-8 my-3" />
     <br />
-    <Skeleton width="80%"className="block w-full h-8 mb-3 my-2" />
+    <Skeleton width="80%" className="block w-full h-8 mb-3 my-2" />
     <br />
-    <Skeleton width="30%"className="block w-full h-8 mb-3 my-2" />
+    <Skeleton width="30%" className="block w-full h-8 mb-3 my-2" />
     <br />
-    <Skeleton width="50%"className="block w-full h-8 mb-3 my-2" />
-  </div>)
+    <Skeleton width="50%" className="block w-full h-8 mb-3 my-2" />
+  </div>
+);

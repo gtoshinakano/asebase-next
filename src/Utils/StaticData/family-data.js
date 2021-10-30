@@ -252,7 +252,7 @@ export const generationsExample = [
 ];
 
 export const familyLabels = {
-  '0': '🧔 Pai',
+  0: '🧔 Pai',
   '0-0': '👴 Avô (pat.)',
   '0-0-0': '👴 Bisavô (pat.)',
   '0-0-0-0': '👴 Tataravô (pat.)',
@@ -267,7 +267,7 @@ export const familyLabels = {
   '0-1-1': '🧓 Bisavó (pat.)',
   '0-1-1-0': '👴 Tataravô (pat.)',
   '0-1-1-1': '🧓 Tataravó (pat.)',
-  '1': '👩 Mãe',
+  1: '👩 Mãe',
   '1-0': '👴 Avô (mat.)',
   '1-0-0': '👴 Bisavô (mat.)',
   '1-0-0-0': '👴 Tataravô (mat.)',

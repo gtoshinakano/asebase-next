@@ -8,8 +8,8 @@ const NikkeiPicker = ({ selected, onSelect, generations }) => {
         <h2 className="p-2 mt-5 mb-1 print:mx-auto">
           1. Qual é o seu grau de descendência japonesa?
         </h2>
-        <Blockquote 
-          icon="ri-questionnaire-fill text-4xl" 
+        <Blockquote
+          icon="ri-questionnaire-fill text-4xl"
           className="border-gray-300 text-gray-500 tracking-wider ml-2 mb-6 print:hidden"
         >
           O seu Grau de Descendência é determinado a partir do{' '}
@@ -108,4 +108,4 @@ const NikkeiPicker = ({ selected, onSelect, generations }) => {
   );
 };
 
-export default NikkeiPicker
+export default NikkeiPicker;

@@ -36,7 +36,7 @@ const Checkbox = ({
 
   const onCheck = async () => {
     const val = !isChecked;
-    if(mutationFn){
+    if (mutationFn) {
       if (confirm && confirm.when === isChecked) {
         const res = await Confirm.show(confirm);
         if (res) {
@@ -47,8 +47,8 @@ const Checkbox = ({
         mutate({ [name]: val ? 1 : 0 });
         setIsChecked(val);
       }
-    }else{
-      if(onChange) onChange(val, name)
+    } else {
+      if (onChange) onChange(val, name);
     }
   };
 
@@ -63,14 +63,23 @@ const Checkbox = ({
         onChange={onCheck}
         disabled={isDisabled}
       />
-      <StyledCheckbox checked={isChecked} onClick={onCheck} disabled={isDisabled}>
+      <StyledCheckbox
+        checked={isChecked}
+        onClick={onCheck}
+        disabled={isDisabled}
+      >
         {isChecked ? (
           <i className="ri-checkbox-fill text-sky-500"></i>
         ) : (
           <i className="ri-checkbox-blank-line"></i>
         )}
       </StyledCheckbox>
-      <label htmlFor={id} className={`p-1 pr-4 ${!isLoading && "hover:bg-gray-100"} transition duration-200 ease-in-out transform hover:scale-95`}>
+      <label
+        htmlFor={id}
+        className={`p-1 pr-4 ${
+          !isLoading && 'hover:bg-gray-100'
+        } transition duration-200 ease-in-out transform hover:scale-95`}
+      >
         {isLoading ? (
           <Skeleton width={250} height={20} />
         ) : isChecked ? (
@@ -84,7 +93,9 @@ const Checkbox = ({
 };
 
 const Container = styled.div.attrs((props) => ({
-  className: `inline-flex ${props.disabled && 'cursor-not-allowed'} ${props.className}`,
+  className: `inline-flex ${props.disabled && 'cursor-not-allowed'} ${
+    props.className
+  }`,
 }))``;
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`

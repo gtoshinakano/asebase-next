@@ -27,7 +27,7 @@ const PersonalInfo = () => {
 
   let birthDate = moment(data?.birth_date).utc() || '';
 
-  if(isLoading) return (<PersonalProfileSkeleton />);
+  if (isLoading) return <PersonalProfileSkeleton />;
   else
     return (
       <>
@@ -47,7 +47,7 @@ const PersonalInfo = () => {
           <GenderInput value={data?.gender || null} queryKey={queryKey} />
         </div>
         <div className="pl-2 mt-3 inline font-thin text-gray-700">
-        🌎 Natural de
+          🌎 Natural de
           <InlineInput
             inline
             placeholder="Município"
@@ -78,7 +78,7 @@ const PersonalInfo = () => {
           , Brasil.
         </div>
         <div className="pl-2 mt-3 inline font-thin text-gray-700">
-        🎂 Nascido em
+          🎂 Nascido em
           <InlineInput
             inline
             placeholder="dd/mm/aaaa"
@@ -109,11 +109,12 @@ const PersonalProfileSkeleton = () => (
     <Skeleton className="w-full h-12 mt-2" />
     <Skeleton width="35%" className="block w-1/4 h-8 mt-4" />
     <br />
-    <Skeleton width="50%"className="block w-full h-8 my-3" />
+    <Skeleton width="50%" className="block w-full h-8 my-3" />
     <br />
-    <Skeleton width="80%"className="block w-full h-8 mb-3 my-2" />
+    <Skeleton width="80%" className="block w-full h-8 mb-3 my-2" />
     <br />
-    <Skeleton width="30%"className="block w-full h-8 mb-3 my-2" />
+    <Skeleton width="30%" className="block w-full h-8 mb-3 my-2" />
     <br />
-    <Skeleton width="50%"className="block w-full h-8 mb-3 my-2" />
-  </div>)
+    <Skeleton width="50%" className="block w-full h-8 mb-3 my-2" />
+  </div>
+);

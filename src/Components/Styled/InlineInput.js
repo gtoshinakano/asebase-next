@@ -24,7 +24,7 @@ const InlineInput = ({
   onChange,
   maxLength,
   min,
-  max
+  max,
 }) => {
   const [width, setWidth] = useState(0);
   const [inputErr, setInputErr] = useState({ hasError: false });
@@ -44,25 +44,26 @@ const InlineInput = ({
 
   React.useEffect(() => setInputVal(value), [value]);
   React.useEffect(() => {
-    const {offsetWidth} = span.current
-    setWidth(type==="number" ? offsetWidth+22 : offsetWidth);
+    const { offsetWidth } = span.current;
+    setWidth(type === 'number' ? offsetWidth + 22 : offsetWidth);
   }, [inputVal, placeholder]);
 
   const valueChange = ({ target }) => {
-    const error = schema?.checkForField(name, { [name]: target.value }) || noError;
+    const error =
+      schema?.checkForField(name, { [name]: target.value }) || noError;
     setInputErr(error);
-    setAcFocus(-1)
+    setAcFocus(-1);
     let val = target.value;
     if (mask) val = mask(val);
     setInputVal(val);
-    if(onChange) onChange(val, name)
+    if (onChange) onChange(val, name);
   };
 
   const onInputBlur = (e) => {
     setFocused(false);
     if (inputVal !== value) {
       if (!inputErr.hasError) {
-        if(mutationFn) mutate({ [name]: inputVal });
+        if (mutationFn) mutate({ [name]: inputVal });
       }
     } else {
       setInputErr(noError);
@@ -77,21 +78,22 @@ const InlineInput = ({
     setFocused(false);
     setInputVal(val);
     setInputErr(noError);
-    setAcFocus(-1)
-    if(mutationFn) mutate({ [name]: val });
-    if(onChange) onChange(val, name)
+    setAcFocus(-1);
+    if (mutationFn) mutate({ [name]: val });
+    if (onChange) onChange(val, name);
   };
 
-  const onKeyDown = ({keyCode, target}) => {
-    if(keyCode === 40) setAcFocus(acFocus+1)
-    if(keyCode === 38) setAcFocus(acFocus-1)
-    if (keyCode === 13 && activeIndex > -1) onSuggestionSelect(opts[activeIndex]);
-  }
+  const onKeyDown = ({ keyCode, target }) => {
+    if (keyCode === 40) setAcFocus(acFocus + 1);
+    if (keyCode === 38) setAcFocus(acFocus - 1);
+    if (keyCode === 13 && activeIndex > -1)
+      onSuggestionSelect(opts[activeIndex]);
+  };
 
   const re = new RegExp(_.escapeRegExp(inputVal), 'i');
   const matches = (result) => re.test(result);
   const opts = minSuggestionLength === 0 ? options : _.filter(options, matches);
-  const activeIndex = acFocus % opts.length
+  const activeIndex = acFocus % opts.length;
 
   return (
     <>
@@ -102,18 +104,23 @@ const InlineInput = ({
         {inputVal ? inputVal : placeholder}
       </div>
       <div
-        className={`p-1 ${inline && 'inline-flex max-w-xxs sm:max-w-none flex-wrap'}`}
+        className={`p-1 ${
+          inline && 'inline-flex max-w-xxs sm:max-w-none flex-wrap'
+        }`}
         style={inline && { width }}
       >
         <div className="relative">
-          <div className={`absolute right-2 font-thin z-10 inline-flex ${inline && "top-3"}`}>
+          <div
+            className={`absolute right-2 font-thin z-10 inline-flex ${
+              inline && 'top-3'
+            }`}
+          >
             {inputErr.hasError && (
               <HelpTip
                 icon={<i className={`text-lg text-red-300 ri-alert-fill`}></i>}
                 message={
                   <>
-                    <i 
-                      className={`ri-error-warning-line mr-2`}></i>
+                    <i className={`ri-error-warning-line mr-2`}></i>
                     {inputErr.errorMessage}
                   </>
                 }

@@ -28,12 +28,10 @@ const get = async (req, res) => {
       const userInfo = user_info[0];
 
       if (userInfo.blocked)
-        res
-          .status(403)
-          .json({
-            message: 'You are blocked for transgress our Terms of Use',
-            action: 'force-sign-out-user',
-          });
+        res.status(403).json({
+          message: 'You are blocked for transgress our Terms of Use',
+          action: 'force-sign-out-user',
+        });
       else
         res.status(200).json({
           message: 'High Five 🖐',

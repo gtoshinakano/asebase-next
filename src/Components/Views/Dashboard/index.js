@@ -23,21 +23,23 @@ const DashboardView = () => {
           <em className="text-sm ml-1 font-extralight pt-1">v0.1</em>
         </h1>
         <UserProperties />
-        {session && <PersonalInfo /> }
+        {session && <PersonalInfo />}
       </div>
       <div className="w-full">
         <div ref={nikkeiRef}>
-          {session && !loading 
-            ? <NikkeiInfo open={nikkeiVisible} />
-            : <Skeleton className="w-full h-44" />
-          }
+          {session && !loading ? (
+            <NikkeiInfo open={nikkeiVisible} />
+          ) : (
+            <Skeleton className="w-full h-44" />
+          )}
         </div>
       </div>
       <div className="w-full sm:w-11/12 lg:w-4/5 xl:w-1/2 mx-auto pt-2 flex flex-col">
-        {session && !loading
-          ? <AcademicProfile />
-          : <Skeleton className="w-full h-44" />
-        }
+        {session && !loading ? (
+          <AcademicProfile />
+        ) : (
+          <Skeleton className="w-full h-44" />
+        )}
       </div>
       <div className="w-full sm:w-11/12 lg:w-4/5 xl:w-1/2 mx-auto pt-2 flex flex-col">
         <ProfessionalInfo />

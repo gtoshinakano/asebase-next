@@ -12,11 +12,9 @@ export default function AutoComplete({
   minSuggestionLength,
   focus,
 }) {
-
-
   if (inputVal.length < minSuggestionLength || options.length === 0) return '';
 
-  const activeIndex = focus % options.length
+  const activeIndex = focus % options.length;
 
   return (
     <div className="w-full">
@@ -37,7 +35,11 @@ export default function AutoComplete({
                 <Listbox.Option
                   key={itemIdx}
                   className={({ active }) =>
-                    `${itemIdx===activeIndex ? 'text-blueGray-900 bg-blueGray-200' : 'text-gray-900'}
+                    `${
+                      itemIdx === activeIndex
+                        ? 'text-blueGray-900 bg-blueGray-200'
+                        : 'text-gray-900'
+                    }
                       cursor-default select-none relative block h-full
                       border-b border-warmGray-100 hover:bg-blueGray-100 hover:text-black font-light z-50  
                     `
@@ -46,8 +48,8 @@ export default function AutoComplete({
                 >
                   {({ selected }) => (
                     <span
-                      className={`${ selected ? 'font-medium' : 'font-thin' }
-                      ${itemIdx===activeIndex ? "font-medium" : 'font-thin'}
+                      className={`${selected ? 'font-medium' : 'font-thin'}
+                      ${itemIdx === activeIndex ? 'font-medium' : 'font-thin'}
                       block truncate cursor-pointer py-1.5 px-3`}
                       onMouseDown={() => onSelect(item)}
                     >
@@ -70,4 +72,3 @@ const Container = styled.div.attrs((props) => ({
   width: ${(props) =>
     props.width + 120 > 240 ? '150px' : props.width + 50 + 'px'};
 `;
-
