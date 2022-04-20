@@ -89,6 +89,11 @@ export default async (req, res) => {
               token.sub,
             ]);
             return res.status(200).json({ log: 'Delete Done' });
+          case 'exchange_profile':
+            await query('DELETE FROM exchange WHERE user_id = ?', [
+              token.sub,
+            ]);
+            return res.status(200).json({ log: 'Delete Done' });
           default:
             return res.status(400).json({ serverMessage: 'Bad Request' });
         }
