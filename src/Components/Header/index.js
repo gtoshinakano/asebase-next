@@ -23,6 +23,12 @@ export default function Header() {
             ? t('greeting-msg', { name: session.user.email })
             : t('greeting-msg', { name: 'visitante' })}
         </h4>
+        {session && <Link href="member/dashboard">
+          <Button >
+          <i className="ri-logout-box-r-line mr-24"></i>Profile 
+          </Button>
+        </Link>
+        }
         {session ? (
           <Button onClick={() => signOut()}>
             <i className="ri-logout-box-r-line mr-2"></i>Sair
