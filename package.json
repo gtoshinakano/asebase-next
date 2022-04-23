@@ -30,7 +30,7 @@
     "moment": "^2.29.1",
     "mysql": "^2.18.1",
     "next": "^11.0.0",
-    "next-auth": "latest",
+    "next-auth": "^3.29.0",
     "next-translate": "^1.0.7",
     "nodemailer": "^6.6.3",
     "prettier": "^2.3.2",
