@@ -15,7 +15,7 @@ export default function AccessDenied() {
            e.preventDefault()
            signIn()
         }}></a> */}
-        This project will be finished one day. All support is welcome.
+        Now this project is implemented on ClickUP!
       </p>
     </div>
   );
