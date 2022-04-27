@@ -23,7 +23,7 @@ import NikkeiBranch from './NikkeiBranch';
 import NikkeiOrigins from './NikkeiOrigins';
 import { Transition } from '@headlessui/react';
 import { RoundButton } from '@Components/Styled/Button';
-import _ from 'lodash'
+import _ from 'lodash';
 
 const NikkeiInfo = () => {
   const [form, setForm] = useState(_form);

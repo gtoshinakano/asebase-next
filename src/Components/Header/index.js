@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 export default function Header() {
   const [session, loading] = useSession();
   const { t, lang } = useTranslation('common');
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <header className="w-full p-3 bg-rose-500 fixed">
@@ -25,14 +25,14 @@ export default function Header() {
             ? t('greeting-msg', { name: session.user.email })
             : t('greeting-msg', { name: 'visitante' })}
         </h4>
-        {session && 
-          <Button 
-            onClick={() => router.push("member/dashboard")}
-            className="mr-4 bg-white font-semibold text-black">
-          <i className="ri-file-user-line mr-2 text-sky-400"></i>Profile 
+        {session && (
+          <Button
+            onClick={() => router.push('member/dashboard')}
+            className="mr-4 bg-white font-semibold text-black"
+          >
+            <i className="ri-file-user-line mr-2 text-sky-400"></i>Profile
           </Button>
-      
-        }
+        )}
         {session ? (
           <Button className="bg-gray-200" onClick={() => signOut()}>
             <i className="ri-logout-box-r-line mr-2"></i>Sair
