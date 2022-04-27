@@ -2,7 +2,7 @@
 
 export default function AccessDenied() {
   return (
-    <div className="flex flex-col pt-72 overflow-hidden justify-center">
+    <div className="flex flex-col pt-52 overflow-hidden justify-center">
       <h1 className="mx-auto mb-2 text-2xl font-bold text-center">
         Welcome to this Demo!
       </h1>
