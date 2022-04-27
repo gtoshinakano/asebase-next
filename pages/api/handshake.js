@@ -20,7 +20,7 @@ const get = async (req, res) => {
     if (user_info.length === 0) {
       // There is no user_info, so let's create one
       const newId = await insertId(
-        'INSERT INTO users_info(id, auth_id, blocked) VALUES(?, ? )',
+        'INSERT INTO users_info(id, auth_id, blocked) VALUES(?, ?, ?)',
         [token.sub, token.sub, 0]
       );
       res.status(200).json({ message: 'User Info Created', uid: newId });
