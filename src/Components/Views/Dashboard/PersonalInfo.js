@@ -21,9 +21,13 @@ const PersonalInfo = () => {
   const handshake = useQuery('handshake');
   const uid = handshake.data?.data.uid || '';
   const queryKey = ['personal-profile', uid];
-  const { data, isLoading, isFetched } = useQuery(queryKey, getPersonalProfile, {
-    staleTime: Infinity,
-  });
+  const { data, isLoading, isFetched } = useQuery(
+    queryKey,
+    getPersonalProfile,
+    {
+      staleTime: Infinity,
+    }
+  );
 
   let birthDate = moment(data?.birth_date).utc() || '';
 
@@ -70,7 +74,7 @@ const PersonalInfo = () => {
             invalidate={queryKey}
             minSuggestionLength={0}
             options={
-              data?.birth_city && (data?.birth_city.length > 0)
+              data?.birth_city && data?.birth_city.length > 0
                 ? getEstadosByCityName(data.birth_city)
                 : _.map(br_states.estados, (i) => i.nome)
             }

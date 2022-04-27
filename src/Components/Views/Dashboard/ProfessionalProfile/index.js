@@ -12,7 +12,7 @@ import * as schemas from '@Utils/Schemas/User';
 import { Transition } from '@headlessui/react';
 import { updateProfessionalProfile } from '@Utils/DefaultQueries/Mutations';
 import { RoundButton } from '@Components/Styled/Button';
-import _ from 'lodash'
+import _ from 'lodash';
 
 const ProfessionalProfile = () => {
   const [form, setForm] = useState(_form);

@@ -34,7 +34,6 @@ export default function Page() {
   // If session exists, display content
   return (
     <Layout>
-      
       <p>
         <strong>{content || ''}</strong>
       </p>
