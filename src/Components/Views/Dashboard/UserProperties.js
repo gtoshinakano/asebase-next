@@ -10,7 +10,7 @@ const UserProperties = () => {
   const { data, isLoading } = useQuery('handshake');
 
   return (
-    <div className="w-full flex flex-wrap p-1.5 text-trueGray-400 font-thin text-xs sm:text-sm">
+    <div className="w-full flex flex-wrap p-1.5 text-neutral-400 font-thin text-xs sm:text-sm">
       <div className="w-1/3 inline-flex py-2">
         <i className="ri-hashtag mr-2"></i> ID
       </div>

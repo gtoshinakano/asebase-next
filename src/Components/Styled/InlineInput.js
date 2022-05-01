@@ -130,7 +130,7 @@ const InlineInput = ({
             {serverMsg && (
               <HelpTip
                 icon={
-                  <i className="ri-feedback-fill text-lg hover:text-blueGray-900"></i>
+                  <i className="ri-feedback-fill text-lg hover:text-slate-900"></i>
                 }
                 message={<>{serverMsg}</>}
                 onClick={onMessageClick}
@@ -174,7 +174,7 @@ const InlineInput = ({
 };
 
 const IInput = styled.input.attrs((props) => ({
-  className: `focus:outline-none text-gray-700 hover:bg-gray-100 focus:bg-blueGray-100 py-1 px-0.5 font-notoJP font-thin tracking-wide transition-colors duration-200 ease-in-out disabled:cursor-not-allowed disabled:bg-trueGray-100
+  className: `focus:outline-none text-gray-700 hover:bg-gray-100 focus:bg-slate-100 py-1 px-0.5 font-notoJP font-thin tracking-wide transition-colors duration-200 ease-in-out disabled:cursor-not-allowed disabled:bg-neutral-100
   ${props.inputCSS} 
   ${
     props.inline

@@ -85,13 +85,13 @@ const ProfessionalItem = ({
         type="button"
       >
         <i
-          className={`ri-number-${index + 1} text-blueGray-500 block text-lg `}
+          className={`ri-number-${index + 1} text-slate-500 block text-lg `}
         ></i>
         <i
           className={`${
             data.length > 4
               ? 'ri-forbid-2-fill'
-              : 'ri-add-box-fill text-blueGray-700'
+              : 'ri-add-box-fill text-slate-700'
           } block text-lg `}
         ></i>
       </button>

@@ -27,7 +27,7 @@ const HelpTip = ({ icon, message, error, warning, onClick }) => {
                       ? 'bg-red-500'
                       : warning
                       ? 'bg-white  border-t border-r border-orange-500 border-b-0 border-l-0'
-                      : 'bg-blueGray-800'
+                      : 'bg-slate-800'
                   }
                 `}
               ></div>
@@ -39,7 +39,7 @@ const HelpTip = ({ icon, message, error, warning, onClick }) => {
                     ? 'bg-red-500 text-white border border-red-500'
                     : warning
                     ? 'bg-white text-orange-500 border border-orange-500'
-                    : 'bg-blueGray-800 text-white'
+                    : 'bg-slate-800 text-white'
                 }
               `}
             >

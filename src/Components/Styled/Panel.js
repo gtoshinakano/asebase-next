@@ -17,7 +17,7 @@ const PanelContainer = ({
   return (
     <div
       className={`w-full rounded-md bg-white
-    ${bordered && 'border border-blueGray-200'} ${shaded && 'shadow'}
+    ${bordered && 'border border-slate-200'} ${shaded && 'shadow'}
   `}
     >
       <div className="w-full p-5 flex">
