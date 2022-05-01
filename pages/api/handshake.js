@@ -9,11 +9,13 @@ const get = async (req, res) => {
   const token = await getToken({ req, secret });
   const session = await getSession({ req });
 
-  if (!token)
+  console.log(token, session)
+
+  if (!session)
     res.status(401).json({ message: 'I refuse to handshake with you' });
   else {
     const user_info = await query(
-      'SELECT id, blocked FROM users_info WHERE auth_id=?',
+      'SELECT u.id FROM users_info u WHERE u.auth_id=?',
       token.sub
     ); // WHERE blocked != 1 #TODO Adicionar user_verified
 

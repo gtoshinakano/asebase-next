@@ -12,6 +12,7 @@ const db = {
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
+  entities: entities
 }
 
 
@@ -65,7 +66,7 @@ export default NextAuth({
   // You can still force a JWT session by explicitly defining `"jwt"`.
   // When using `"database"`, the session cookie will only contain a `sessionToken` value,
   // which is used to look up the session in the database.
-    strategy: 'database',
+    strategy: 'jwt',
 
     // Seconds - How long until an idle session expires and is no longer valid.
     maxAge: 30 * 24 * 60 * 60, // 30 days
@@ -94,7 +95,7 @@ export default NextAuth({
   // https://next-auth.js.org/configuration/callbacks
   callbacks: {
     async signIn(user, account, profile, email, credentials) {
-      console.log(user, account, profile, email, credentials);
+      console.log(user);
       return true;
     },
     // async redirect(url, baseUrl) { return baseUrl },
