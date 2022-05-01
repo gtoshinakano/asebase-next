@@ -3,21 +3,20 @@ import nodemailer from 'nodemailer';
 export const sendVerificationRequest = ({
   identifier: email,
   url,
-  token,
   baseUrl,
   provider,
 }) => {
   return new Promise((resolve, reject) => {
     const { server, from } = provider;
     // Strip protocol from URL and use domain as site name
-    const site = baseUrl.replace(/^https?:\/\//, '');
+    const site = url.replace(/^https?:\/\//, '');
 
     nodemailer.createTransport(server).sendMail(
       {
         to: email,
         from,
         subject: `Sign in to ${site}`,
-        text: text({ url, site, email }),
+        text: text({ url, site }),
         html: html({ url, site, email }),
       },
       (error) => {
@@ -41,7 +40,7 @@ const html = ({ url, site, email }) => {
   const escapedSite = `${site.replace(/\./g, '&#8203;.')}`;
 
   // Some simple styling options
-  const backgroundColor = 'red';
+  const backgroundColor = 'green';
   const textColor = '#444444';
   const mainBackgroundColor = '#ffffff';
   const buttonBackgroundColor = '#346df1';

@@ -1,7 +1,7 @@
 import { query, insertId } from '@lib/db';
 import { getSessionUserInfoId } from '@Helpers';
 import * as schemas from '@Utils/Schemas/User';
-import jwt from 'next-auth/jwt';
+import {getToken} from 'next-auth/jwt';
 import moment from 'moment';
 import { JAPAN_PROVINCES } from '@Utils/StaticData/json-data';
 import _ from 'lodash';
@@ -10,7 +10,7 @@ const secret = process.env.SECRET;
 
 export default async (req, res) => {
   const { property } = req.query;
-  const token = await jwt.getToken({ req, secret });
+  const token = await getToken({ req, secret });
   const checkedUser = await getSessionUserInfoId(token.sub);
 
   if (req.method === 'PUT') {

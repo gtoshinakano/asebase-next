@@ -1,12 +1,12 @@
 // This is an example of how to read a JSON Web Token from an API route
-import jwt from 'next-auth/jwt';
-import { getSession } from 'next-auth/client';
+import { getToken } from 'next-auth/jwt';
+import { getSession } from 'next-auth/react';
 import { query, insertId } from '@lib/db';
 
 const secret = process.env.SECRET;
 
 const get = async (req, res) => {
-  const token = await jwt.getToken({ req, secret });
+  const token = await getToken({ req, secret });
   const session = await getSession({ req });
 
   if (!token)

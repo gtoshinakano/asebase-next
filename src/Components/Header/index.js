@@ -1,16 +1,17 @@
 import Link from '@Components/Link';
-import { signIn, signOut, useSession } from 'next-auth/client';
+import {  signOut, useSession } from 'next-auth/react';
 import useTranslation from 'next-translate/useTranslation';
 import { Button } from '@Styled/Button';
 import { useRouter } from 'next/router';
 
-// The approach used in this component shows how to build a sign in and sign out
-// component that works on pages which support both client and server side
-// rendering, and avoids any flash incorrect content on initial page load.
+
 export default function Header() {
-  const [session, loading] = useSession();
+  const {data, status} = useSession();
+  const loading = status === "loading"
   const { t, lang } = useTranslation('common');
   const router = useRouter();
+
+  const isAuth = status === "authenticated"
 
   return (
     <header className="w-full p-3 bg-rose-500 fixed">
@@ -21,11 +22,11 @@ export default function Header() {
           ) : (
             <i className="ri-earth-fill mr-3"></i>
           )}
-          {session
-            ? t('greeting-msg', { name: session.user.email })
+          {isAuth
+            ? t('greeting-msg', { name: data.user.email })
             : t('greeting-msg', { name: 'visitante' })}
         </h4>
-        {session && (
+        {isAuth && (
           <Button
             onClick={() => router.push('member/dashboard')}
             className="mr-4 bg-white font-semibold text-black"
@@ -33,7 +34,7 @@ export default function Header() {
             <i className="ri-file-user-line mr-2 text-sky-400"></i>Profile
           </Button>
         )}
-        {session ? (
+        {isAuth ? (
           <Button className="bg-gray-200" onClick={() => signOut()}>
             <i className="ri-logout-box-r-line mr-2"></i>Sair
           </Button>

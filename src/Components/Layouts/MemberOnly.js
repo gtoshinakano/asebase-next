@@ -4,7 +4,7 @@ import { useQueryClient, useQuery } from 'react-query';
 import { handshake } from '@Utils/DefaultQueries';
 import ScreenLoader from '@Styled/ScreenLoader';
 import { useRouter } from 'next/router';
-import { signOut } from 'next-auth/client';
+import { signOut } from 'next-auth/react';
 import Skeleton from 'react-loading-skeleton';
 import { Transition } from '@headlessui/react';
 import { getPersonalProfile } from '@Utils/DefaultQueries';

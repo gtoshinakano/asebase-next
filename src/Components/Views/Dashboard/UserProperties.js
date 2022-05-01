@@ -1,5 +1,5 @@
 import React from 'react';
-import { signOut } from 'next-auth/client';
+import { signOut } from 'next-auth/react';
 import { useQuery } from 'react-query';
 import Skeleton from 'react-loading-skeleton';
 import InlineInput from '@Components/Styled/InlineInput';

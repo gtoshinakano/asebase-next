@@ -1,11 +1,11 @@
 import React from 'react';
 import Layout from '@Components/Layouts/NotSignedCommon';
 import SignIn from '@Views/SignIn';
-import { providers, getSession, csrfToken } from 'next-auth/client';
+import { getProviders, getSession, getCsrfToken } from 'next-auth/react';
 
 export default function Page({ providers, csrfToken }) {
   // React.useEffect(() => {
-  //   console.log(providers, csrfToken);
+  //    console.log(providers, csrfToken)
   // }, [])
 
   return (
@@ -19,16 +19,16 @@ export default function Page({ providers, csrfToken }) {
 
 export async function getServerSideProps(context) {
   const { req } = context;
-  const session = await getSession({ req });
+  const session = await getSession(context);
   if (session) {
     return {
-      redirect: { destination: '/' },
+      redirect: { destination: '/' }
     };
   }
   return {
     props: {
-      providers: await providers(context),
-      csrfToken: await csrfToken(context),
+      providers: await getProviders(context),
+      csrfToken: await getCsrfToken(context),
     },
   };
 }

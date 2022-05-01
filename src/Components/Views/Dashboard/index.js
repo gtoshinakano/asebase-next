@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import UserProperties from './UserProperties';
 import PersonalInfo from './PersonalInfo';
 import NikkeiInfo from './NikkeiInfo';
-import { useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import Skeleton from 'react-loading-skeleton';
 import useOnScreen from '@Components/Hooks/useOnScreen';
 import AcademicProfile from './AcademicProfile';
@@ -10,7 +10,9 @@ import ExchangeInfo from './ExchangeInfo';
 import ProfessionalInfo from './ProfessionalProfile';
 
 const DashboardView = () => {
-  const [session, loading] = useSession();
+  const {status} = useSession();
+  const loading = status === "loading"
+  const isAuth = status === "authenticated"
 
   const nikkeiRef = useRef();
   const nikkeiVisible = useOnScreen(nikkeiRef);
@@ -23,11 +25,11 @@ const DashboardView = () => {
           <em className="text-sm ml-1 font-extralight pt-1">v0.1</em>
         </h1>
         <UserProperties />
-        {session && <PersonalInfo />}
+        {isAuth && <PersonalInfo />}
       </div>
       <div className="w-full">
         <div ref={nikkeiRef}>
-          {session && !loading ? (
+          {isAuth && !loading ? (
             <NikkeiInfo open={nikkeiVisible} />
           ) : (
             <Skeleton className="w-full h-44" />
@@ -35,7 +37,7 @@ const DashboardView = () => {
         </div>
       </div>
       <div className="w-full sm:w-11/12 lg:w-4/5 xl:w-1/2 mx-auto pt-2 flex flex-col">
-        {session && !loading ? (
+        {isAuth && !loading ? (
           <AcademicProfile />
         ) : (
           <Skeleton className="w-full h-44" />

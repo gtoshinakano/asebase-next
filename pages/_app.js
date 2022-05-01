@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { Provider } from 'next-auth/client';
+import { SessionProvider } from 'next-auth/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import '../styles/tailwind.css';
@@ -17,16 +17,14 @@ export default function App({ Component, pageProps }) {
         />
       </Head>
       <QueryClientProvider client={queryClient}>
-        <Provider
-          options={{
-            clientMaxAge: 0,
-            keepAlive: 0,
-          }}
+        <SessionProvider
+          staleTime={0} 
+          refetchInterval={0}
           session={pageProps.session}
         >
           <Component {...pageProps} />
           <ReactQueryDevtools position="bottom-right" />
-        </Provider>
+        </SessionProvider>
       </QueryClientProvider>
     </>
   );

@@ -1,8 +1,7 @@
 import Layout from '@Components/Layouts/MemberOnly';
-import { getSession } from 'next-auth/client';
 import DashboardView from '@Components/Views/Dashboard';
 
-export default function Page({ session }) {
+export default function Page() {
   return (
     <Layout title="Perfil de Bolsista">
       <div className="w-full min-h-screen flex flex-wrap flex-col font-notoJP text-gray-700 pb-40">
@@ -12,12 +11,11 @@ export default function Page({ session }) {
     </Layout>
   );
 }
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-  return {
-    props: {
-      session: session,
-    },
-  };
-}
+// export async function getServerSideProps(context) {
+//   const session = await getSession(context);
+//   return {
+//     props: {
+//       session: session,
+//     },
+//   };
+// }

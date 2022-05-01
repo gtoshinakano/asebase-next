@@ -1,6 +1,6 @@
 import React from 'react';
 import Panel from '@Styled/Panel';
-import { signIn } from 'next-auth/client';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { SchemaModel, StringType } from 'schema-typed';
 
