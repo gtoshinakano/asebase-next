@@ -12,7 +12,8 @@ const db = {
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  entities: entities
+  synchronize: true,
+  entities: entities,
 }
 
 
@@ -66,7 +67,7 @@ export default NextAuth({
   // You can still force a JWT session by explicitly defining `"jwt"`.
   // When using `"database"`, the session cookie will only contain a `sessionToken` value,
   // which is used to look up the session in the database.
-    strategy: 'jwt',
+    strategy: 'database',
 
     // Seconds - How long until an idle session expires and is no longer valid.
     maxAge: 30 * 24 * 60 * 60, // 30 days
@@ -76,10 +77,6 @@ export default NextAuth({
     // Note: This option is ignored if using JSON Web Tokens
     // updateAge: 24 * 60 * 60, // 24 hours
   },
-
-  // JSON Web tokens are only used for sessions if the `jwt: true` session
-  // option is set - or by default if no database is specified.
-  // https://next-auth.js.org/configuration/options#jwt
 
 
   pages: {

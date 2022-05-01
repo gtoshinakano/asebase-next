@@ -10,6 +10,7 @@ export default function Header() {
   const loading = status === "loading"
   const { t, lang } = useTranslation('common');
   const router = useRouter();
+  console.log(data)
 
   const isAuth = status === "authenticated"
 
