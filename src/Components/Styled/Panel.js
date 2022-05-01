@@ -21,7 +21,7 @@ const PanelContainer = ({
   `}
     >
       <div className="w-full p-5 flex">
-        <div className="flex-grow">{header}</div>
+        <div className="grow">{header}</div>
         <div className="w-1/5 sm:w-4">
           {collapsible && expanded && (
             <ExpandButton onClick={() => setExpanded(false)}>

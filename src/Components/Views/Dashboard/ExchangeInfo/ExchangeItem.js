@@ -74,7 +74,7 @@ const ExchangeItem = ({ data, onChange, onAdd, onRemove, index, item }) => {
       >
         {makeYearIndex(index, form.year, error?.year.hasError, data)}
       </button>
-      <div className="flex-grow pl-2 pb-5">
+      <div className="grow pl-2 pb-5">
         <div>
           🌟
           <InlineInput

@@ -7,7 +7,7 @@ export default function Layout({ children }) {
       <Header />
       <div className="min-h-screen w-full flex">
         <aside className="min-h-screen bg-yellow-400">oi</aside>
-        <main className="flex-grow">{children}</main>
+        <main className="grow">{children}</main>
       </div>
       <Footer />
     </>

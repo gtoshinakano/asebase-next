@@ -95,7 +95,7 @@ const ProfessionalItem = ({
           } block text-lg `}
         ></i>
       </button>
-      <div className="flex-grow pl-2 pb-5">
+      <div className="grow pl-2 pb-5">
         <div>
           📅 De:
           <InlineInput

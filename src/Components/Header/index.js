@@ -15,7 +15,7 @@ export default function Header() {
   return (
     <header className="w-full p-3 bg-rose-500 fixed">
       <nav className="text-white text-sm flex">
-        <h4 className="flex-grow">
+        <h4 className="grow">
           {loading ? (
             <i className="ri-loader-5-line mr-3 animate-spin"></i>
           ) : (

@@ -77,7 +77,7 @@ const AcademicItem = ({ data, onChange, onAdd, onRemove, index, item }) => {
           } block text-lg `}
         ></i>
       </button>
-      <div className="flex-grow pl-2 pb-5">
+      <div className="grow pl-2 pb-5">
         <div>
           {user?.gender === 'f' ? '👩‍🎓' : '👨‍🎓'} Ano de Conclusão:
           <InlineInput
