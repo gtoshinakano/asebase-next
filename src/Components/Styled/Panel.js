@@ -17,11 +17,11 @@ const PanelContainer = ({
   return (
     <div
       className={`w-full rounded-md bg-white
-    ${bordered && 'border border-blueGray-200'} ${shaded && 'shadow'}
+    ${bordered && 'border border-slate-200'} ${shaded && 'shadow'}
   `}
     >
       <div className="w-full p-5 flex">
-        <div className="flex-grow">{header}</div>
+        <div className="grow">{header}</div>
         <div className="w-1/5 sm:w-4">
           {collapsible && expanded && (
             <ExpandButton onClick={() => setExpanded(false)}>

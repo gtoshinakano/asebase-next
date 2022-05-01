@@ -74,7 +74,7 @@ const ExchangeItem = ({ data, onChange, onAdd, onRemove, index, item }) => {
       >
         {makeYearIndex(index, form.year, error?.year.hasError, data)}
       </button>
-      <div className="flex-grow pl-2 pb-5">
+      <div className="grow pl-2 pb-5">
         <div>
           🌟
           <InlineInput
@@ -330,12 +330,12 @@ const makeYearIndex = (index, year, hasError, data) => {
     <>
       {hasError ? (
         <i
-          className={`ri-number-${index + 1} text-blueGray-500 block text-lg `}
+          className={`ri-number-${index + 1} text-slate-500 block text-lg `}
         ></i>
       ) : (
         [...(year + '')].map((num, index) => (
           <i
-            className={`ri-number-${num} text-blueGray-500 block text-lg `}
+            className={`ri-number-${num} text-slate-500 block text-lg `}
             key={num + '-' + index}
           ></i>
         ))
@@ -344,7 +344,7 @@ const makeYearIndex = (index, year, hasError, data) => {
         className={`${
           data.length > 4
             ? 'ri-forbid-2-fill'
-            : 'ri-add-box-fill text-blueGray-700'
+            : 'ri-add-box-fill text-slate-700'
         } block text-lg `}
       ></i>
     </>

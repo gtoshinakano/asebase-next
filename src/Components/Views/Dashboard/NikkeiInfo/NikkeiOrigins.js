@@ -25,7 +25,7 @@ const NikkeiOrigins = ({ form, error, originChange }) => {
       {jpFamilyMembers.map((i) => (
         <div className="w-3/4 m-2 font-extralight flex" key={i}>
           <span className="pt-4">{familyLabels[i]} é imigrante de</span>
-          <div className="flex-grow">
+          <div className="grow">
             <InlineInput
               inline
               placeholder="Província"

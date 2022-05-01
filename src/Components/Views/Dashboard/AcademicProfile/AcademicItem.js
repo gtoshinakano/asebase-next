@@ -67,17 +67,17 @@ const AcademicItem = ({ data, onChange, onAdd, onRemove, index, item }) => {
         type="button"
       >
         <i
-          className={`ri-number-${index + 1} text-blueGray-500 block text-lg `}
+          className={`ri-number-${index + 1} text-slate-500 block text-lg `}
         ></i>
         <i
           className={`${
             data.length > 4
               ? 'ri-forbid-2-fill'
-              : 'ri-add-box-fill text-blueGray-700'
+              : 'ri-add-box-fill text-slate-700'
           } block text-lg `}
         ></i>
       </button>
-      <div className="flex-grow pl-2 pb-5">
+      <div className="grow pl-2 pb-5">
         <div>
           {user?.gender === 'f' ? '👩‍🎓' : '👨‍🎓'} Ano de Conclusão:
           <InlineInput

@@ -37,11 +37,11 @@ export default function AutoComplete({
                   className={({ active }) =>
                     `${
                       itemIdx === activeIndex
-                        ? 'text-blueGray-900 bg-blueGray-200'
+                        ? 'text-slate-900 bg-slate-200'
                         : 'text-gray-900'
                     }
                       cursor-default select-none relative block h-full
-                      border-b border-warmGray-100 hover:bg-blueGray-100 hover:text-black font-light z-50  
+                      border-b border-stone-100 hover:bg-slate-100 hover:text-black font-light z-50  
                     `
                   }
                   value={item}

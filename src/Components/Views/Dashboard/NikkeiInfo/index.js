@@ -115,7 +115,7 @@ const NikkeiInfo = () => {
 
   return (
     <>
-      <div className="px-1 sm:w-11/12 lg:w-4/5 xl:w-1/2 flex-grow mx-auto flex flex-col overflow-hidden ">
+      <div className="px-1 sm:w-11/12 lg:w-4/5 xl:w-1/2 grow mx-auto flex flex-col overflow-hidden ">
         <div className="pl-1.5 mt-3 font-thin text-gray-700 pt-4">
           <Checkbox
             checked={is_nikkei === 1 && !isAwaiting}
@@ -192,7 +192,7 @@ const NikkeiInfo = () => {
             form={form}
           />
         </div>
-        <div className="mt-3 px-1 sm:w-11/12 lg:w-4/5 xl:w-1/2 flex-grow mx-auto flex flex-col">
+        <div className="mt-3 px-1 sm:w-11/12 lg:w-4/5 xl:w-1/2 grow mx-auto flex flex-col">
           {jpFamilyMembers.length > 0 && (
             <NikkeiOrigins
               form={form}

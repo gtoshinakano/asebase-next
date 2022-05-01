@@ -145,7 +145,7 @@ const ProfessionalProfile = () => {
           )
         ) : (
           <button
-            className="ml-8 mt-4 px-4 py-1 bg-blueGray-100 inline-flex font-thin hover:bg-blueGray-200 transition duration-200 transform hover:scale-95"
+            className="ml-8 mt-4 px-4 py-1 bg-slate-100 inline-flex font-thin hover:bg-slate-200 transition duration-200 transform hover:scale-95"
             onClick={onInitForm}
           >
             <i className="ri-edit-2-fill mr-3 text-sky-400 my-auto text-3xl md:text-base"></i>{' '}

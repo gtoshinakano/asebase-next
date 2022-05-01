@@ -9,7 +9,7 @@ export default function Page() {
             <span className="bg-teal-400 text-white rounded-full h-16 w-16 p-4 justify-center">
               <i className="ri-user-add-line text-3xl"></i>
             </span>
-            <p className="flex-grow px-2">
+            <p className="grow px-2">
               <span className="text-xl font-bold block mb-3">
                 Usuário criado com sucesso
               </span>
