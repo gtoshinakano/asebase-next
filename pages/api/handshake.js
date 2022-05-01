@@ -1,15 +1,11 @@
-// This is an example of how to read a JSON Web Token from an API route
-import { getToken } from 'next-auth/jwt';
 import { getSession } from 'next-auth/react';
 import { query, insertId } from '@lib/db';
-
-const secret = process.env.SECRET;
 
 const get = async (req, res) => {
   const session = await getSession({ req });
 
   if (!session)
-    res.status(401).json({ message: 'I refuse to handshake with you' });
+    res.status(401).json({ message: 'I refuse to shake hands with you' });
   else {
     const user_id = await query(
       'SELECT id FROM users WHERE email=?',
@@ -46,7 +42,6 @@ const get = async (req, res) => {
             ...session.user,
             uid: userInfo.id,
             serverTime: new Date(),
-            //TODO Adicionar user_verified e isAdmin
           },
         });
     }
