@@ -1,8 +1,7 @@
 const colors = require('tailwindcss/colors');
 
 module.exports = {
-  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './src/**/*.{js,ts,jsx,tsx}'],
-  darkMode: false, // or 'media' or 'class'
+  content: ['./pages/**/*.{js,ts,jsx,tsx}', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     colors: {
       ...colors,
@@ -36,14 +35,6 @@ module.exports = {
     fontFamily: {
       noto: ['"Noto Sans"', 'Helvetica'],
       notoJP: ['"Noto Sans JP"', 'Helvetica'],
-    },
-  },
-  variants: {
-    extend: {
-      backgroundColor: ['disabled'],
-      textColor: ['disabled'],
-      cursor: ['disabled'],
-      fontWeight: ['hover', 'focus'],
     },
   },
   plugins: [],
