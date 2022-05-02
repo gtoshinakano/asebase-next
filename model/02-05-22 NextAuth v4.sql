@@ -1,0 +1,277 @@
+﻿# Host: sql690.main-hosting.eu  (Version 5.5.5-10.5.13-MariaDB-cll-lve)
+# Date: 2022-05-02 09:48:50
+# Generator: MySQL-Front 6.0  (Build 2.20)
+
+
+#
+# Structure for table "accounts"
+#
+
+DROP TABLE IF EXISTS `accounts`;
+CREATE TABLE `accounts` (
+  `provider` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `scope` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id_token` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `session_state` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `providerAccountId` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `userId` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `refresh_token` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `access_token` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `expires_at` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_3aa23c0a6d107393e8b40e3e2a6` (`userId`),
+  CONSTRAINT `FK_3aa23c0a6d107393e8b40e3e2a6` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+#
+# Data for table "accounts"
+#
+
+INSERT INTO `accounts` VALUES ('google','Bearer','openid https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email','eyJhbGciOiJSUzI1NiIsImtpZCI6Ijg2MTY0OWU0NTAzMTUzODNmNmI5ZDUxMGI3Y2Q0ZTkyMjZjM2NkODgiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIxMDE4MTQwOTIxMzg0LTE0ZnExcXZybDZ0MXBlMDlkbW9jbDZnZXVxaWZoajY3LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQu',NULL,'oauth','100571866479747946355','42ef2a3e-be40-4362-ac18-3273ca96cac9','74ae48c2-63b1-415c-a077-dad694390ed4',NULL,'ya29.A0ARrdaM81aUVKJlLf2xt2sT3I1YuuiFpLmCjMCSReQNkSXzAh6Raz6IhHjyO9AO7Ffs7Bx-FmPFRhAQcEt-b7Y3aut7VKBZuOJlrKRQjBvMewD-_CEAs0SCarqee4C1MQyIMQB8cr2SKQxeQ8MhNtE0IdDDLP',1651448787),('google','Bearer','https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid','eyJhbGciOiJSUzI1NiIsImtpZCI6Ijg2MTY0OWU0NTAzMTUzODNmNmI5ZDUxMGI3Y2Q0ZTkyMjZjM2NkODgiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIxMDE4MTQwOTIxMzg0LTE0ZnExcXZybDZ0MXBlMDlkbW9jbDZnZXVxaWZoajY3LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQu',NULL,'oauth','113953188609844757210','9438f280-208b-494a-810c-435d57975b71','2efc6847-68c2-4bba-85cf-c5c1b5f266e8',NULL,'ya29.A0ARrdaM-WrlH2xKGGdJFEUm10q3IRttwJoPOdh_Wihy26z0vah4nd27Z_vsA1vBO4wgImGq25WsARiUciuCDeyuwzpvaTuQ3zSmtvXlfGiPxlq8I7VJRccSXjBGGMr6iSssNN8PS0U4eqNExfE4Tr6CTcYApt',1651449051);
+
+#
+# Structure for table "japan_provinces"
+#
+
+DROP TABLE IF EXISTS `japan_provinces`;
+CREATE TABLE `japan_provinces` (
+  `code` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `japanese_name` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `region` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label_latlng` point DEFAULT NULL,
+  `flag_latlng` point DEFAULT NULL,
+  PRIMARY KEY (`code`),
+  UNIQUE KEY `id_UNIQUE` (`code`),
+  UNIQUE KEY `name_UNIQUE` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+#
+# Data for table "japan_provinces"
+#
+
+INSERT INTO `japan_provinces` VALUES ('JP','Japão','','None',NULL,NULL),('JP-01','Hokkaido','北海道','Hokkaido',X'000000000101000000DA71C3EFA6B34540DA71C3EFA6B34540',X'000000000101000000D704DF02F7824540D704DF02F7824540'),('JP-02','Aomori','青森','Tohoku',X'000000000101000000B18A37328F5A4440B18A37328F5A4440',X'000000000101000000BB3C6A316D2D4440BB3C6A316D2D4440'),('JP-03','Iwate','岩手','Tohoku',X'000000000101000000153AAFB14BBA4340153AAFB14BBA4340',X'0000000001010000004BDDADD7908643404BDDADD790864340'),('JP-04','Miyagi','宮城','Tohoku',X'000000000101000000890B40A374254340890B40A374254340',X'00000000010100000087488CDA26E5424087488CDA26E54240'),('JP-05','Akita','秋田','Tohoku',X'000000000101000000BB48A12C7CFD4340BB48A12C7CFD4340',X'000000000101000000C0003BE2C0A74340C0003BE2C0A74340'),('JP-06','Yamagata','山形','Tohoku',X'000000000101000000091A33897A254340091A33897A254340',X'000000000101000000E0EE276775024340E0EE276775024340'),('JP-07','Fukushima','福島','Tohoku',X'000000000101000000A514747B49AF4240A514747B49AF4240',X'00000000010100000048D5EBD76456424048D5EBD764564240'),('JP-08','Ibaraki','茨城','Kanto',X'0000000001010000002DCF83BBB32842402DCF83BBB3284240',X'000000000101000000EAFFCE77B2E64140EAFFCE77B2E64140'),('JP-09','Tochigi','栃木','Kanto',X'000000000101000000226DE34F54504240226DE34F54504240',X'000000000101000000A772C17696084240A772C17696084240'),('JP-10','Gunma','群馬','Kanto',X'000000000101000000E23D079623584240E23D079623584240',X'000000000101000000AE0C5EB671F84140AE0C5EB671F84140'),('JP-11','Saitama','埼玉','Kanto',X'000000000101000000459DB98784F34140459DB98784F34140',X'000000000101000000B02431322AB14140B02431322AB14140'),('JP-12','Chiba','千葉','Kanto',X'000000000101000000130B7C45B7B24140130B7C45B7B24140',X'000000000101000000CCA07AF2C1634140CCA07AF2C1634140'),('JP-13','Tokyo','東京','Kanto',X'0000000001010000007BF5F1D077DD41407BF5F1D077DD4140',X'00000000010100000020DE14EED58E414020DE14EED58E4140'),('JP-14','Kanagawa','神奈川','Kanto',X'0000000001010000001BF1643733B241401BF1643733B24140',X'00000000010100000082CFE509E7CF404082CFE509E7CF4040'),('JP-15','Niigata','新潟','Chubu',X'000000000101000000FE63213A04A24240FE63213A04A24240',X'000000000101000000103CA0D09DB94240103CA0D09DB94240'),('JP-16','Toyama','富山','Chubu',X'0000000001010000004A95287B4B7742404A95287B4B774240',X'0000000001010000007E0E2850A5A642407E0E2850A5A64240'),('JP-17','Ishikawa','石川','Chubu',X'000000000101000000A3CA30EE063B4240A3CA30EE063B4240',X'000000000101000000B59A08BBFE404240B59A08BBFE404240'),('JP-18','Fukui','福井','Chubu',X'00000000010100000076E3DD91B1FA414076E3DD91B1FA4140',X'000000000101000000AEE55EF4B3064240AEE55EF4B3064240'),('JP-19','Yamanashi','山梨','Chubu',X'000000000101000000FBCA83F414C54140FBCA83F414C54140',X'000000000101000000E98F42976D824140E98F42976D824140'),('JP-20','Nagano','長野','Chubu',X'0000000001010000007C0DC171191742407C0DC17119174240',X'000000000101000000056EDD19C8B64140056EDD19C8B64140'),('JP-21','Gifu','岐阜','Chubu',X'0000000001010000006FD40AD3F7F641406FD40AD3F7F64140',X'0000000001010000006FD40AD3F7F641406FD40AD3F7F64140'),('JP-22','Shizuoka','静岡','Chubu',X'000000000101000000EF02250516484140EF02250516484140',X'0000000001010000000A573142C6A140400A573142C6A14040'),('JP-23','Aichi','愛知','Chubu',X'0000000001010000008DD0CFD4EB8641408DD0CFD4EB864140',X'0000000001010000002454AA1FB3A340402454AA1FB3A34040'),('JP-24','Mie','三重','Kansai',X'0000000001010000001F84807C090941401F84807C09094140',X'000000000101000000ED1CD3396AF04040ED1CD3396AF04040'),('JP-25','Shiga','滋賀','Kansai',X'000000000101000000F60CE19865EB4140F60CE19865EB4140',X'0000000001010000003F0A0A89F55941403F0A0A89F5594140'),('JP-26','Kyoto','京都','Kansai',X'0000000001010000006F0D6C9560A341406F0D6C9560A34140',X'000000000101000000CFC3217E4D544140CFC3217E4D544140'),('JP-27','Osaka','大阪','Kansai',X'0000000001010000002AFD84B35B5741402AFD84B35B574140',X'0000000001010000005C0328BD8F0141405C0328BD8F014140'),('JP-28','Hyogo','兵庫','Kansai',X'0000000001010000007D08AA46AFF441407D08AA46AFF44140',X'000000000101000000EABD3C7DB3004240EABD3C7DB3004240'),('JP-29','Nara','奈良','Kansai',X'00000000010100000088670932022C414088670932022C4140',X'000000000101000000D995EE850ADC4040D995EE850ADC4040'),('JP-30','Wakayama','和歌山','Kansai',X'000000000101000000D5B2B5BE48EE4040D5B2B5BE48EE4040',X'000000000101000000E091729E71144040E091729E71144040'),('JP-31','Tottori','鳥取','Chugoku',X'0000000001010000007EE02A4F20E441407EE02A4F20E44140',X'000000000101000000826CD58C29F04140826CD58C29F04140'),('JP-32','Shimane','島根','Chugoku',X'00000000010100000072FE261422C6414072FE261422C64140',X'0000000001010000001F6B8156D5A141401F6B8156D5A14140'),('JP-33','Okayama','岡山','Chugoku',X'0000000001010000009AD18F86535E41409AD18F86535E4140',X'0000000001010000004EF08922272141404EF0892227214140'),('JP-34','Hiroshima','広島','Chugoku',X'000000000101000000840F255AF2484140840F255AF2484140',X'00000000010100000046F2B89731F9404046F2B89731F94040'),('JP-35','Yamaguchi','山口','Chugoku',X'000000000101000000D49B51F355184140D49B51F355184140',X'0000000001010000007D907A46C3DA40407D907A46C3DA4040'),('JP-36','Tokushima','徳島','Shikoku',X'0000000001010000009240834D9DEB40409240834D9DEB4040',X'00000000010100000060E0325AF694404060E0325AF6944040'),('JP-37','Kagawa','香川','Shikoku',X'000000000101000000C554FA09671F4140C554FA09671F4140',X'000000000101000000297BD28B57CF4040297BD28B57CF4040'),('JP-38','Ehime','愛媛','Shikoku',X'000000000101000000815A0C1EA6D74040815A0C1EA6D74040',X'000000000101000000DB79004E62744040DB79004E62744040'),('JP-39','Kochi','高知','Shikoku',X'0000000001010000000D18247D5A9140400D18247D5A914040',X'000000000101000000AC4D2AF984464040AC4D2AF984464040'),('JP-40','Fukuoka','福岡','Kyushu',X'000000000101000000419AB1683AD94040419AB1683AD94040',X'000000000101000000817E11FD0FF84040817E11FD0FF84040'),('JP-41','Saga','佐賀','Kyushu',X'00000000010100000094FAB2B453D5404094FAB2B453D54040',X'000000000101000000F0094C1F15594040F0094C1F15594040'),('JP-42','Nagasaki','長崎','Kyushu',X'00000000010100000090BE49D3A066404090BE49D3A0664040',X'000000000101000000FC44E57A562E4040FC44E57A562E4040'),('JP-43','Kumamoto','熊本','Kyushu',X'000000000101000000C85F5AD4275F4040C85F5AD4275F4040',X'000000000101000000DA8399CC1F014040DA8399CC1F014040'),('JP-44','Oita','大分','Kyushu',X'0000000001010000006F1118EB1B9240406F1118EB1B924040',X'000000000101000000849C2BD9884D4040849C2BD9884D4040'),('JP-45','Miyazaki','宮崎','Kyushu',X'0000000001010000007769C36169D83F407769C36169D83F40',X'00000000010100000078674E7D4F733F4078674E7D4F733F40'),('JP-46','Kagoshima','鹿児島','Kyushu',X'000000000101000000AE64C74620323F40AE64C74620323F40',X'00000000010100000009EE0B37E6723E4009EE0B37E6723E40'),('JP-47','Okinawa','沖縄','Kyushu',X'000000000101000000F3AE7AC03C643B40F3AE7AC03C643B40',X'0000000001010000000AC8AF3315D639400AC8AF3315D63940');
+
+#
+# Structure for table "organization"
+#
+
+DROP TABLE IF EXISTS `organization`;
+CREATE TABLE `organization` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `org_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `org_latlng` point DEFAULT NULL,
+  `org_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `org_address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+#
+# Data for table "organization"
+#
+
+
+#
+# Structure for table "users"
+#
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `emailVerified` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `IDX_97672ac88f789774dd47f7c8be` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+#
+# Data for table "users"
+#
+
+INSERT INTO `users` VALUES ('wedoit japan','wedoit.nft@gmail.com','https://lh3.googleusercontent.com/a/AATXAJyAae50ugVfNSJUsxomKmuEQEUQoRFDlpL18_P4=s96-c','2efc6847-68c2-4bba-85cf-c5c1b5f266e8',NULL),('Gabriel Toshinori Nakano','gtoshinakano@gmail.com','https://lh3.googleusercontent.com/a/AATXAJz6XvTg0VoJwM5azmtRutYA5HjNwkpgKii1iWSv=s96-c','74ae48c2-63b1-415c-a077-dad694390ed4',NULL),(NULL,'bombowlb@gmail.com',NULL,'98b015f1-100a-48ac-a2fa-cdac5e2cac76','1651446928156');
+
+#
+# Structure for table "sessions"
+#
+
+DROP TABLE IF EXISTS `sessions`;
+CREATE TABLE `sessions` (
+  `userId` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sessionToken` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expires` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `IDX_8b5e2ec52e335c0fe16d7ec358` (`sessionToken`),
+  KEY `FK_57de40bc620f456c7311aa3a1e6` (`userId`),
+  CONSTRAINT `FK_57de40bc620f456c7311aa3a1e6` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+#
+# Data for table "sessions"
+#
+
+INSERT INTO `sessions` VALUES ('98b015f1-100a-48ac-a2fa-cdac5e2cac76','c4e9a050-36e6-47ad-8e6f-2319c8e9e220','1070ff81-3631-43bb-9db5-3aa9d3535217','1654038587624'),('2efc6847-68c2-4bba-85cf-c5c1b5f266e8','99d16488-1781-426a-a069-13b348e4baf9','1cffad3f-476a-4913-8934-6d0e210ee985','1654039482032'),('98b015f1-100a-48ac-a2fa-cdac5e2cac76','b68e8453-49ce-4700-befd-4ee6c1afb37c','33bd3873-b5f4-460d-8c0d-385b006a68ad','1654030710274'),('98b015f1-100a-48ac-a2fa-cdac5e2cac76','4e31848a-3dc1-40b7-8085-24a6007d956e','75937dbe-abc0-475d-bb80-be6ac4610617','1654029898306'),('2efc6847-68c2-4bba-85cf-c5c1b5f266e8','efad2d07-dafc-44d4-892a-880d26bd69ab','78656bbb-a1f9-48a9-af23-8ce00506cdb9','1654037455173'),('98b015f1-100a-48ac-a2fa-cdac5e2cac76','aa49d280-266c-413c-bd6e-aa1582e126a1','7903b313-2052-45fb-9bd1-9687f72153db','1654038928952'),('98b015f1-100a-48ac-a2fa-cdac5e2cac76','b05b4b00-a2a1-4c6c-81c1-21634b4ee02e','e3ac30f7-b663-445e-8384-c483862f23f3','1654037866300');
+
+#
+# Structure for table "users_info"
+#
+
+DROP TABLE IF EXISTS `users_info`;
+CREATE TABLE `users_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `auth_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `full_name` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `gender` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `birth_date` datetime DEFAULT NULL,
+  `birth_country` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT 'BRA',
+  `birth_state` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `birth_city` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_nikkei` tinyint(4) DEFAULT 0,
+  `jp_generation` tinyint(1) DEFAULT 0,
+  `map_latlng` point DEFAULT NULL,
+  `is_admin` tinyint(4) DEFAULT 0,
+  `created_at` timestamp(6) NULL DEFAULT NULL,
+  `updated_at` timestamp(6) NULL DEFAULT NULL,
+  `cpf` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `blocked` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `fk_users_users_info` (`auth_id`),
+  UNIQUE KEY `cpf_UNIQUE` (`cpf`),
+  CONSTRAINT `fk_users_users_info` FOREIGN KEY (`auth_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+#
+# Data for table "users_info"
+#
+
+INSERT INTO `users_info` VALUES (101,'2efc6847-68c2-4bba-85cf-c5c1b5f266e8',NULL,NULL,'2002-12-23 00:00:00','BRA','Alagoas','Milagres',1,0,NULL,0,NULL,'2022-05-02 00:12:03.000000',NULL,0),(102,'98b015f1-100a-48ac-a2fa-cdac5e2cac76',NULL,NULL,NULL,'BRA',NULL,NULL,0,0,NULL,0,NULL,NULL,NULL,0);
+
+#
+# Structure for table "professional_data"
+#
+
+DROP TABLE IF EXISTS `professional_data`;
+CREATE TABLE `professional_data` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `start_year` int(4) NOT NULL,
+  `end_year` int(4) NOT NULL,
+  `position` varchar(75) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `company_name` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `current_job` tinyint(1) NOT NULL,
+  `user_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `fk_professional_data_users_info1_idx` (`user_id`),
+  CONSTRAINT `fk_user_info_professional` FOREIGN KEY (`user_id`) REFERENCES `users_info` (`auth_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+#
+# Data for table "professional_data"
+#
+
+
+#
+# Structure for table "exchange"
+#
+
+DROP TABLE IF EXISTS `exchange`;
+CREATE TABLE `exchange` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `province_code` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `year` int(11) NOT NULL,
+  `type` tinyint(1) DEFAULT NULL,
+  `started_in` tinyint(2) DEFAULT NULL,
+  `started_year` int(4) DEFAULT NULL,
+  `ended_in` tinyint(2) DEFAULT NULL,
+  `ended_year` int(4) DEFAULT NULL,
+  `exchange_place` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `organization_id` int(11) NOT NULL,
+  `study_area` int(11) NOT NULL,
+  `study_title` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `study_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `exchange_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `org_exch_ref` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `org_exch_title` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_users_info_has_japan_provinces_japan_provinces1_idx` (`province_code`),
+  KEY `fk_exchange_organization1_idx` (`organization_id`),
+  KEY `fk_users_info_exch` (`user_id`),
+  CONSTRAINT `fk_exchange_organization1` FOREIGN KEY (`organization_id`) REFERENCES `organization` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_users_info_exch` FOREIGN KEY (`user_id`) REFERENCES `users_info` (`auth_id`),
+  CONSTRAINT `fk_users_info_has_japan_provinces_japan_provinces1` FOREIGN KEY (`province_code`) REFERENCES `japan_provinces` (`code`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+#
+# Data for table "exchange"
+#
+
+
+#
+# Structure for table "japanese_origins"
+#
+
+DROP TABLE IF EXISTS `japanese_origins`;
+CREATE TABLE `japanese_origins` (
+  `user_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `province_code` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `degree` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`user_id`,`province_code`),
+  KEY `fk_user_info_has_japan_provinces_japan_provinces1_idx` (`province_code`),
+  KEY `fk_user_info_has_japan_provinces_user_info1_idx` (`user_id`),
+  CONSTRAINT `fk_user_info` FOREIGN KEY (`user_id`) REFERENCES `users_info` (`auth_id`),
+  CONSTRAINT `fk_user_info_has_japan_provinces_japan_provinces1` FOREIGN KEY (`province_code`) REFERENCES `japan_provinces` (`code`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+#
+# Data for table "japanese_origins"
+#
+
+INSERT INTO `japanese_origins` VALUES ('2efc6847-68c2-4bba-85cf-c5c1b5f266e8','JP-40','1-0');
+
+#
+# Structure for table "academic_info"
+#
+
+DROP TABLE IF EXISTS `academic_info`;
+CREATE TABLE `academic_info` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `institution_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `subject` varchar(155) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `year` int(4) NOT NULL,
+  `study_area` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`),
+  KEY `fk_academic_info_users_info1_idx` (`user_id`),
+  CONSTRAINT `fk_academic_info_users_info` FOREIGN KEY (`user_id`) REFERENCES `users_info` (`auth_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+#
+# Data for table "academic_info"
+#
+
+INSERT INTO `academic_info` VALUES (3,'sdrf','2efc6847-68c2-4bba-85cf-c5c1b5f266e8','324',1922,1);
+
+#
+# Structure for table "verification_tokens"
+#
+
+DROP TABLE IF EXISTS `verification_tokens`;
+CREATE TABLE `verification_tokens` (
+  `id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `identifier` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expires` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+#
+# Data for table "verification_tokens"
+#
+
+INSERT INTO `verification_tokens` VALUES ('1b6f3979-7ee8-46a8-8a36-af7ae12d5e8c','bombowlb@gmail.com','026ec7e542b0abfe495747a05ab6b0d00bd8d2796460b944663722ec774a8d92','1651524777163'),('2a88c451-b721-4904-ba8e-3de9b3015ec8','bombowlb@gmail.com','448c8858cf7bf0a5e0cb6221b5450249e3b0cf1b403eb129c0bc1d1dbd53d727','1651529152406'),('6be20a8d-1127-49e2-95c2-42ad057e4c95','bombowlb@gmail.com','916b317e13c42d38c31bf84aac1dfd4217f4e8e791bdd206ca226ba26fa102c2','1651523977568'),('7b10e472-086e-4a26-9de5-e179635c49a9','bombowlb@gmail.com','fa8f936cd4ce5126e7e5626cb4e4ca1d58de031a2adfc4dc756d378d64d46bbf','1651524680207'),('f32613e6-3d74-41cf-ac0e-1462a1783b47','bombowlb@gmail.com','764033ee8fc3270b9443b1c9ec7bc025da35b045226b3e0383922b1d03807854','1651524995524');
