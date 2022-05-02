@@ -1,17 +1,23 @@
 import { query, insertId } from '@lib/db';
 import { getSessionUserInfoId } from '@Helpers';
 import * as schemas from '@Utils/Schemas/User';
-import jwt from 'next-auth/jwt';
+import {getSession} from 'next-auth/react';
 import moment from 'moment';
 import { JAPAN_PROVINCES } from '@Utils/StaticData/json-data';
 import _ from 'lodash';
 
-const secret = process.env.SECRET;
 
 export default async (req, res) => {
   const { property } = req.query;
-  const token = await jwt.getToken({ req, secret });
-  const checkedUser = await getSessionUserInfoId(token.sub);
+  const session = await getSession({ req });
+  const user_id = await query(
+    'SELECT id FROM users WHERE email=?',
+    session.user.email
+  ); 
+
+  const uid = user_id[0].id
+
+  const checkedUser = await getSessionUserInfoId(uid);
 
   if (req.method === 'PUT') {
     if (!checkedUser.hasError) {
@@ -20,7 +26,7 @@ export default async (req, res) => {
           case 'name':
             await query(
               'UPDATE users SET name=?, updated_at=NOW() WHERE auth_id = ?',
-              [req.body.name, token.sub]
+              [req.body.name, uid]
             );
             return res.json({
               serverMessage:
@@ -30,42 +36,42 @@ export default async (req, res) => {
             return await resSingleUpdate(
               'full_name',
               req.body.full_name,
-              token.sub,
+              uid,
               res
             );
           case 'birth_city':
             return await resSingleUpdate(
               'birth_city',
               req.body.birth_city,
-              token.sub,
+              uid,
               res
             );
           case 'birth_state':
             return await resSingleUpdate(
               'birth_state',
               req.body.birth_state,
-              token.sub,
+              uid,
               res
             );
           case 'gender':
             return await resSingleUpdate(
               'gender',
               req.body.gender,
-              token.sub,
+              uid,
               res
             );
           case 'birth_date':
-            return await resBirthDate(req.body, token.sub, res);
+            return await resBirthDate(req.body, uid, res);
           case 'is_nikkei':
-            return await resIsNikkei(req.body, token.sub, res);
+            return await resIsNikkei(req.body, uid, res);
           case 'nikkei_info':
-            return await resNikkeiInfo(req.body, token.sub, res);
+            return await resNikkeiInfo(req.body, uid, res);
           case 'academic_profile':
-            return await resAcademicProfile(req.body, token.sub, res);
+            return await resAcademicProfile(req.body, uid, res);
           case 'professional_profile':
-            return await resProfessionalProfile(req.body, token.sub, res);
+            return await resProfessionalProfile(req.body, uid, res);
           case 'exchange_profile':
-            return await resExchangeInfo(req.body, token.sub, res);
+            return await resExchangeInfo(req.body, uid, res);
           default:
             return res.status(400).json({ serverMessage: 'Bad Request' });
         }
@@ -81,16 +87,16 @@ export default async (req, res) => {
         switch (property) {
           case 'academic_profile':
             await query('DELETE FROM academic_info WHERE user_id = ?', [
-              token.sub,
+              uid,
             ]);
             return res.status(200).json({ log: 'Delete Done' });
           case 'professional_profile':
             await query('DELETE FROM professional_data WHERE user_id = ?', [
-              token.sub,
+              uid,
             ]);
             return res.status(200).json({ log: 'Delete Done' });
           case 'exchange_profile':
-            await query('DELETE FROM exchange WHERE user_id = ?', [token.sub]);
+            await query('DELETE FROM exchange WHERE user_id = ?', [uid]);
             return res.status(200).json({ log: 'Delete Done' });
           default:
             return res.status(400).json({ serverMessage: 'Bad Request' });

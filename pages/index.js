@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import Layout from '@Components/Layouts/NotSignedCommon';
 import AccessDenied from '@Views/AccessDenied';
 
 export default function Page() {
-  const [session, loading] = useSession();
+  
+  const {data: session, status} = useSession();
+  const loading = status === "loading"
   const [content, setContent] = useState();
 
   // Fetch content from protected route
@@ -23,7 +25,7 @@ export default function Page() {
   if (typeof window !== 'undefined' && loading) return null;
 
   // If no session exists, display access denied message
-  if (!session) {
+  if (status !== "authenticated") {
     return (
       <Layout>
         <AccessDenied />
@@ -34,9 +36,7 @@ export default function Page() {
   // If session exists, display content
   return (
     <Layout>
-      <p>
-        <strong>{content || ''}</strong>
-      </p>
+      {content || ''}
     </Layout>
   );
 }
