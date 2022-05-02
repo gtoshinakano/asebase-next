@@ -38,7 +38,6 @@ const ProfessionalProfile = () => {
     _.map(form, (i) => _.pick(i, toPick)),
     _.map(professional?.data, (i) => _.pick(i, toPick))
   );
-  //console.log(hasChanged, _.map(form, i=> _.pick(i, toPick)), _.map(professional?.data, i=>_.pick(i, toPick)), hasError)
 
   const onProfessionalChange = (val, index) => {
     let newForm = [...form];
@@ -50,7 +49,6 @@ const ProfessionalProfile = () => {
       ).length > 0;
     setHasError(hasErr);
     setForm(newForm);
-    console.log(error);
   };
 
   const onCurrentChange = (val, index) => {
@@ -64,7 +62,6 @@ const ProfessionalProfile = () => {
       ).length > 0;
     setHasError(hasErr);
     setForm(newForm);
-    console.log(schemas.ProfessionalList.check(newForm));
   };
 
   const onAdd = (val, index) => {

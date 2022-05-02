@@ -4,9 +4,6 @@ import SignIn from '@Views/SignIn';
 import { getProviders, getSession, getCsrfToken } from 'next-auth/react';
 
 export default function Page({ providers, csrfToken }) {
-  // React.useEffect(() => {
-  //    console.log(providers, csrfToken)
-  // }, [])
 
   return (
     <Layout>

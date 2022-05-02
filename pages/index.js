@@ -31,12 +31,12 @@ export default function Page() {
         <AccessDenied />
       </Layout>
     );
+  } else if (status === "authenticated") {
+    return (
+      <Layout>
+        {content || ''}
+      </Layout>
+    );
   }
-
-  // If session exists, display content
-  return (
-    <Layout>
-      {content || ''}
-    </Layout>
-  );
+  else return("loading...")
 }

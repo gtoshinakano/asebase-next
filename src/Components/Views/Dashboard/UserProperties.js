@@ -29,7 +29,7 @@ const UserProperties = () => {
       <div className="w-2/3">
         {!isLoading ? (
           <InlineInput
-            value={data.data.name}
+            value={data.data.name || ""}
             placeholder="Nome de Exibição"
             inputCSS=""
             name="name"

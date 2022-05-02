@@ -24,7 +24,7 @@ const DashboardView = () => {
           <i className="ri-map-pin-user-fill mr-2 pb-4"></i> MEMBRO ASEBASE{' '}
           <em className="text-sm ml-1 font-extralight pt-1">v0.1</em>
         </h1>
-        <UserProperties />
+        {isAuth && <UserProperties />}
         {isAuth && <PersonalInfo />}
       </div>
       <div className="w-full">

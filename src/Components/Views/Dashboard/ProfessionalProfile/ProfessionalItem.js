@@ -43,7 +43,6 @@ const ProfessionalItem = ({
     const newForm = { ...form, [name]: val };
     setForm(newForm);
     onChange(newForm, index);
-    console.log(val, index);
   };
 
   const onCurrentJobChange = (val, name) => {

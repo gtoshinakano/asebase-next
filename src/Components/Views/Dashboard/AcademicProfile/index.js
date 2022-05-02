@@ -37,7 +37,6 @@ const AcademicProfile = ({ visible }) => {
     _.map(form, (i) => _.pick(i, toPick)),
     _.map(academic?.data, (i) => _.pick(i, toPick))
   );
-  //console.log(hasChanged, _.map(form, i=> _.pick(i, toPick)), _.map(academic?.data, i=>_.pick(i, toPick)))
 
   const onAcademicChange = (val, index) => {
     let newForm = [...form];

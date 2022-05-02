@@ -25,7 +25,6 @@ const ExchangeInfo = () => {
   });
   const mutation = useMutation(updateExchangeProfile, {
     onSuccess: (e) => {
-      //console.log(queryKey, e)
       client.setQueryData(queryKey, e.data);
     },
   });
@@ -38,7 +37,7 @@ const ExchangeInfo = () => {
     _.map(form, (i) => _.pick(i, toPick)),
     _.map(exchange?.data, (i) => _.pick(i, toPick))
   );
-  //console.log(hasChanged, _.map(form, i=> _.pick(i, toPick)), _.map(academic?.data, i=>_.pick(i, toPick)))
+
 
   const onExchangeChange = (val, index) => {
     let newForm = [...form];

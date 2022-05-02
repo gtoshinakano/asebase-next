@@ -12,8 +12,7 @@ const db = {
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  synchronize: true,
-  entities: entities,
+  synchronize: true
 }
 
 
@@ -78,6 +77,10 @@ export default NextAuth({
     // updateAge: 24 * 60 * 60, // 24 hours
   },
 
+  jwt: {
+    maxAge: 60 * 60 * 24 * 30,
+
+  },
 
   pages: {
     signIn: '/auth/signin', // Displays signin buttons
@@ -92,7 +95,6 @@ export default NextAuth({
   // https://next-auth.js.org/configuration/callbacks
   callbacks: {
     async signIn(user, account, profile, email, credentials) {
-      console.log(user);
       return true;
     },
     // async redirect(url, baseUrl) { return baseUrl },
@@ -104,7 +106,7 @@ export default NextAuth({
   // https://next-auth.js.org/configuration/events
   events: {},
 
-  adapter: TypeORMLegacyAdapter(db),
+  adapter: TypeORMLegacyAdapter(db, {entities}),
 
   // You can set the theme to 'light', 'dark' or use 'auto' to default to the
   // whatever prefers-color-scheme is set to in the browser. Default is 'auto'
