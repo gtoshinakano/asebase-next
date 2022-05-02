@@ -1,15 +1,19 @@
 import { query } from '@lib/db';
-import {getToken} from 'next-auth/jwt';
+import {getSession} from 'next-auth/react';
 import _ from 'lodash';
 
-const secret = process.env.SECRET;
-
 async function get(req, res) {
-  const token = await getToken({ req, secret });
+  const session = await getSession({ req });
   try {
-    if (!token.sub) {
+    if (!session) {
       return res.status(400).json({ message: 'Not Signed' });
     }
+    const user_id = await query(
+      'SELECT id FROM users WHERE email=?',
+      session.user.email
+    ); 
+
+    const uid = user_id[0].id
 
     const result = await query(
       `
@@ -18,7 +22,7 @@ async function get(req, res) {
       WHERE e.user_id=? AND o.id=e.organization_id AND e.province_code=p.code
       ORDER BY e.year ASC
     `,
-      [token.sub]
+      [uid]
     );
 
     const toRet = result.map((i) => ({
