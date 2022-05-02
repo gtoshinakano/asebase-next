@@ -8,7 +8,7 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -19,19 +19,40 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@Components/*": ["src/Components/*"],
-      "@Layouts/*": ["src/Layouts/*"],
-      "@Views/*": ["src/Components/Views/*"],
-      "@Utils/*": ["src/Utils/*"],
-      "@Helpers": ["src/Utils/Helpers"],
-      "@Contexts/*": ["src/Contexts/*"],
-      "@Credentials/*": ["src/Credentials/*"],
-      "@Styled/*": ["src/Components/Styled/*"],
-      "@Settings/*": ["src/Settings/*"],
-      "@lib/*": ["src/lib/*"]
+      "@Components/*": [
+        "src/Components/*"
+      ],
+      "@Layouts/*": [
+        "src/Layouts/*"
+      ],
+      "@Views/*": [
+        "src/Components/Views/*"
+      ],
+      "@Utils/*": [
+        "src/Utils/*"
+      ],
+      "@Helpers": [
+        "src/Utils/Helpers"
+      ],
+      "@Contexts/*": [
+        "src/Contexts/*"
+      ],
+      "@Credentials/*": [
+        "src/Credentials/*"
+      ],
+      "@Styled/*": [
+        "src/Components/Styled/*"
+      ],
+      "@Settings/*": [
+        "src/Settings/*"
+      ],
+      "@lib/*": [
+        "src/lib/*"
+      ]
     },
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true 
+    "emitDecoratorMetadata": true,
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",

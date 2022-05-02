@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Dialog, Transition } from '@headlessui/react';
 
 let resolve;
@@ -13,7 +13,8 @@ class Confirm extends Component {
     if (typeof window === 'object') {
       const containerElement = document?.createElement('div');
       document?.body.appendChild(containerElement);
-      return render(<Confirm createConfirmProps={props} />, containerElement);
+      const root = createRoot(containerElement)
+      return root.render(<Confirm createConfirmProps={props} />);
     }
   }
 
