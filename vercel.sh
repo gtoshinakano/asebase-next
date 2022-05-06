@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Vercel deployment Ignored Build Step 
+# Vercel deployment "Ignored Build Step" to prevent building
 # https://vercel.com/docs/concepts/projects/overview#ignored-build-step
 
 echo "VERCEL_ENV: $VERCEL_ENV"
