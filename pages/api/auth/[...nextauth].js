@@ -17,8 +17,6 @@ const db = {
   logging: true, 
 };
 
-console.log(process.env.GOOGLE_ID, process.env.GOOGLE_PASS)
-
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
 export default NextAuth({

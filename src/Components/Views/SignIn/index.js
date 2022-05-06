@@ -74,7 +74,6 @@ const Screen = ({ csrfToken, providers }) => {
                 key={provider.id}
                 className="transition duration-200 bg-white hover:bg-yellow-200 hover:text-gray-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-black border w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center mb-2 inline-flex items-center justify-center each-in-out"
                 onClick={() => signIn(provider.id)}
-                disabled={disableSubmit}
               >
                 <i
                   className={`${socialIcons[provider.id]} text-orange-500`}
