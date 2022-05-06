@@ -8,7 +8,7 @@ export const sendVerificationRequest = ({
 }) => {
   return new Promise((resolve, reject) => {
     const { server, from } = provider;
-    // Strip protocol from URL and use domain as site name 
+    // Strip protocol from URL and use domain as site name  
     const site = url.replace(/^https?:\/\//, '');
 
     nodemailer.createTransport(server).sendMail(
