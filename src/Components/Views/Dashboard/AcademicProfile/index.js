@@ -6,11 +6,11 @@ import {
   useMutation,
   useIsMutating,
 } from 'react-query';
-import { getAcademicProfile } from '@Utils/DefaultQueries/UserQueries';
+import { getAcademicProfile } from '@Utils/defaultQueries/UserQueries';
 import Skeleton from 'react-loading-skeleton';
 import * as schemas from '@Utils/Schemas/User';
 import { Transition } from '@headlessui/react';
-import { updateAcademicProfile } from '@Utils/DefaultQueries/Mutations';
+import { updateAcademicProfile } from '@Utils/defaultQueries/Mutations';
 import { RoundButton } from '@Components/Styled/Button';
 import _ from 'lodash';
 

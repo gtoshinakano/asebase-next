@@ -10,8 +10,8 @@ import Skeleton from 'react-loading-skeleton';
 import {
   updateIsNikkei,
   updateNikkeiProfile,
-} from '@Utils/DefaultQueries/Mutations';
-import { getNikkeiProfile } from '@Utils/DefaultQueries/UserQueries';
+} from '@Utils/defaultQueries/Mutations';
+import { getNikkeiProfile } from '@Utils/defaultQueries/UserQueries';
 import {
   newItemsBySelected,
   getOptsByGeneration,

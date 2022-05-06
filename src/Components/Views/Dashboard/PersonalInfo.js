@@ -1,7 +1,7 @@
 import React from 'react';
 import InlineInput from '@Styled/InlineInput';
 import { useQuery } from 'react-query';
-import { getPersonalProfile } from '@Utils/DefaultQueries';
+import { getPersonalProfile } from '@Utils/defaultQueries';
 import Skeleton from 'react-loading-skeleton';
 import * as schemas from '@Utils/Schemas/User';
 import {
@@ -9,7 +9,7 @@ import {
   updateBirthCity,
   updateFullName,
   updateBirthState,
-} from '@Utils/DefaultQueries/Mutations';
+} from '@Utils/defaultQueries/Mutations';
 import GenderInput from '@Components/Styled/GenderInput';
 import { maskDate } from '@Utils/Helpers/masks';
 import moment from 'moment';

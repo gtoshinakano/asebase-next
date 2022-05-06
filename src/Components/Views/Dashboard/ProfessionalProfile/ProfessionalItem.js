@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import moment from 'moment';
 import _ from 'lodash';
 import Confirm from '@Components/Styled/Confirm';
-import { deleteProfessionalProfile } from '@Utils/DefaultQueries/Delete';
+import { deleteProfessionalProfile } from '@Utils/defaultQueries/Delete';
 import Checkbox from '@Components/Styled/Checkbox';
 
 const ProfessionalItem = ({

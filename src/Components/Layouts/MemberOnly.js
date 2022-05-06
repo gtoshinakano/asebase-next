@@ -1,13 +1,13 @@
 import Sidebar from '@Components/Sidebar';
 import Head from 'next/head';
 import { useQueryClient, useQuery } from 'react-query';
-import { handshake } from '@Utils/DefaultQueries';
+import { handshake } from '@Utils/defaultQueries';
 import ScreenLoader from '@Styled/ScreenLoader';
 import { useRouter } from 'next/router';
 import { signOut } from 'next-auth/react';
 import Skeleton from 'react-loading-skeleton';
 import { Transition } from '@headlessui/react';
-import { getPersonalProfile } from '@Utils/DefaultQueries';
+import { getPersonalProfile } from '@Utils/defaultQueries';
 
 export default function Layout({ children, title }) {
   const client = useQueryClient();

@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 import Skeleton from 'react-loading-skeleton';
 import InlineInput from '@Components/Styled/InlineInput';
 import * as schemas from '@Utils/Schemas/User';
-import { updateNickname } from '@Utils/DefaultQueries/Mutations';
+import { updateNickname } from '@Utils/defaultQueries/Mutations';
 
 const UserProperties = () => {
   const { data, isLoading } = useQuery('handshake');

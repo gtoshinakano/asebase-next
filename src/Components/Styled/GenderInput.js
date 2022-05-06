@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { updateGender } from '@Utils/DefaultQueries/Mutations';
+import { updateGender } from '@Utils/defaultQueries/Mutations';
 
 const GenderInput = ({ value, queryKey }) => {
   const [inputVal, setInputVal] = useState(null);

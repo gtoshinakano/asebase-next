@@ -8,7 +8,7 @@ import { AREAS } from '@Utils/StaticData/json-data';
 import moment from 'moment';
 import _ from 'lodash';
 import Confirm from '@Components/Styled/Confirm';
-import { deleteAcademicProfile } from '@Utils/DefaultQueries/Delete';
+import { deleteAcademicProfile } from '@Utils/defaultQueries/Delete';
 
 const AcademicItem = ({ data, onChange, onAdd, onRemove, index, item }) => {
   const [form, setForm] = useState(_form);

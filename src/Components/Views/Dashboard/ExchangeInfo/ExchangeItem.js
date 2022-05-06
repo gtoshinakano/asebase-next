@@ -7,7 +7,7 @@ import { TripleToggle } from '@Styled/TripleToggle';
 import moment from 'moment';
 import _ from 'lodash';
 import Confirm from '@Components/Styled/Confirm';
-import { deleteExchangeProfile } from '@Utils/DefaultQueries/Delete';
+import { deleteExchangeProfile } from '@Utils/defaultQueries/Delete';
 import {
   AREAS,
   EXCHANGE_TYPES,
