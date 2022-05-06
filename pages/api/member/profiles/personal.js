@@ -1,5 +1,8 @@
 import { query } from '@lib/db';
-import {getSession} from 'next-auth/react';
+import { getSession } from 'next-auth/react';
+import { prepareConnection } from '@typeorm/db';
+import { UserEntity } from '@entities/Auth';
+import { MemberEntity } from '@entities/Member';
 
 async function get(req, res) {
   const session = await getSession({ req });
@@ -8,22 +11,31 @@ async function get(req, res) {
       return res.status(400).json({ message: 'Not Signed' });
     }
 
-    const user_id = await query(
-      'SELECT id FROM users WHERE email=?',
-      session.user.email
-    ); 
+    const db = await prepareConnection();
+    const user = await db
+      .getRepository(UserEntity)
+      .findOne({ where: { email: session.user.email } });
 
-    const uid = user_id[0].id
+    const uid = user.id;
 
-    const result = await query(
-      `
-      SELECT full_name, gender, birth_date, birth_country, birth_state, birth_city, is_nikkei, jp_generation, map_latlng
-      FROM users_info
-      WHERE auth_id = ?
-    `,
-      [uid]
-    );
-    return res.status(200).json(result[0]);
+    const user_info = await db.getRepository(MemberEntity).findOne({
+      where: { auth_id: uid },
+      select: [
+        'id',
+        'blocked',
+        'is_nikkei',
+        'full_name',
+        'gender',
+        'birth_date',
+        'birth_country',
+        'birth_state',
+        'birth_city',
+        'jp_generation',
+        'map_latlng',
+      ],
+    });
+
+    return res.status(200).json(user_info);
   } catch (e) {
     res.status(401).json({ message: e.message });
   }

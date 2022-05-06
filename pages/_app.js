@@ -11,7 +11,7 @@ export default function App({ Component, pageProps }) {
     <>
       <QueryClientProvider client={queryClient}>
         <SessionProvider
-          staleTime={0} 
+          staleTime={0}
           refetchInterval={0}
           session={pageProps.session}
         >

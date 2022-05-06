@@ -123,11 +123,11 @@ const ExchangeItem = ({ data, onChange, onAdd, onRemove, index, item }) => {
           <InlineInput
             inline
             placeholder="Mês"
-            name={'started_in'}
-            value={form.started_in}
+            name={'started_month'}
+            value={form.started_month}
             type="number"
-            min="1"
-            max="12"
+            min={1}
+            max={12}
             onChange={onSingleChange}
           />
           de
@@ -137,12 +137,12 @@ const ExchangeItem = ({ data, onChange, onAdd, onRemove, index, item }) => {
             name={'started_year'}
             value={form.started_year}
             type="number"
-            min={form.year || 1920}
+            min={parseInt(form.year) || 1920}
             max={thisYear + 5}
             onChange={onSingleChange}
           />
-          {error.started_in.hasError && (
-            <ErrorDot msg={error.started_in?.errorMessage || ''} />
+          {error.started_month.hasError && (
+            <ErrorDot msg={error.started_month?.errorMessage || ''} />
           )}
           {error.started_year.hasError && (
             <ErrorDot msg={error.started_year?.errorMessage || ''} />
@@ -153,10 +153,10 @@ const ExchangeItem = ({ data, onChange, onAdd, onRemove, index, item }) => {
           <InlineInput
             inline
             placeholder="Mês"
-            name={'ended_in'}
-            value={form.ended_in}
+            name={'ended_month'}
+            value={form.ended_month}
             type="number"
-            min={form.started_year === form.ended_year ? form.started_in : 1}
+            min={form.started_year === form.ended_year ? parseInt(form.started_month)+1 : 1}
             max="12"
             onChange={onSingleChange}
           />
@@ -167,12 +167,12 @@ const ExchangeItem = ({ data, onChange, onAdd, onRemove, index, item }) => {
             name={'ended_year'}
             value={form.ended_year}
             type="number"
-            min={form.started_year || 1920}
+            min={parseInt(form.started_year) || 1920}
             max={thisYear + 5}
             onChange={onSingleChange}
           />
-          {error.ended_in.hasError && (
-            <ErrorDot msg={error.ended_in.errorMessage || ''} />
+          {error.ended_month.hasError && (
+            <ErrorDot msg={error.ended_month.errorMessage || ''} />
           )}
           {error.ended_year.hasError && (
             <ErrorDot msg={error.ended_year.errorMessage || ''} />

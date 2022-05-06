@@ -1,6 +1,8 @@
-import { query } from '@lib/db';
-import {getSession} from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import _ from 'lodash';
+import { prepareConnection } from '@typeorm/db';
+import { UserEntity } from '@entities/Auth';
+import { ProfessionalData } from '@entities/Member';
 
 async function get(req, res) {
   const session = await getSession({ req });
@@ -9,23 +11,19 @@ async function get(req, res) {
       return res.status(400).json({ message: 'Not Signed' });
     }
 
-    const user_id = await query(
-      'SELECT id FROM users WHERE email=?',
-      session.user.email
-    ); 
+    const db = await prepareConnection();
+    const user = await db
+      .getRepository(UserEntity)
+      .findOne({ where: { email: session.user.email } });
 
-    const uid = user_id[0].id
+    const uid = user.id;
 
-    const result = await query(
-      `
-      SELECT start_year, end_year, position, company_name, current_job
-      FROM  professional_data 
-      WHERE user_id=?
-      ORDER BY start_year ASC
-    `,
-      [uid]
-    );
-    return res.status(200).json(result);
+    const Professional = await db.getRepository(ProfessionalData).find({
+      where: { user_id: uid },
+      select: ['current_job', 'position', 'company_name', 'start_year', 'end_year'],
+    });
+
+    return res.status(200).json(Professional);
   } catch (e) {
     res.status(401).json({ message: e.message });
   }

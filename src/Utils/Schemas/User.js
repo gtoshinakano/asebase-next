@@ -102,7 +102,7 @@ const endedYearValid = (val, data) =>
 
 const endedInValid = (val, data) => {
   return parseInt(data.started_year) === parseInt(data.ended_year)
-    ? parseInt(val) >= parseInt(data.started_in)
+    ? parseInt(val) >= parseInt(data.started_month)
     : parseInt(data.started_year) < parseInt(data.ended_year);
 };
 
@@ -111,14 +111,14 @@ export const ExchangeItem = SchemaModel({
     .isRequired('Campo obrigatório')
     .range(1920, thisYear + 5, 'Ano fora do intervalo válido'),
   type: NumberType().isRequired('Campo obrigatório'),
-  started_in: NumberType()
+  started_month: NumberType()
     .range(1, 12, 'Mês inexistente')
     .isRequired('Campo obrigatório'),
   started_year: NumberType()
     .range(1920, thisYear + 5, 'Ano fora do intervalo válido')
     .isRequired('Campo obrigatório')
     .addRule(startedYearValid, 'Ano Invalido'),
-  ended_in: NumberType()
+  ended_month: NumberType()
     .addRule(endedInValid, 'Mês inválido')
     .range(1, 12, 'Mês inexistente')
     .isRequired('Campo obrigatório'),

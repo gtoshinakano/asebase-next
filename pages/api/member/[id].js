@@ -18,7 +18,7 @@ export default async (req, res) => {
     `,
       id
     );
-    console.log(query);
+
     return res.json(results[0]);
   } catch (e) {
     res.json({ message: e.message });

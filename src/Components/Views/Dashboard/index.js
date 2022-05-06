@@ -10,9 +10,9 @@ import ExchangeInfo from './ExchangeInfo';
 import ProfessionalInfo from './ProfessionalProfile';
 
 const DashboardView = () => {
-  const {status} = useSession();
-  const loading = status === "loading"
-  const isAuth = status === "authenticated"
+  const { status } = useSession();
+  const loading = status === 'loading';
+  const isAuth = status === 'authenticated';
 
   const nikkeiRef = useRef();
   const nikkeiVisible = useOnScreen(nikkeiRef);

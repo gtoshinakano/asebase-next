@@ -12,7 +12,11 @@ export default function AutoComplete({
   minSuggestionLength,
   focus,
 }) {
-  if (inputVal && (inputVal.length < minSuggestionLength || options.length === 0)) return '';
+  if (
+    inputVal &&
+    (inputVal.length < minSuggestionLength || options.length === 0)
+  )
+    return '';
 
   const activeIndex = focus % options.length;
 

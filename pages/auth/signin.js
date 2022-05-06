@@ -4,7 +4,6 @@ import SignIn from '@Views/SignIn';
 import { getProviders, getSession, getCsrfToken } from 'next-auth/react';
 
 export default function Page({ providers, csrfToken }) {
-
   return (
     <Layout>
       <div className="w-full h-screen flex justify-center items-center bg-gray-100">
@@ -19,7 +18,7 @@ export async function getServerSideProps(context) {
   const session = await getSession(context);
   if (session) {
     return {
-      redirect: { destination: '/' }
+      redirect: { destination: '/' },
     };
   }
   return {

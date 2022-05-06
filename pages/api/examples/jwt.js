@@ -1,5 +1,5 @@
 // This is an example of how to read a JSON Web Token from an API route
-import {getToken} from 'next-auth/jwt';
+import { getToken } from 'next-auth/jwt';
 
 const secret = process.env.SECRET;
 

@@ -1,11 +1,10 @@
 import { query, insertId } from '@lib/db';
 import { getSessionUserInfoId } from '@Helpers';
 import * as schemas from '@Utils/Schemas/User';
-import {getSession} from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import moment from 'moment';
 import { JAPAN_PROVINCES } from '@Utils/StaticData/json-data';
 import _ from 'lodash';
-
 
 export default async (req, res) => {
   const { property } = req.query;
@@ -13,9 +12,9 @@ export default async (req, res) => {
   const user_id = await query(
     'SELECT id FROM users WHERE email=?',
     session.user.email
-  ); 
+  );
 
-  const uid = user_id[0].id
+  const uid = user_id[0].id;
 
   const checkedUser = await getSessionUserInfoId(uid);
 
@@ -54,12 +53,7 @@ export default async (req, res) => {
               res
             );
           case 'gender':
-            return await resSingleUpdate(
-              'gender',
-              req.body.gender,
-              uid,
-              res
-            );
+            return await resSingleUpdate('gender', req.body.gender, uid, res);
           case 'birth_date':
             return await resBirthDate(req.body, uid, res);
           case 'is_nikkei':
@@ -86,9 +80,7 @@ export default async (req, res) => {
       try {
         switch (property) {
           case 'academic_profile':
-            await query('DELETE FROM academic_info WHERE user_id = ?', [
-              uid,
-            ]);
+            await query('DELETE FROM academic_info WHERE user_id = ?', [uid]);
             return res.status(200).json({ log: 'Delete Done' });
           case 'professional_profile':
             await query('DELETE FROM professional_data WHERE user_id = ?', [
@@ -168,10 +160,10 @@ const resNikkeiInfo = async (body, sub, res) => {
           JAPAN_PROVINCES,
           (f) => f.name === jpFamilyOrigins[key]
         );
-        return query('INSERT INTO japanese_origins VALUES(?, ?, ?)', [
+        return query('INSERT INTO japanese_origins VALUES(?, NULL, ?, ?)', [
           sub,
-          jp_code.code,
           key,
+          jp_code.code,
         ]);
       });
       await Promise.all(promises);
@@ -190,7 +182,7 @@ const resAcademicProfile = async (body, sub, res) => {
     } else {
       await query('DELETE FROM academic_info WHERE user_id=?', [sub]);
       const promises = Object.values(body).map((item) => {
-        return query('INSERT INTO academic_info VALUES("",?, ?, ?, ?, ?)', [
+        return query('INSERT INTO academic_info(id, institution_name, user_id, subject, year, study_area) VALUES(NULL,?, ?, ?, ?, ?)', [
           item.institution_name,
           sub,
           item.subject,
@@ -215,7 +207,7 @@ const resProfessionalProfile = async (body, sub, res) => {
       await query('DELETE FROM professional_data WHERE user_id=?', [sub]);
       const promises = Object.values(body).map((item) => {
         return query(
-          'INSERT INTO professional_data VALUES("",?, ?, ?, ?, ?, ?)',
+          'INSERT INTO professional_data(id, start_year, end_year, position, company_name, current_job, user_id) VALUES(NULL,?, ?, ?, ?, ?, ?)',
           [
             item.start_year,
             item.end_year,
@@ -240,19 +232,19 @@ const resExchangeInfo = async (body, sub, res) => {
     return res.status(401).json({ ...error });
   } else {
     try {
-      await query('DELETE FROM exchange WHERE user_id=?', [sub]);
+      await query('DELETE FROM exchanges WHERE user_id=?', [sub]);
       let promises = [];
       Object.values(body).forEach(async (item) => {
         const searchOrg = await query(
-          'SELECT id FROM organization WHERE org_name=?',
+          'SELECT id FROM organizations WHERE org_name=?',
           [item.org_name]
         );
         let org_id;
         if (searchOrg.length === 1) org_id = searchOrg[0].id;
         else {
           org_id = await insertId(
-            'INSERT INTO organization VALUES("", ?, ?, ?, ?)',
-            [item.org_name, '', '', '']
+            'INSERT INTO organizations (id, org_name, is_verified) VALUES(NULL, ?, ?)',
+            [item.org_name, '', '']
           );
         }
         const [p_code] = _.filter(
@@ -261,15 +253,15 @@ const resExchangeInfo = async (body, sub, res) => {
         );
         promises.push(
           query(
-            'INSERT INTO exchange VALUES("", ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            'INSERT INTO exchanges (id, user_id, province_code, year, type, started_month, started_year, ended_month, ended_year, exchange_place, organization_id, study_area, study_title, study_url, exchange_url, org_exch_ref, org_exch_title) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
             [
               sub,
               p_code.code,
               item.year,
               item.type,
-              item.started_in,
+              item.started_month,
               item.started_year,
-              item.ended_in,
+              item.ended_month,
               item.ended_year,
               item.exchange_place,
               org_id,

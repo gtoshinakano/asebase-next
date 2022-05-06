@@ -1,45 +1,45 @@
-import { query } from '@lib/db';
-import {getSession} from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import _ from 'lodash';
+import { prepareConnection } from '@typeorm/db';
+import { UserEntity } from '@entities/Auth';
+import { ExchangeEntity } from '@entities/Member';
 
 async function get(req, res) {
   const session = await getSession({ req });
+
   try {
     if (!session) {
       return res.status(400).json({ message: 'Not Signed' });
     }
-    const user_id = await query(
-      'SELECT id FROM users WHERE email=?',
-      session.user.email
-    ); 
+    const db = await prepareConnection();
+    const user = await db
+      .getRepository(UserEntity)
+      .findOne({ where: { email: session.user.email } });
 
-    const uid = user_id[0].id
+    const uid = user.id;
 
-    const result = await query(
-      `
-      SELECT e.province_code, e.year, e.type, e.started_in, e.started_year, e.ended_year, e.ended_in, e.exchange_place, e.organization_id, e.study_area, e.study_title, e.study_url, e.exchange_url, e.org_exch_ref, e.org_exch_title, o.org_name, p.name AS province_name
-      FROM exchange e, organization o, japan_provinces p 
-      WHERE e.user_id=? AND o.id=e.organization_id AND e.province_code=p.code
-      ORDER BY e.year ASC
-    `,
-      [uid]
-    );
+    const exchange = await db.getRepository(ExchangeEntity)
+      .createQueryBuilder('e')
+      .leftJoinAndSelect('e.organization_id','o','e.organization_id = o.id')
+      .leftJoinAndSelect('e.province_code','p','e.province_code = p.code')
+      .where('e.user_id = :uid', {uid})
+      .getMany()
 
-    const toRet = result.map((i) => ({
+    const toRet = exchange.map((i) => ({
       year: i.year,
       type: i.type,
-      started_in: i.started_in,
+      started_month: i.started_month,
       started_year: i.started_year,
-      ended_in: i.ended_in,
+      ended_month: i.ended_month,
       ended_year: i.ended_year,
-      org_name: i.org_name,
+      org_name: i.organization_id.org_name,
       org_exch_ref: i.org_exch_ref,
       org_exch_title: i.org_exch_title,
       exchange_place: i.exchange_place,
       study_area: i.study_area,
       study_title: i.study_title,
       study_url: i.study_url,
-      province_name: i.province_name,
+      province_name: i.province_code.name,
     }));
 
     return res.status(200).json(toRet);
@@ -53,9 +53,9 @@ export default get;
 export const _item = {
   year: '',
   type: 1,
-  started_in: '',
+  started_month: '',
   started_year: '',
-  ended_in: '',
+  ended_month: '',
   ended_year: '',
   org_name: '',
   org_exch_ref: '',

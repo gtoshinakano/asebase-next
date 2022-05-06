@@ -1,6 +1,8 @@
 import Layout from '@Components/Layouts/MemberOnly';
 import DashboardView from '@Components/Views/Dashboard';
 
+import { getSession } from 'next-auth/react';
+
 export default function Page() {
   return (
     <Layout title="Perfil de Bolsista">
@@ -11,11 +13,12 @@ export default function Page() {
     </Layout>
   );
 }
-// export async function getServerSideProps(context) {
-//   const session = await getSession(context);
-//   return {
-//     props: {
-//       session: session,
-//     },
-//   };
-// }
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  return {
+    props: {
+      session: session,
+    },
+  };
+}

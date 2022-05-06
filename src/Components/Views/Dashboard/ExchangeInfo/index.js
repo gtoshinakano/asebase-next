@@ -38,7 +38,6 @@ const ExchangeInfo = () => {
     _.map(exchange?.data, (i) => _.pick(i, toPick))
   );
 
-
   const onExchangeChange = (val, index) => {
     let newForm = [...form];
     newForm.splice(index, 1, val);
@@ -194,9 +193,9 @@ const _form = [];
 export const _item = {
   year: '',
   type: 1,
-  started_in: '',
+  started_month: '',
   started_year: '',
-  ended_in: '',
+  ended_month: '',
   ended_year: '',
   org_name: '',
   org_exch_ref: '',

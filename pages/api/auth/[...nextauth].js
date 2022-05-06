@@ -1,9 +1,10 @@
+import 'reflect-metadata';
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import EmailProvider from 'next-auth/providers/email';
-import { TypeORMLegacyAdapter } from "@next-auth/typeorm-legacy-adapter"
+import { TypeORMLegacyAdapter } from '@next-auth/typeorm-legacy-adapter';
 import { sendVerificationRequest } from '@Utils/signin-email';
-import * as entities from "@lib/entities" 
+import entities from '@Entities'
 
 const db = {
   type: process.env.DB_TYPE,
@@ -12,24 +13,9 @@ const db = {
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  synchronize: true
-}
-
-
-// import firebase from 'firebase/app';
-// import 'firebase/firestore';
-
-// const clientCredentials = {
-//   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-//   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-//   databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
-//   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-//   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-// };
-
-// const firestore = (
-//   firebase.apps[0] ?? firebase.initializeApp(clientCredentials)
-// ).firestore();
+  synchronize: false, // leave it always false
+  logging: true, 
+};
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
@@ -45,7 +31,7 @@ export default NextAuth({
         },
       },
       from: process.env.EMAILSV_FROM,
-      sendVerificationRequest : sendVerificationRequest,
+      sendVerificationRequest: sendVerificationRequest,
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
@@ -53,19 +39,18 @@ export default NextAuth({
     }),
   ],
 
-
   // The secret should be set to a reasonably long random string.
   // It is used to sign cookies and to sign and encrypt JSON Web Tokens, unless
   // a separate secret is defined explicitly for encrypting the JWT.
   secret: process.env.SECRET,
 
   session: {
-  // Choose how you want to save the user session.
-  // The default is `"jwt"`, an encrypted JWT (JWE) stored in the session cookie.
-  // If you use an `adapter` however, we default it to `"database"` instead.
-  // You can still force a JWT session by explicitly defining `"jwt"`.
-  // When using `"database"`, the session cookie will only contain a `sessionToken` value,
-  // which is used to look up the session in the database.
+    // Choose how you want to save the user session.
+    // The default is `"jwt"`, an encrypted JWT (JWE) stored in the session cookie.
+    // If you use an `adapter` however, we default it to `"database"` instead.
+    // You can still force a JWT session by explicitly defining `"jwt"`.
+    // When using `"database"`, the session cookie will only contain a `sessionToken` value,
+    // which is used to look up the session in the database.
     strategy: 'database',
 
     // Seconds - How long until an idle session expires and is no longer valid.
@@ -79,7 +64,6 @@ export default NextAuth({
 
   jwt: {
     maxAge: 60 * 60 * 24 * 30,
-
   },
 
   pages: {
@@ -95,11 +79,23 @@ export default NextAuth({
   // https://next-auth.js.org/configuration/callbacks
   callbacks: {
     async signIn(user, account, profile, email, credentials) {
+      console.log('next-auth signin');
       return true;
     },
-    // async redirect(url, baseUrl) { return baseUrl },
-    // async session(session, user) { return session },
-    // async jwt(token, user, account, profile, isNewUser) { return token }
+    // async redirect(url, baseUrl) {
+    //   console.log("next-auth redirect"/*, url, baseUrl*/)
+    //   return baseUrl
+    // },
+    // async session(session, user) {
+    //   console.log("next-auth session"/*, session, user*/)
+    //   return session
+    // },
+    async jwt(token, user, account, profile, isNewUser) {
+      console.log(
+        'next-auth jwt' /*, token, user, account, profile, isNewUser*/
+      );
+      return token;
+    },
   },
 
   // Events are useful for logging
@@ -113,5 +109,5 @@ export default NextAuth({
   theme: 'light',
 
   // Enable debug messages in the console if you are having problems
-  //debug: true,
+  debug: true,
 });

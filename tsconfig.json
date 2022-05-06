@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,47 +15,24 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@Components/*": [
-        "src/Components/*"
-      ],
-      "@Layouts/*": [
-        "src/Layouts/*"
-      ],
-      "@Views/*": [
-        "src/Components/Views/*"
-      ],
-      "@Utils/*": [
-        "src/Utils/*"
-      ],
-      "@Helpers": [
-        "src/Utils/Helpers"
-      ],
-      "@Contexts/*": [
-        "src/Contexts/*"
-      ],
-      "@Credentials/*": [
-        "src/Credentials/*"
-      ],
-      "@Styled/*": [
-        "src/Components/Styled/*"
-      ],
-      "@Settings/*": [
-        "src/Settings/*"
-      ],
-      "@lib/*": [
-        "src/lib/*"
-      ]
+      "@Components/*": ["src/Components/*"],
+      "@Layouts/*": ["src/Layouts/*"],
+      "@Views/*": ["src/Components/Views/*"],
+      "@Utils/*": ["src/Utils/*"],
+      "@Helpers": ["src/Utils/Helpers"],
+      "@Contexts/*": ["src/Contexts/*"],
+      "@Credentials/*": ["src/Credentials/*"],
+      "@Styled/*": ["src/Components/Styled/*"],
+      "@Settings/*": ["src/Settings/*"],
+      "@lib/*": ["src/lib/*"],
+      "@typeorm/*": ["src/lib/typeorm/*"],
+      "@entities/*": ["src/lib/typeorm/entities/*"],
+      "@Entities": ["src/lib/typeorm/entities"]
     },
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "incremental": true
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/lib/typeorm/config.js"],
+  "exclude": ["node_modules"]
 }

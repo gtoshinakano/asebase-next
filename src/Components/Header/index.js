@@ -1,17 +1,16 @@
 import Link from '@Components/Link';
-import {  signOut, useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import useTranslation from 'next-translate/useTranslation';
 import { Button } from '@Styled/Button';
 import { useRouter } from 'next/router';
 
-
 export default function Header() {
-  const {data, status} = useSession();
-  const loading = status === "loading"
+  const { data, status } = useSession();
+  const loading = status === 'loading';
   const { t, lang } = useTranslation('common');
   const router = useRouter();
 
-  const isAuth = status === "authenticated"
+  const isAuth = status === 'authenticated';
 
   return (
     <header className="w-full p-3 bg-rose-500 fixed">
@@ -35,7 +34,10 @@ export default function Header() {
           </Button>
         )}
         {isAuth ? (
-          <Button className="bg-gray-200" onClick={() => signOut()}>
+          <Button
+            className="bg-gray-200"
+            onClick={() => signOut({ callbackUrl: '/' })}
+          >
             <i className="ri-logout-box-r-line mr-2"></i>Sair
           </Button>
         ) : (
