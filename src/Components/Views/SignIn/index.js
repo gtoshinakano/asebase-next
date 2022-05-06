@@ -64,7 +64,6 @@ const Screen = ({ csrfToken, providers }) => {
             )}
           </button>
         </form>
-        {process.env.NEXT_PUBLIC_GTEST}
         <hr className="mt-3 mb-4" />
         <div className="w-full">
           {Object.values(providers).map((provider) => {
