@@ -6,7 +6,7 @@
 echo "VERCEL_ENV: $VERCEL_ENV"
 echo "VERCEL_GIT_COMMIT_REF: $VERCEL_GIT_COMMIT_REF"
 
-if [[ "$VERCEL_ENV" == "production" || "$VERCEL_GIT_COMMIT_REF" == "development"]] ; then
+if [[ "$VERCEL_ENV" == "production" || "$VERCEL_GIT_COMMIT_REF" == "development"]] then
   # Proceed with the build
   echo "✅ - Build Ok"
   exit 1;
