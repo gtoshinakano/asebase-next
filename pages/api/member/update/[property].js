@@ -5,18 +5,23 @@ import { getSession } from 'next-auth/react';
 import moment from 'moment';
 import { JAPAN_PROVINCES } from '@Utils/StaticData/json-data';
 import _ from 'lodash';
+import { UserEntity } from '@entities/Auth';
+import { MemberEntity } from '@entities/Member';
+import { prepareConnection } from '@typeorm/db';
+
+
 
 export default async (req, res) => {
   const { property } = req.query;
   const session = await getSession({ req });
-  const user_id = await query(
-    'SELECT id FROM users WHERE email=?',
-    session.user.email
-  );
 
-  const uid = user_id[0].id;
+  const db = await prepareConnection();
+  const user = await db.getRepository(UserEntity).findOne(
+    {where: {email: session.user.email}, 
+    select: ["id"]}
+  )
 
-  const checkedUser = await getSessionUserInfoId(uid);
+  const checkedUser = await getSessionUserInfoId(user.id);
 
   if (req.method === 'PUT') {
     if (!checkedUser.hasError) {
@@ -31,6 +36,8 @@ export default async (req, res) => {
               serverMessage:
                 'Alteração visível somente após login. Clique no balão ao lado para re-autenticar',
             });
+
+
           case 'full_name':
             return await resSingleUpdate(
               'full_name',
