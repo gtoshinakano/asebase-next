@@ -3,7 +3,7 @@
 echo "VERCEL_GIT_COMMIT_REF: $VERCEL_GIT_COMMIT_REF"
 
 if [[ "$VERCEL_GIT_COMMIT_REF" == "main" || "$VERCEL_GIT_COMMIT_REF" == "development"  ]] ; then
-  # Proceed with the build
+  # Build only main and development branches
     echo "✅ - Build Ok"
   exit 1;
 
