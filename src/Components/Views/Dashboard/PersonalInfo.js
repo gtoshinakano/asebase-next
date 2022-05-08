@@ -29,7 +29,7 @@ const PersonalInfo = () => {
     }
   );
 
-  let birthDate = moment(data?.birth_date).utc() || '';
+  let birthDate = moment(data?.birth_date) || '';
 
   if (isLoading || !isFetched) return <PersonalProfileSkeleton />;
   else

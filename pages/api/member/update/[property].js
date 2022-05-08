@@ -1,10 +1,9 @@
 import { query, insertId } from '@lib/db';
-import { getSessionUserInfoId } from '@Helpers';
 import * as schemas from '@Utils/Schemas/User';
 import { getSession } from 'next-auth/react';
 import moment from 'moment';
 import { JAPAN_PROVINCES } from '@Utils/StaticData/json-data';
-import _, { set } from 'lodash';
+import _ from 'lodash';
 import { MemberEntity } from '@entities/Member';
 import { prepareConnection } from '@typeorm/db';
 
@@ -48,7 +47,7 @@ export default async (req, res) => {
           case 'gender':
             return await resSingleUpdate(db, property, req.body[property], uid, res);
           case 'birth_date':
-            return await resBirthDate(req.body, uid, res);
+            return await resBirthDate(db, req.body, uid, res);
           case 'is_nikkei':
             return await resIsNikkei(req.body, uid, res);
           case 'nikkei_info':
@@ -97,17 +96,10 @@ export default async (req, res) => {
   }
 };
 
-const resBirthDate = async (body, sub, res) => {
+const resBirthDate = async (db, body, uid, res) => {
   const date = moment(body.birth_date, 'DD/MM/YYYY', true);
-  if (!date.isValid())
-    return res.status(400).json({ serverMessage: 'Wrong Format' });
-  else {
-    await query(
-      'UPDATE users_info SET birth_date=?, updated_at=NOW() WHERE auth_id = ?',
-      [date.format('YYYY-MM-DD HH:mm:ss'), sub]
-    );
-    return res.status(200).json({ log: 'Update Done' });
-  }
+  if (!date.isValid()) return res.status(400).json({ serverMessage: 'Wrong Format' });
+  else return await resSingleUpdate(db, "birth_date", date.format('YYYY-MM-DD HH:mm:ss'), uid, res)
 };
 
 const resSingleUpdate = async (db, field, value, uid, res) => {
