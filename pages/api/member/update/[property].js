@@ -4,11 +4,9 @@ import * as schemas from '@Utils/Schemas/User';
 import { getSession } from 'next-auth/react';
 import moment from 'moment';
 import { JAPAN_PROVINCES } from '@Utils/StaticData/json-data';
-import _ from 'lodash';
-import { UserEntity } from '@entities/Auth';
+import _, { set } from 'lodash';
 import { MemberEntity } from '@entities/Member';
 import { prepareConnection } from '@typeorm/db';
-
 
 
 export default async (req, res) => {
@@ -16,15 +14,22 @@ export default async (req, res) => {
   const session = await getSession({ req });
 
   const db = await prepareConnection();
-  const user = await db.getRepository(UserEntity).findOne(
-    {where: {email: session.user.email}, 
-    select: ["id"]}
-  )
 
-  const checkedUser = await getSessionUserInfoId(user.id);
+  const user = await db.getRepository(MemberEntity).findOne({
+    relations: ["auth_id"],
+    where: {
+      blocked: 0,
+      auth_id: {
+        email: session.user.email
+      }
+    }, 
+    select: ["id", "auth_id"]
+  })
+
+  const uid = user.id
 
   if (req.method === 'PUT') {
-    if (!checkedUser.hasError) {
+    if (user.id && user.auth_id && user.auth_id.id) {
       try {
         switch (property) {
           case 'name':
@@ -37,30 +42,11 @@ export default async (req, res) => {
                 'Alteração visível somente após login. Clique no balão ao lado para re-autenticar',
             });
 
-
-          case 'full_name':
-            return await resSingleUpdate(
-              'full_name',
-              req.body.full_name,
-              uid,
-              res
-            );
+          case 'full_name': 
           case 'birth_city':
-            return await resSingleUpdate(
-              'birth_city',
-              req.body.birth_city,
-              uid,
-              res
-            );
           case 'birth_state':
-            return await resSingleUpdate(
-              'birth_state',
-              req.body.birth_state,
-              uid,
-              res
-            );
           case 'gender':
-            return await resSingleUpdate('gender', req.body.gender, uid, res);
+            return await resSingleUpdate(db, property, req.body[property], uid, res);
           case 'birth_date':
             return await resBirthDate(req.body, uid, res);
           case 'is_nikkei':
@@ -124,11 +110,14 @@ const resBirthDate = async (body, sub, res) => {
   }
 };
 
-const resSingleUpdate = async (field, value, sub, res) => {
-  await query(
-    `UPDATE users_info SET ${field}=?, updated_at=NOW() WHERE auth_id = ?`,
-    [value, sub]
-  );
+const resSingleUpdate = async (db, field, value, uid, res) => {
+  await db
+    .getRepository(MemberEntity)
+    .createQueryBuilder()
+    .update(MemberEntity)
+    .set({[field]: value})
+    .where("id= :uid", {uid})
+    .execute()
   return res.status(200).json({ log: 'Update Done' });
 };
 
