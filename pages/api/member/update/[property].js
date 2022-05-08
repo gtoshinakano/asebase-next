@@ -98,7 +98,7 @@ export default async (req, res) => {
 
 const resBirthDate = async (db, body, uid, res) => {
   const date = moment(body.birth_date, 'DD/MM/YYYY', true);
-  if (!date.isValid()) return res.status(400).json({ serverMessage: 'Wrong Format' });
+  if (!date.isValid()) return res.status(400).json({ serverMessage: 'Invalid date' });
   else return await resSingleUpdate(db, "birth_date", date.format('YYYY-MM-DD HH:mm:ss'), uid, res)
 };
 
