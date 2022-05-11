@@ -4,7 +4,7 @@ import { getSession } from 'next-auth/react';
 import moment from 'moment';
 import { JAPAN_PROVINCES } from '@Utils/StaticData/json-data';
 import _ from 'lodash';
-import { MemberEntity, NikkeiInfo } from '@entities/Member';
+import { MemberEntity, NikkeiInfo, AcademicInfo } from '@entities/Member';
 import { prepareConnection } from '@typeorm/db';
 
 
@@ -26,7 +26,6 @@ export default async (req, res) => {
   })
 
   const {id: uid, auth_id} = user
-  console.log(auth_id.id)
 
   if (req.method === 'PUT') {
     if (user.id && user.auth_id && user.auth_id.id) {
@@ -54,7 +53,7 @@ export default async (req, res) => {
           case 'nikkei_info':
             return await resNikkeiInfo(db, req.body, auth_id.id, res);
           case 'academic_profile':
-            return await resAcademicProfile(req.body, uid, res);
+            return await resAcademicProfile(db, req.body, auth_id.id, res);
           case 'professional_profile':
             return await resProfessionalProfile(req.body, uid, res);
           case 'exchange_profile':
@@ -178,23 +177,33 @@ const resNikkeiInfo = async (db, body, auth_id, res) => {
   }
 };
 
-const resAcademicProfile = async (body, sub, res) => {
+const resAcademicProfile = async (db, body, auth_id, res) => {
   try {
     const error = schemas.AcademicList.check(body);
     if (Object.values(error).filter((e) => e.hasError).length > 0) {
       return res.status(401).json({ ...error });
     } else {
-      await query('DELETE FROM academic_info WHERE user_id=?', [sub]);
-      const promises = Object.values(body).map((item) => {
-        return query('INSERT INTO academic_info(id, institution_name, user_id, subject, year, study_area) VALUES(NULL,?, ?, ?, ?, ?)', [
-          item.institution_name,
-          sub,
-          item.subject,
-          item.year,
-          item.study_area,
-        ]);
-      });
-      await Promise.all(promises).then((resp) => console.log(resp));
+      await db
+        .getRepository(AcademicInfo)
+        .createQueryBuilder()
+        .delete()
+        .from(AcademicInfo)
+        .where("user_id = :auth_id", { auth_id })
+        .execute()
+      const tuples = Object.values(body).map((item) => ({
+        institution_name: item.institution_name,
+        user_id: auth_id,
+        subject: item.subject,
+        year: item.year,
+        study_area: item.study_area,
+      }));
+      await db
+        .getRepository(AcademicInfo)
+        .createQueryBuilder()
+        .insert()
+        .into(AcademicInfo)
+        .values(tuples)
+        .execute()
       return res.status(200).json({ log: 'Update Done' });
     }
   } catch (e) {
