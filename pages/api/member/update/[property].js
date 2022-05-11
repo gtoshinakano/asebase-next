@@ -117,7 +117,6 @@ const resSingleUpdate = async (db, field, value, uid, res) => {
 const resIsNikkei = async (db, body, auth_id, res) => {
   try {
     const { is_nikkei } = body;
-    console.log(is_nikkei)
     await db
       .getRepository(MemberEntity)
       .createQueryBuilder()
@@ -125,7 +124,6 @@ const resIsNikkei = async (db, body, auth_id, res) => {
       .set({"is_nikkei": is_nikkei})
       .where("auth_id= :auth_id", {auth_id})
       .execute()
-      console.log(uid)
     if (!is_nikkei) {
       await db
         .getRepository(NikkeiInfo)
@@ -166,7 +164,6 @@ const resNikkeiInfo = async (db, body, auth_id, res) => {
           province_code: jp_code.code
         }
       });
-      console.log(tuples)
       await db
         .getRepository(NikkeiInfo)
         .createQueryBuilder()

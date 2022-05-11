@@ -15,7 +15,6 @@ import { maskDate } from '@Utils/Helpers/masks';
 import moment from 'moment';
 import _ from 'lodash';
 import br_states from '@Utils/StaticData/br_states.json';
-import UserProperties from './UserProperties';
 
 const PersonalInfo = () => {
   const handshake = useQuery('handshake');

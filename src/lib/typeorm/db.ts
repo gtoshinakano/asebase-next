@@ -31,7 +31,7 @@ export const prepareConnection = (sync?: boolean) => {
         database,
         entities: entities,
         synchronize: sync || false,
-        logging: false //process.env.NODE_ENV === "development", // true to see logging
+        logging: sync || false //process.env.NODE_ENV === "development", // true to see logging
       });
 
       return connection;

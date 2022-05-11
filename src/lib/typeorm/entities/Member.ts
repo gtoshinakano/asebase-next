@@ -98,7 +98,7 @@ export class NikkeiInfo {
     name: 'province_code',
     referencedColumnName: 'code',
   })
-  province_code!: MemberEntity;
+  province_code!: ProvinceEntity;
 
   @Column({ type: 'varchar' })
   degree!: string;
