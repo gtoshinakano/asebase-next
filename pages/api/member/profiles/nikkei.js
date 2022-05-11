@@ -1,6 +1,4 @@
-import { query } from '@lib/db';
 import { getSession } from 'next-auth/react';
-import { getConnection } from 'typeorm';
 import { prepareConnection } from '@typeorm/db';
 import _ from 'lodash';
 import { UserEntity } from '@entities/Auth';

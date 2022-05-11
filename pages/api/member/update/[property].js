@@ -25,7 +25,8 @@ export default async (req, res) => {
     select: ["id", "auth_id"]
   })
 
-  const uid = user.id
+  const {id: uid, auth_id} = user
+  console.log(auth_id.id)
 
   if (req.method === 'PUT') {
     if (user.id && user.auth_id && user.auth_id.id) {
@@ -49,9 +50,9 @@ export default async (req, res) => {
           case 'birth_date':
             return await resBirthDate(db, req.body, uid, res);
           case 'is_nikkei':
-            return await resIsNikkei(db, req.body, uid, res);
+            return await resIsNikkei(db, req.body, auth_id.id, res);
           case 'nikkei_info':
-            return await resNikkeiInfo(req.body, uid, res);
+            return await resNikkeiInfo(db, req.body, auth_id.id, res);
           case 'academic_profile':
             return await resAcademicProfile(req.body, uid, res);
           case 'professional_profile':
@@ -113,23 +114,25 @@ const resSingleUpdate = async (db, field, value, uid, res) => {
   return res.status(200).json({ log: 'Update Done' });
 };
 
-const resIsNikkei = async (db, body, uid, res) => {
+const resIsNikkei = async (db, body, auth_id, res) => {
   try {
     const { is_nikkei } = body;
+    console.log(is_nikkei)
     await db
       .getRepository(MemberEntity)
       .createQueryBuilder()
       .update(MemberEntity)
       .set({"is_nikkei": is_nikkei})
-      .where("id= :uid", {uid})
+      .where("auth_id= :auth_id", {auth_id})
       .execute()
+      console.log(uid)
     if (!is_nikkei) {
       await db
         .getRepository(NikkeiInfo)
         .createQueryBuilder()
         .delete()
         .from(NikkeiInfo)
-        .where("user_id = :uid", { uid })
+        .where("user_id = :auth_id", { auth_id })
         .execute()
     }
     return res.status(200).json({ log: 'Update Done' });
@@ -138,26 +141,39 @@ const resIsNikkei = async (db, body, uid, res) => {
   }
 };
 
-const resNikkeiInfo = async (body, sub, res) => {
+const resNikkeiInfo = async (db, body, auth_id, res) => {
   try {
     const error = schemas.NikkeiProfile.check(body);
     if (Object.values(error).filter((e) => e.hasError).length > 0) {
       return res.status(401).json({ ...error });
     } else {
-      await query('DELETE FROM japanese_origins WHERE user_id=?', [sub]);
+      await db
+        .getRepository(NikkeiInfo)
+        .createQueryBuilder()
+        .delete()
+        .from(NikkeiInfo)
+        .where("user_id = :auth_id", { auth_id })
+        .execute()
       const { jpFamilyOrigins } = body;
-      const promises = Object.keys(jpFamilyOrigins).map((key) => {
+      const tuples = Object.keys(jpFamilyOrigins).map((key) => {
         const [jp_code] = _.filter(
           JAPAN_PROVINCES,
           (f) => f.name === jpFamilyOrigins[key]
         );
-        return query('INSERT INTO japanese_origins VALUES(?, NULL, ?, ?)', [
-          sub,
-          key,
-          jp_code.code,
-        ]);
+        return {
+          user_id: auth_id, 
+          degree: key,
+          province_code: jp_code.code
+        }
       });
-      await Promise.all(promises);
+      console.log(tuples)
+      await db
+        .getRepository(NikkeiInfo)
+        .createQueryBuilder()
+        .insert()
+        .into(NikkeiInfo)
+        .values(tuples)
+        .execute()
       return res.status(200).json({ log: 'Update Done' });
     }
   } catch (e) {
