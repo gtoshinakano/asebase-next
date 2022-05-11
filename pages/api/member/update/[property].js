@@ -4,7 +4,7 @@ import { getSession } from 'next-auth/react';
 import moment from 'moment';
 import { JAPAN_PROVINCES } from '@Utils/StaticData/json-data';
 import _ from 'lodash';
-import { MemberEntity } from '@entities/Member';
+import { MemberEntity, NikkeiInfo } from '@entities/Member';
 import { prepareConnection } from '@typeorm/db';
 
 
@@ -49,7 +49,7 @@ export default async (req, res) => {
           case 'birth_date':
             return await resBirthDate(db, req.body, uid, res);
           case 'is_nikkei':
-            return await resIsNikkei(req.body, uid, res);
+            return await resIsNikkei(db, req.body, uid, res);
           case 'nikkei_info':
             return await resNikkeiInfo(req.body, uid, res);
           case 'academic_profile':
@@ -113,23 +113,26 @@ const resSingleUpdate = async (db, field, value, uid, res) => {
   return res.status(200).json({ log: 'Update Done' });
 };
 
-const resIsNikkei = async (body, sub, res) => {
+const resIsNikkei = async (db, body, uid, res) => {
   try {
-    const [user] = await query(
-      'SELECT id, blocked FROM users_info WHERE auth_id=?',
-      sub
-    );
     const { is_nikkei } = body;
-    if (user && user.id > 0) {
-      await query(
-        'UPDATE users_info SET is_nikkei=?, updated_at=NOW() WHERE auth_id=?',
-        [is_nikkei, sub]
-      );
-      if (!is_nikkei) {
-        await query('DELETE FROM japanese_origins WHERE user_id=?', [user.id]);
-      }
-      return res.status(200).json({ log: 'Update Done' });
-    } else return res.status(400).json({ serverMessage: 'Bad Request' });
+    await db
+      .getRepository(MemberEntity)
+      .createQueryBuilder()
+      .update(MemberEntity)
+      .set({"is_nikkei": is_nikkei})
+      .where("id= :uid", {uid})
+      .execute()
+    if (!is_nikkei) {
+      await db
+        .getRepository(NikkeiInfo)
+        .createQueryBuilder()
+        .delete()
+        .from(NikkeiInfo)
+        .where("user_id = :uid", { uid })
+        .execute()
+    }
+    return res.status(200).json({ log: 'Update Done' });
   } catch (e) {
     return res.status(400).json({ serverMessage: JSON.stringify(e) });
   }
