@@ -1,8 +1,8 @@
 import { SessionProvider } from 'next-auth/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import '../styles/tailwind.css';
-import '../styles/global.css';
+import '@styles/tailwind.css';
+import '@styles/global.css';
 
 const queryClient = new QueryClient();
 
