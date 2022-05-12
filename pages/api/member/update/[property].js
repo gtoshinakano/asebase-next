@@ -4,7 +4,7 @@ import { getSession } from 'next-auth/react';
 import moment from 'moment';
 import { JAPAN_PROVINCES } from '@Utils/StaticData/json-data';
 import _ from 'lodash';
-import { MemberEntity, NikkeiInfo, AcademicInfo } from '@entities/Member';
+import { MemberEntity, NikkeiInfo, AcademicInfo, ProfessionalData } from '@entities/Member';
 import { prepareConnection } from '@typeorm/db';
 
 
@@ -55,7 +55,7 @@ export default async (req, res) => {
           case 'academic_profile':
             return await resAcademicProfile(db, req.body, auth_id.id, res);
           case 'professional_profile':
-            return await resProfessionalProfile(req.body, uid, res);
+            return await resProfessionalProfile(db, req.body, auth_id.id, res);
           case 'exchange_profile':
             return await resExchangeInfo(req.body, uid, res);
           default:
@@ -211,27 +211,34 @@ const resAcademicProfile = async (db, body, auth_id, res) => {
   }
 };
 
-const resProfessionalProfile = async (body, sub, res) => {
+const resProfessionalProfile = async (db, body, auth_id, res) => {
   try {
     const error = schemas.ProfessionalList.check(body);
     if (Object.values(error).filter((e) => e.hasError).length > 0) {
       return res.status(401).json({ ...error });
     } else {
-      await query('DELETE FROM professional_data WHERE user_id=?', [sub]);
-      const promises = Object.values(body).map((item) => {
-        return query(
-          'INSERT INTO professional_data(id, start_year, end_year, position, company_name, current_job, user_id) VALUES(NULL,?, ?, ?, ?, ?, ?)',
-          [
-            item.start_year,
-            item.end_year,
-            item.position,
-            item.company_name,
-            item.current_job,
-            sub,
-          ]
-        );
-      });
-      await Promise.all(promises).then((resp) => console.log(resp));
+      await db
+        .getRepository(ProfessionalData)
+        .createQueryBuilder()
+        .delete()
+        .from(ProfessionalData)
+        .where("user_id = :auth_id", { auth_id })
+        .execute()
+      const tuples = Object.values(body).map((item) => ({
+        start_year: item.start_year,
+        end_year: item.end_year,
+        position: item.position,
+        company_name: item.company_name,
+        current_job: item.current_job,
+        user_id: auth_id,
+      }));
+      await db
+        .getRepository(ProfessionalData)
+        .createQueryBuilder()
+        .insert()
+        .into(ProfessionalData)
+        .values(tuples)
+        .execute()
       return res.status(200).json({ log: 'Update Done' });
     }
   } catch (e) {
