@@ -14,7 +14,7 @@ const db = {
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
   synchronize: false, // leave it always false
-  logging: true, 
+  logging: false, 
 };
 
 // For more information on each option (and a full list of options) go to
@@ -109,5 +109,5 @@ export default NextAuth({
   theme: 'light',
 
   // Enable debug messages in the console if you are having problems
-  debug: true,
+  debug: process.env.NODE_ENV === "development",
 });

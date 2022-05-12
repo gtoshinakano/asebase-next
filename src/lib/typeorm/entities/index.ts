@@ -7,12 +7,12 @@ import {
 import {
   MemberEntity,
   NikkeiInfo,
-  ProvinceEntity,
   AcademicInfo,
   ProfessionalData,
-  OrganizationEntity,
   ExchangeEntity,
 } from './Member';
+import { ProvinceEntity } from './Province';
+import { OrganizationEntity } from './Organization';
 
 export default {
   UserEntity,

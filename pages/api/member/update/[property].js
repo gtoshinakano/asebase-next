@@ -1,25 +1,35 @@
 import { query, insertId } from '@lib/db';
-import { getSessionUserInfoId } from '@Helpers';
 import * as schemas from '@Utils/Schemas/User';
 import { getSession } from 'next-auth/react';
 import moment from 'moment';
 import { JAPAN_PROVINCES } from '@Utils/StaticData/json-data';
 import _ from 'lodash';
+import { MemberEntity, NikkeiInfo, AcademicInfo, ProfessionalData, ExchangeEntity } from '@entities/Member';
+import { OrganizationEntity } from '@entities/Organization'
+import { prepareConnection } from '@typeorm/db';
+
 
 export default async (req, res) => {
   const { property } = req.query;
   const session = await getSession({ req });
-  const user_id = await query(
-    'SELECT id FROM users WHERE email=?',
-    session.user.email
-  );
 
-  const uid = user_id[0].id;
+  const db = await prepareConnection();
 
-  const checkedUser = await getSessionUserInfoId(uid);
+  const user = await db.getRepository(MemberEntity).findOne({
+    relations: ["auth_id"],
+    where: {
+      blocked: 0,
+      auth_id: {
+        email: session.user.email
+      }
+    }, 
+    select: ["id", "auth_id"]
+  })
+
+  const {id: uid, auth_id} = user
 
   if (req.method === 'PUT') {
-    if (!checkedUser.hasError) {
+    if (user.id && user.auth_id && user.auth_id.id) {
       try {
         switch (property) {
           case 'name':
@@ -31,41 +41,24 @@ export default async (req, res) => {
               serverMessage:
                 'Alteração visível somente após login. Clique no balão ao lado para re-autenticar',
             });
-          case 'full_name':
-            return await resSingleUpdate(
-              'full_name',
-              req.body.full_name,
-              uid,
-              res
-            );
+
+          case 'full_name': 
           case 'birth_city':
-            return await resSingleUpdate(
-              'birth_city',
-              req.body.birth_city,
-              uid,
-              res
-            );
           case 'birth_state':
-            return await resSingleUpdate(
-              'birth_state',
-              req.body.birth_state,
-              uid,
-              res
-            );
           case 'gender':
-            return await resSingleUpdate('gender', req.body.gender, uid, res);
+            return await resSingleUpdate(db, property, req.body[property], uid, res);
           case 'birth_date':
-            return await resBirthDate(req.body, uid, res);
+            return await resBirthDate(db, req.body, uid, res);
           case 'is_nikkei':
-            return await resIsNikkei(req.body, uid, res);
+            return await resIsNikkei(db, req.body, auth_id.id, res);
           case 'nikkei_info':
-            return await resNikkeiInfo(req.body, uid, res);
+            return await resNikkeiInfo(db, req.body, auth_id.id, res);
           case 'academic_profile':
-            return await resAcademicProfile(req.body, uid, res);
+            return await resAcademicProfile(db, req.body, auth_id.id, res);
           case 'professional_profile':
-            return await resProfessionalProfile(req.body, uid, res);
+            return await resProfessionalProfile(db, req.body, auth_id.id, res);
           case 'exchange_profile':
-            return await resExchangeInfo(req.body, uid, res);
+            return await resExchangeInfo(db, req.body, auth_id.id, res);
           default:
             return res.status(400).json({ serverMessage: 'Bad Request' });
         }
@@ -104,69 +97,80 @@ export default async (req, res) => {
   }
 };
 
-const resBirthDate = async (body, sub, res) => {
+const resBirthDate = async (db, body, uid, res) => {
   const date = moment(body.birth_date, 'DD/MM/YYYY', true);
-  if (!date.isValid())
-    return res.status(400).json({ serverMessage: 'Wrong Format' });
-  else {
-    await query(
-      'UPDATE users_info SET birth_date=?, updated_at=NOW() WHERE auth_id = ?',
-      [date.format('YYYY-MM-DD HH:mm:ss'), sub]
-    );
-    return res.status(200).json({ log: 'Update Done' });
-  }
+  if (!date.isValid()) return res.status(400).json({ serverMessage: 'Invalid date' });
+  else return await resSingleUpdate(db, "birth_date", date.format('YYYY-MM-DD HH:mm:ss'), uid, res)
 };
 
-const resSingleUpdate = async (field, value, sub, res) => {
-  await query(
-    `UPDATE users_info SET ${field}=?, updated_at=NOW() WHERE auth_id = ?`,
-    [value, sub]
-  );
+const resSingleUpdate = async (db, field, value, uid, res) => {
+  await db
+    .getRepository(MemberEntity)
+    .createQueryBuilder()
+    .update(MemberEntity)
+    .set({[field]: value})
+    .where("id= :uid", {uid})
+    .execute()
   return res.status(200).json({ log: 'Update Done' });
 };
 
-const resIsNikkei = async (body, sub, res) => {
+const resIsNikkei = async (db, body, auth_id, res) => {
   try {
-    const [user] = await query(
-      'SELECT id, blocked FROM users_info WHERE auth_id=?',
-      sub
-    );
     const { is_nikkei } = body;
-    if (user && user.id > 0) {
-      await query(
-        'UPDATE users_info SET is_nikkei=?, updated_at=NOW() WHERE auth_id=?',
-        [is_nikkei, sub]
-      );
-      if (!is_nikkei) {
-        await query('DELETE FROM japanese_origins WHERE user_id=?', [user.id]);
-      }
-      return res.status(200).json({ log: 'Update Done' });
-    } else return res.status(400).json({ serverMessage: 'Bad Request' });
+    await db
+      .getRepository(MemberEntity)
+      .createQueryBuilder()
+      .update(MemberEntity)
+      .set({"is_nikkei": is_nikkei})
+      .where("auth_id= :auth_id", {auth_id})
+      .execute()
+    if (!is_nikkei) {
+      await db
+        .getRepository(NikkeiInfo)
+        .createQueryBuilder()
+        .delete()
+        .from(NikkeiInfo)
+        .where("user_id = :auth_id", { auth_id })
+        .execute()
+    }
+    return res.status(200).json({ log: 'Update Done' });
   } catch (e) {
     return res.status(400).json({ serverMessage: JSON.stringify(e) });
   }
 };
 
-const resNikkeiInfo = async (body, sub, res) => {
+const resNikkeiInfo = async (db, body, auth_id, res) => {
   try {
     const error = schemas.NikkeiProfile.check(body);
     if (Object.values(error).filter((e) => e.hasError).length > 0) {
       return res.status(401).json({ ...error });
     } else {
-      await query('DELETE FROM japanese_origins WHERE user_id=?', [sub]);
+      await db
+        .getRepository(NikkeiInfo)
+        .createQueryBuilder()
+        .delete()
+        .from(NikkeiInfo)
+        .where("user_id = :auth_id", { auth_id })
+        .execute()
       const { jpFamilyOrigins } = body;
-      const promises = Object.keys(jpFamilyOrigins).map((key) => {
+      const tuples = Object.keys(jpFamilyOrigins).map((key) => {
         const [jp_code] = _.filter(
           JAPAN_PROVINCES,
           (f) => f.name === jpFamilyOrigins[key]
         );
-        return query('INSERT INTO japanese_origins VALUES(?, NULL, ?, ?)', [
-          sub,
-          key,
-          jp_code.code,
-        ]);
+        return {
+          user_id: auth_id, 
+          degree: key,
+          province_code: jp_code.code
+        }
       });
-      await Promise.all(promises);
+      await db
+        .getRepository(NikkeiInfo)
+        .createQueryBuilder()
+        .insert()
+        .into(NikkeiInfo)
+        .values(tuples)
+        .execute()
       return res.status(200).json({ log: 'Update Done' });
     }
   } catch (e) {
@@ -174,23 +178,33 @@ const resNikkeiInfo = async (body, sub, res) => {
   }
 };
 
-const resAcademicProfile = async (body, sub, res) => {
+const resAcademicProfile = async (db, body, auth_id, res) => {
   try {
     const error = schemas.AcademicList.check(body);
     if (Object.values(error).filter((e) => e.hasError).length > 0) {
       return res.status(401).json({ ...error });
     } else {
-      await query('DELETE FROM academic_info WHERE user_id=?', [sub]);
-      const promises = Object.values(body).map((item) => {
-        return query('INSERT INTO academic_info(id, institution_name, user_id, subject, year, study_area) VALUES(NULL,?, ?, ?, ?, ?)', [
-          item.institution_name,
-          sub,
-          item.subject,
-          item.year,
-          item.study_area,
-        ]);
-      });
-      await Promise.all(promises).then((resp) => console.log(resp));
+      await db
+        .getRepository(AcademicInfo)
+        .createQueryBuilder()
+        .delete()
+        .from(AcademicInfo)
+        .where("user_id = :auth_id", { auth_id })
+        .execute()
+      const tuples = Object.values(body).map((item) => ({
+        institution_name: item.institution_name,
+        user_id: auth_id,
+        subject: item.subject,
+        year: item.year,
+        study_area: item.study_area,
+      }));
+      await db
+        .getRepository(AcademicInfo)
+        .createQueryBuilder()
+        .insert()
+        .into(AcademicInfo)
+        .values(tuples)
+        .execute()
       return res.status(200).json({ log: 'Update Done' });
     }
   } catch (e) {
@@ -198,27 +212,34 @@ const resAcademicProfile = async (body, sub, res) => {
   }
 };
 
-const resProfessionalProfile = async (body, sub, res) => {
+const resProfessionalProfile = async (db, body, auth_id, res) => {
   try {
     const error = schemas.ProfessionalList.check(body);
     if (Object.values(error).filter((e) => e.hasError).length > 0) {
       return res.status(401).json({ ...error });
     } else {
-      await query('DELETE FROM professional_data WHERE user_id=?', [sub]);
-      const promises = Object.values(body).map((item) => {
-        return query(
-          'INSERT INTO professional_data(id, start_year, end_year, position, company_name, current_job, user_id) VALUES(NULL,?, ?, ?, ?, ?, ?)',
-          [
-            item.start_year,
-            item.end_year,
-            item.position,
-            item.company_name,
-            item.current_job,
-            sub,
-          ]
-        );
-      });
-      await Promise.all(promises).then((resp) => console.log(resp));
+      await db
+        .getRepository(ProfessionalData)
+        .createQueryBuilder()
+        .delete()
+        .from(ProfessionalData)
+        .where("user_id = :auth_id", { auth_id })
+        .execute()
+      const tuples = Object.values(body).map((item) => ({
+        start_year: item.start_year,
+        end_year: item.end_year,
+        position: item.position,
+        company_name: item.company_name,
+        current_job: item.current_job,
+        user_id: auth_id,
+      }));
+      await db
+        .getRepository(ProfessionalData)
+        .createQueryBuilder()
+        .insert()
+        .into(ProfessionalData)
+        .values(tuples)
+        .execute()
       return res.status(200).json({ log: 'Update Done' });
     }
   } catch (e) {
@@ -226,53 +247,62 @@ const resProfessionalProfile = async (body, sub, res) => {
   }
 };
 
-const resExchangeInfo = async (body, sub, res) => {
+const resExchangeInfo = async (db, body, auth_id, res) => {
   const error = schemas.ExchangeList.check(body);
   if (Object.values(error).filter((e) => e.hasError).length > 0) {
     return res.status(401).json({ ...error });
   } else {
     try {
-      await query('DELETE FROM exchanges WHERE user_id=?', [sub]);
+      await db
+        .getRepository(ExchangeEntity)
+        .createQueryBuilder()
+        .delete()
+        .from(ExchangeEntity)
+        .where("user_id = :auth_id", { auth_id })
+        .execute()
       let promises = [];
       Object.values(body).forEach(async (item) => {
-        const searchOrg = await query(
-          'SELECT id FROM organizations WHERE org_name=?',
-          [item.org_name]
-        );
+        let searchOrg = await db.getRepository(OrganizationEntity)
+          .findOne({org_name: item.org_name})
         let org_id;
-        if (searchOrg.length === 1) org_id = searchOrg[0].id;
+        if (searchOrg) org_id = searchOrg.id;
         else {
-          org_id = await insertId(
-            'INSERT INTO organizations (id, org_name, is_verified) VALUES(NULL, ?, ?)',
-            [item.org_name, '', '']
-          );
+          let org_insert = await db.getRepository(OrganizationEntity)
+            .createQueryBuilder()
+            .insert()
+            .into(OrganizationEntity)
+            .values({org_name: item.org_name})
+            .execute()
+            org_id = org_insert.raw.insertId;
         }
         const [p_code] = _.filter(
           JAPAN_PROVINCES,
           (f) => f.name === item.province_name
         );
         promises.push(
-          query(
-            'INSERT INTO exchanges (id, user_id, province_code, year, type, started_month, started_year, ended_month, ended_year, exchange_place, organization_id, study_area, study_title, study_url, exchange_url, org_exch_ref, org_exch_title) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            [
-              sub,
-              p_code.code,
-              item.year,
-              item.type,
-              item.started_month,
-              item.started_year,
-              item.ended_month,
-              item.ended_year,
-              item.exchange_place,
-              org_id,
-              item.study_area,
-              item.study_title,
-              item.study_url,
-              item.exchange_url,
-              item.org_exch_ref,
-              item.org_exch_title,
-            ]
-          )
+          db.getRepository(ExchangeEntity)
+            .createQueryBuilder()
+            .insert()
+            .into(ExchangeEntity)
+            .values({
+              year: item.year,
+              type: item.type,
+              started_month: item.started_month,
+              started_year: item.started_year,
+              ended_month: item.ended_month,
+              ended_year: item.ended_year,
+              exchange_place: item.exchange_place,
+              study_area: item.study_area,
+              study_title: item.study_title,
+              study_url: item.study_url,
+              exchange_url: item.exchange_url,
+              org_exch_ref: item.org_exch_ref,
+              org_exch_title: item.org_exch_title,
+              organization_id: org_id,
+              province_code: p_code.code,
+              user_id: auth_id
+            })
+            .execute()
         );
       });
       return await Promise.all(promises).then(() => {

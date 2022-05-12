@@ -11,6 +11,8 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { UserEntity } from './Auth';
+import { ProvinceEntity } from './Province';
+import { OrganizationEntity } from './Organization';
 
 export enum GenderTypes {
   m = 'm',
@@ -79,49 +81,6 @@ export class MemberEntity {
   nikkei_info!: NikkeiInfo[];
 }
 
-@Entity({ name: 'japan_provinces' })
-export class ProvinceEntity {
-  @PrimaryColumn()
-  code!: string;
-
-  @Column({ type: 'varchar' })
-  name!: string;
-
-  @Column({ type: 'varchar' })
-  japanese_name!: string;
-
-  @Column({ type: 'varchar' })
-  region!: string;
-
-  @Column({ type: 'point', nullable: true })
-  label_latlng!: string | null;
-
-  @Column({ type: 'point', nullable: true })
-  flag_latlng!: string | null;
-
-  @OneToMany(() => NikkeiInfo, (nikkeiInfo) => nikkeiInfo.province_code)
-  nikkei_info!: NikkeiInfo[];
-}
-
-@Entity({ name: 'organizations' })
-export class OrganizationEntity {
-  @PrimaryGeneratedColumn('increment')
-  id!: number;
-
-  @Column({ type: 'varchar', length: 150, })
-  org_name!: string;
-
-  @Column({ type: 'point', nullable: true })
-  org_latlng!: string | null;
-
-  @Column({ type: 'varchar', nullable: true })
-  org_url!: string;
-
-  @Column({ type: 'boolean', nullable: false, default: false })
-  is_verified!: boolean;
-
-}
-
 @Entity({ name: 'japanese_origins' })
 export class NikkeiInfo {
   @PrimaryGeneratedColumn('increment')
@@ -139,7 +98,7 @@ export class NikkeiInfo {
     name: 'province_code',
     referencedColumnName: 'code',
   })
-  province_code!: MemberEntity;
+  province_code!: ProvinceEntity;
 
   @Column({ type: 'varchar' })
   degree!: string;
