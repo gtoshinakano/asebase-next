@@ -27,7 +27,7 @@ export default function Header() {
         </h4>
         {isAuth && (
           <Button
-            onClick={() => router.push('member/dashboard')}
+            onClick={() => router.push('member/profile')}
             className="mr-4 bg-white font-semibold text-black"
           >
             <i className="ri-file-user-line mr-2 text-sky-400"></i>Profile

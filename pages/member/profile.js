@@ -1,5 +1,5 @@
 import Layout from '@Components/Layouts/MemberOnly';
-import DashboardView from '@Components/Views/Dashboard';
+import DashboardView from '@Components/Views/Profile';
 
 import { getSession } from 'next-auth/react';
 
