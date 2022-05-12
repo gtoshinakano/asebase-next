@@ -4,7 +4,8 @@ import { getSession } from 'next-auth/react';
 import moment from 'moment';
 import { JAPAN_PROVINCES } from '@Utils/StaticData/json-data';
 import _ from 'lodash';
-import { MemberEntity, NikkeiInfo, AcademicInfo, ProfessionalData } from '@entities/Member';
+import { MemberEntity, NikkeiInfo, AcademicInfo, ProfessionalData, ExchangeEntity } from '@entities/Member';
+import { OrganizationEntity } from '@entities/Organization'
 import { prepareConnection } from '@typeorm/db';
 
 
@@ -57,7 +58,7 @@ export default async (req, res) => {
           case 'professional_profile':
             return await resProfessionalProfile(db, req.body, auth_id.id, res);
           case 'exchange_profile':
-            return await resExchangeInfo(req.body, uid, res);
+            return await resExchangeInfo(db, req.body, auth_id.id, res);
           default:
             return res.status(400).json({ serverMessage: 'Bad Request' });
         }
@@ -246,53 +247,62 @@ const resProfessionalProfile = async (db, body, auth_id, res) => {
   }
 };
 
-const resExchangeInfo = async (body, sub, res) => {
+const resExchangeInfo = async (db, body, auth_id, res) => {
   const error = schemas.ExchangeList.check(body);
   if (Object.values(error).filter((e) => e.hasError).length > 0) {
     return res.status(401).json({ ...error });
   } else {
     try {
-      await query('DELETE FROM exchanges WHERE user_id=?', [sub]);
+      await db
+        .getRepository(ExchangeEntity)
+        .createQueryBuilder()
+        .delete()
+        .from(ExchangeEntity)
+        .where("user_id = :auth_id", { auth_id })
+        .execute()
       let promises = [];
       Object.values(body).forEach(async (item) => {
-        const searchOrg = await query(
-          'SELECT id FROM organizations WHERE org_name=?',
-          [item.org_name]
-        );
+        let searchOrg = await db.getRepository(OrganizationEntity)
+          .findOne({org_name: item.org_name})
         let org_id;
-        if (searchOrg.length === 1) org_id = searchOrg[0].id;
+        if (searchOrg) org_id = searchOrg.id;
         else {
-          org_id = await insertId(
-            'INSERT INTO organizations (id, org_name, is_verified) VALUES(NULL, ?, ?)',
-            [item.org_name, '', '']
-          );
+          let org_insert = await db.getRepository(OrganizationEntity)
+            .createQueryBuilder()
+            .insert()
+            .into(OrganizationEntity)
+            .values({org_name: item.org_name})
+            .execute()
+            org_id = org_insert.raw.insertId;
         }
         const [p_code] = _.filter(
           JAPAN_PROVINCES,
           (f) => f.name === item.province_name
         );
         promises.push(
-          query(
-            'INSERT INTO exchanges (id, user_id, province_code, year, type, started_month, started_year, ended_month, ended_year, exchange_place, organization_id, study_area, study_title, study_url, exchange_url, org_exch_ref, org_exch_title) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            [
-              sub,
-              p_code.code,
-              item.year,
-              item.type,
-              item.started_month,
-              item.started_year,
-              item.ended_month,
-              item.ended_year,
-              item.exchange_place,
-              org_id,
-              item.study_area,
-              item.study_title,
-              item.study_url,
-              item.exchange_url,
-              item.org_exch_ref,
-              item.org_exch_title,
-            ]
-          )
+          db.getRepository(ExchangeEntity)
+            .createQueryBuilder()
+            .insert()
+            .into(ExchangeEntity)
+            .values({
+              year: item.year,
+              type: item.type,
+              started_month: item.started_month,
+              started_year: item.started_year,
+              ended_month: item.ended_month,
+              ended_year: item.ended_year,
+              exchange_place: item.exchange_place,
+              study_area: item.study_area,
+              study_title: item.study_title,
+              study_url: item.study_url,
+              exchange_url: item.exchange_url,
+              org_exch_ref: item.org_exch_ref,
+              org_exch_title: item.org_exch_title,
+              organization_id: org_id,
+              province_code: p_code.code,
+              user_id: auth_id
+            })
+            .execute()
         );
       });
       return await Promise.all(promises).then(() => {
