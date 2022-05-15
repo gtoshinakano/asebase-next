@@ -1,8 +1,4 @@
 import { getSession } from 'next-auth/react';
-import { prepareConnection } from '@typeorm/db';
-import { UserEntity } from '@entities/Auth';
-import { MemberEntity } from '@entities/Member';
-import { getConnection } from 'typeorm';
 import {Member} from '@Classes/Member'
 
 const get = async (req, res) => {
@@ -23,7 +19,7 @@ const get = async (req, res) => {
         message: 'High Five 🖐',
         data: {
           uid: member.user_info.id,
-          serverTime: new Date(),
+          auth_id : member.auth_id
         },
       });
     }

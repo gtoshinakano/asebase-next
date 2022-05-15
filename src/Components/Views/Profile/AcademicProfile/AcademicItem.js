@@ -15,15 +15,15 @@ const AcademicItem = ({ data, onChange, onAdd, onRemove, index, item }) => {
   const [error, setError] = useState(schemas.AcademicItem.check(form));
   const client = useQueryClient();
   const handshake = client.getQueryData('handshake');
-  const uid = handshake.data.id || '';
-  const queryKey = ['personal-profile', uid];
+  const auth_id = handshake.data.auth_id || '';
+  const queryKey = ['personal-profile', auth_id];
   const user = client.getQueryData(queryKey);
   const mutation = useMutation(deleteAcademicProfile, {
     mutationKey: 'academic',
     onSuccess: () => {
       onRemove(index);
       client.invalidateQueries(queryKey);
-      client.invalidateQueries(['academic-profile', uid]);
+      client.invalidateQueries(['academic-profile', auth_id]);
     },
   });
 

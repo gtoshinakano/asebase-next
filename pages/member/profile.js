@@ -23,8 +23,9 @@ export async function getServerSideProps(context) {
   }
   const member = await Member.init(session.user.email)
   if (member.user_info.blocked) {
-    return { redirect: { destination: '/' } }; // TODO Create blocked message page
-  }  
+    return { redirect: { destination: '/' } }; //TODO blocked user msg page
+  }
+  console.log(member)
   return {
     props: {
       session: session,
@@ -32,6 +33,7 @@ export async function getServerSideProps(context) {
         message: 'High Five 🖐',
         data: {
           uid: member.user_info.id,
+          auth_id : member.auth_id
         }
       }
     },

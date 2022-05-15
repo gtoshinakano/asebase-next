@@ -17,8 +17,8 @@ export default function Layout({ children, title, handshakeData }) {
     initialData: handshakeData
   });
   const { isLoading, data, isFetched } = useQuery('handshake');
-  if (data && data.uid)
-    client.setQueryDefaults(['personal-profile', data.uid], {
+  if (data && data.auth_id)
+    client.setQueryDefaults(['personal-profile', data.auth_id], {
       queryFn: getPersonalProfile,
       staleTime: Infinity,
     });

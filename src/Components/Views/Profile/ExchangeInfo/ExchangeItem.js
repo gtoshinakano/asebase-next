@@ -22,8 +22,8 @@ const ExchangeItem = ({ data, onChange, onAdd, onRemove, index, item }) => {
   const [error, setError] = useState(schemas.ExchangeItem.check(form));
   const client = useQueryClient();
   const handshake = client.getQueryData('handshake');
-  const uid = handshake.data.id || '';
-  const queryKey = ['personal-profile', uid];
+  const auth_id = handshake.data.auth_id || '';
+  const queryKey = ['personal-profile', auth_id];
   const mutation = useMutation(deleteExchangeProfile, {
     mutationKey: 'exchange',
     onSuccess: () => {

@@ -22,8 +22,8 @@ const ProfessionalItem = ({
   const [error, setError] = useState(schemas.ProfessionalItem.check(form));
   const client = useQueryClient();
   const handshake = client.getQueryData('handshake');
-  const uid = handshake.data.id || '';
-  const queryKey = ['professional-profile', uid];
+  const auth_id = handshake.data.auth_id || '';
+  const queryKey = ['professional-profile', auth_id];
   const mutation = useMutation(deleteProfessionalProfile, {
     mutationKey: 'professional',
     onSuccess: () => {

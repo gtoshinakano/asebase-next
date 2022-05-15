@@ -29,9 +29,9 @@ const NikkeiInfo = () => {
   const [form, setForm] = useState(_form);
   const client = useQueryClient();
   const handshake = useQuery('handshake');
-  const uid = handshake.data?.data.uid || '';
-  const queryKey = ['personal-profile', uid];
-  const nikkeiQueryKey = ['nikkei-profile', uid];
+  const auth_id = handshake.data?.data.auth_id || '';
+  const queryKey = ['personal-profile', auth_id];
+  const nikkeiQueryKey = ['nikkei-profile', auth_id];
   const { data, isLoading, isFetching } = useQuery(queryKey, {
     staleTime: Infinity,
   });

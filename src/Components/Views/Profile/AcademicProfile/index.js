@@ -19,7 +19,7 @@ const AcademicProfile = ({ visible }) => {
   const [hasError, setHasError] = useState(false);
   const client = useQueryClient();
   const handshake = client.getQueryData('handshake');
-  const queryKey = ['academic-profile', handshake?.data.id];
+  const queryKey = ['academic-profile', handshake?.data.auth_id];
   const academic = useQuery(queryKey, getAcademicProfile, {
     staleTime: Infinity,
   });

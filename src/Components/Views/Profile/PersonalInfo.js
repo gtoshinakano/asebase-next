@@ -18,8 +18,8 @@ import br_states from '@Utils/StaticData/br_states.json';
 
 const PersonalInfo = () => {
   const handshake = useQuery('handshake');
-  const uid = handshake.data?.data.uid || '';
-  const queryKey = ['personal-profile', uid];
+  const auth_id = handshake.data?.data.auth_id || '';
+  const queryKey = ['personal-profile', auth_id];
   const { data, isLoading, isFetched } = useQuery(
     queryKey,
     getPersonalProfile,

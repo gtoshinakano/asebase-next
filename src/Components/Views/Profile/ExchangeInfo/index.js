@@ -19,7 +19,7 @@ const ExchangeInfo = () => {
   const [hasError, setHasError] = useState(false);
   const client = useQueryClient();
   const handshake = client.getQueryData('handshake');
-  const queryKey = ['exchange-profile', handshake?.data.id];
+  const queryKey = ['exchange-profile', handshake?.data.auth_id];
   const exchange = useQuery(queryKey, getExchangeProfile, {
     staleTime: Infinity,
   });

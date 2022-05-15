@@ -19,7 +19,7 @@ const ProfessionalProfile = () => {
   const [hasError, setHasError] = useState(false);
   const client = useQueryClient();
   const handshake = client.getQueryData('handshake');
-  const queryKey = ['professional-profile', handshake?.data.id];
+  const queryKey = ['professional-profile', handshake?.data.auth_id];
   const professional = useQuery(queryKey, getProfessionalProfile, {
     staleTime: Infinity,
   });
