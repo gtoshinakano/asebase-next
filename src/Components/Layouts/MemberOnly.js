@@ -9,11 +9,12 @@ import Skeleton from 'react-loading-skeleton';
 import { Transition } from '@headlessui/react';
 import { getPersonalProfile } from '@Utils/defaultQueries';
 
-export default function Layout({ children, title }) {
+export default function Layout({ children, title, handshakeData }) {
   const client = useQueryClient();
   client.setQueryDefaults('handshake', {
     queryFn: handshake,
     staleTime: Infinity,
+    initialData: handshakeData
   });
   const { isLoading, data, isFetched } = useQuery('handshake');
   if (data && data.uid)

@@ -14,7 +14,6 @@ export default function Page({ providers, csrfToken }) {
 }
 
 export async function getServerSideProps(context) {
-  const { req } = context;
   const session = await getSession(context);
   if (session) {
     return {
