@@ -1,4 +1,3 @@
-import { query } from '@lib/db';
 import { getSession } from 'next-auth/react';
 import { prepareConnection } from '@typeorm/db';
 import { UserEntity } from '@entities/Auth';
@@ -6,10 +5,10 @@ import { MemberEntity } from '@entities/Member';
 
 async function get(req, res) {
   const session = await getSession({ req });
+  if (!session) {
+    return res.status(400).json({ message: 'Not Signed' });
+  }
   try {
-    if (!session) {
-      return res.status(400).json({ message: 'Not Signed' });
-    }
 
     const db = await prepareConnection();
     const user = await db

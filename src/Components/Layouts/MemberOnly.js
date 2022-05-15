@@ -7,7 +7,8 @@ import { useRouter } from 'next/router';
 import { signOut } from 'next-auth/react';
 import Skeleton from 'react-loading-skeleton';
 import { Transition } from '@headlessui/react';
-import { getPersonalProfile } from '@Utils/defaultQueries';
+import * as fn from '@Utils/defaultQueries';
+import superjson from 'superjson'
 
 export default function Layout({ children, title, handshakeData }) {
   const client = useQueryClient();
@@ -17,12 +18,33 @@ export default function Layout({ children, title, handshakeData }) {
     initialData: handshakeData
   });
   const { isLoading, data, isFetched } = useQuery('handshake');
-  if (data && data.auth_id)
+  if (data && data.auth_id){
     client.setQueryDefaults(['personal-profile', data.auth_id], {
-      queryFn: getPersonalProfile,
+      queryFn: fn.getPersonalProfile,
       staleTime: Infinity,
+      initialData: superjson.parse(handshakeData.data.personal_profile)
     });
-
+    client.setQueryDefaults( ['nikkei-profile', data.auth_id], {
+      queryFn: fn.getNikkeiProfile,
+      staleTime: Infinity,
+      initialData: superjson.parse(handshakeData.data.nikkei_info)
+    })
+    client.setQueryDefaults( ['academic-profile', data.auth_id], {
+      queryFn: fn.getAcademicProfile,
+      staleTime: Infinity,
+      initialData: superjson.parse(handshakeData.data.academic_info)
+    })
+    client.setQueryDefaults( ['professional-profile', data.auth_id], {
+      queryFn: fn.getProfessionalProfile,
+      staleTime: Infinity,
+      initialData: superjson.parse(handshakeData.data.professional_profile)
+    })
+    client.setQueryDefaults( ['exchange-profile', data.auth_id], {
+      queryFn: fn.getExchangeProfile,
+      staleTime: Infinity,
+      initialData: superjson.parse(handshakeData.data.exchange_profile)
+    })
+  }
   const router = useRouter();
 
   if (isFetched && !data) router.push('/');

@@ -1,14 +1,36 @@
 import { UserEntity } from '@entities/Auth';
-import { MemberEntity } from '@entities/Member';
+import { MemberEntity, NikkeiInfo, AcademicInfo, ProfessionalData, ExchangeEntity } from '@entities/Member';
 import { prepareConnection } from '@typeorm/db';
 import { Connection, getRepository } from "typeorm";
 
+type Exchange = {
+  year: number,
+  type: number,
+  started_month: number,
+  started_year: number,
+  ended_month: number,
+  ended_year: number,
+  org_name: string,
+  org_exch_ref: string,
+  org_exch_title: string,
+  exchange_place: string,
+  study_area: number,
+  study_title: string,
+  study_url: string,
+  province_name: string,
+}
+
 export class Member{
+  
   private auth_id : string
   private name : string
   email : string
   db : Connection
   user_info: MemberEntity | undefined
+  nikkei_info: NikkeiInfo[] | undefined
+  academic_info: AcademicInfo[] | undefined
+  professional_info: ProfessionalData[] | undefined
+  exchange_info: Exchange[] | undefined
   
 
   private constructor(email: string, db: Connection, user?: UserEntity, member?: MemberEntity){
@@ -39,6 +61,57 @@ export class Member{
     }
     return new Member(email, db, user, member)
   }
+
+  public async fetchNikkeiProfile(){
+    if(this.user_info?.is_nikkei){
+      this.nikkei_info = await this.db
+        .getRepository(NikkeiInfo)
+        .find({where: { user_id: this.auth_id }, relations: ['province_code']});
+    }
+  }
+
+  public async fetchAcademicProfile(){
+    this.academic_info = await this.db.getRepository(AcademicInfo).find({
+      where: { user_id: this.auth_id },
+      select: ['institution_name', 'subject', 'year', 'study_area'],
+    });
+  }
+
+  public async fetchProfessionalProfile(){
+    this.professional_info = await this.db.getRepository(ProfessionalData).find({
+      where: { user_id: this.auth_id },
+      select: ['current_job', 'position', 'company_name', 'start_year', 'end_year'],
+    });
+  }
+
+  public async fetchExchangeProfile(){
+    const exchange = await this.db.getRepository(ExchangeEntity)
+      .createQueryBuilder('e')
+      .leftJoinAndSelect('e.organization_id','o','e.organization_id = o.id')
+      .leftJoinAndSelect('e.province_code','p','e.province_code = p.code')
+      .where('e.user_id = :uid', {uid: this.auth_id})
+      .getMany()
+
+    this.exchange_info = exchange.map((i) => ({
+      year: i.year,
+      type: i.type,
+      started_month: i.started_month,
+      started_year: i.started_year,
+      ended_month: i.ended_month,
+      ended_year: i.ended_year,
+      org_name: i.organization_id.org_name,
+      org_exch_ref: i.org_exch_ref,
+      org_exch_title: i.org_exch_title,
+      exchange_place: i.exchange_place,
+      study_area: i.study_area,
+      study_title: i.study_title,
+      study_url: i.study_url,
+      province_name: i.province_code.name,
+    }));
+
+  }
+
+
   
 }
 

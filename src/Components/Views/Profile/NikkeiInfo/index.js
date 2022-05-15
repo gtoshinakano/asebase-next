@@ -111,7 +111,7 @@ const NikkeiInfo = () => {
   const isAwaiting =
     isLoading || mutation.isLoading || mutation.isFetching || isFetching;
 
-  const { is_nikkei } = data;
+  const { is_nikkei } = data || {is_nikkei: 0};
 
   return (
     <>
