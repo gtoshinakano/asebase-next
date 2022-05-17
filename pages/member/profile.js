@@ -7,7 +7,7 @@ import superjson from 'superjson';
 
 export default function Page(props) {
   return (
-    <Layout title="Perfil de Bolsista" handshakeData={props.handshakeData}>
+    <Layout title="Perfil de Bolsista" handshakeData={props.userData}>
       <div className="w-full min-h-screen flex flex-wrap flex-col font-notoJP text-gray-700 pb-40">
         <div className="h-64 w-full bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 print:hidden"></div>
         <DashboardView />
@@ -33,10 +33,10 @@ export async function getServerSideProps(context) {
   return {
     props: {
       session: session,
-      handshakeData: {
+      userData: {
         message: 'High Five 🖐',
         data: {
-          uid: member.user_info.id, // users_info id
+          uid: member.user_info.id, // users_info id (number)
           auth_id : member.auth_id, // users id (string)
           nikkei_profile: member.nikkei_info ? superjson.stringify(member.nikkei_info) : [],
           personal_profile: superjson.stringify(_.pick(member.user_info, personalProfileKeys)),

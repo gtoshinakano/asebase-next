@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import InlineInput from '@Components/Styled/InlineInput';
 import { maskOnlyNumbers } from '@Utils/Helpers/masks';
 import * as schemas from '@Utils/Schemas/User';
@@ -9,13 +9,14 @@ import moment from 'moment';
 import _ from 'lodash';
 import Confirm from '@Components/Styled/Confirm';
 import { deleteAcademicProfile } from '@Utils/defaultQueries/Delete';
+import { AuthContext } from '@Components/Layouts/MemberOnly';
 
 const AcademicItem = ({ data, onChange, onAdd, onRemove, index, item }) => {
   const [form, setForm] = useState(_form);
   const [error, setError] = useState(schemas.AcademicItem.check(form));
   const client = useQueryClient();
-  const handshake = client.getQueryData('handshake');
-  const auth_id = handshake.data.auth_id || '';
+  const auth = useContext(AuthContext)
+  const auth_id = auth.data.auth_id
   const queryKey = ['personal-profile', auth_id];
   const user = client.getQueryData(queryKey);
   const mutation = useMutation(deleteAcademicProfile, {

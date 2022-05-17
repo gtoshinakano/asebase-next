@@ -2,23 +2,7 @@ import { UserEntity } from '@entities/Auth';
 import { MemberEntity, NikkeiInfo, AcademicInfo, ProfessionalData, ExchangeEntity } from '@entities/Member';
 import { prepareConnection } from '@typeorm/db';
 import { Connection, getRepository } from "typeorm";
-
-type Exchange = {
-  year: number,
-  type: number,
-  started_month: number,
-  started_year: number,
-  ended_month: number,
-  ended_year: number,
-  org_name: string,
-  org_exch_ref: string,
-  org_exch_title: string,
-  exchange_place: string,
-  study_area: number,
-  study_title: string,
-  study_url: string,
-  province_name: string,
-}
+import _ from 'lodash'
 
 export class Member{
   
@@ -27,7 +11,7 @@ export class Member{
   email : string
   db : Connection
   user_info: MemberEntity | undefined
-  nikkei_info: NikkeiInfo[] | undefined
+  nikkei_info: NikkeiInfoObj | undefined
   academic_info: AcademicInfo[] | undefined
   professional_info: ProfessionalData[] | undefined
   exchange_info: Exchange[] | undefined
@@ -64,9 +48,31 @@ export class Member{
 
   public async fetchNikkeiProfile(){
     if(this.user_info?.is_nikkei){
-      this.nikkei_info = await this.db
+      const query = await this.db
         .getRepository(NikkeiInfo)
         .find({where: { user_id: this.auth_id }, relations: ['province_code']});
+
+      const result = query.map((i) => ({
+        name: i.province_code.name,
+        degree: i.degree,
+      }))  
+
+      this.nikkei_info = result.length > 0
+        ? {
+          jp_generation: genByDegreeMaxLenght[_.map(result, (i) => i.degree).reduce((a:string, b:string) =>
+            a.length > b.length ? a : b
+          ).length],
+          jpFamilyMembers: _.map(result, (i) => i.degree),
+          jpFamilyOrigins: _.reduce(
+            result,
+            (acc: any, cur) => {
+              acc[cur.degree] = cur.name;
+              return acc;
+            },
+            {}
+          ),
+        }
+        : { jp_generation: 2, jpFamilyMembers: [], jpFamilyOrigins: {} }
     }
   }
 
@@ -115,3 +121,36 @@ export class Member{
   
 }
 
+type generationDegrees = {
+  [key: number] : number
+}
+
+const genByDegreeMaxLenght : generationDegrees = {
+  1: 2,
+  3: 3,
+  5: 4,
+  7: 5,
+};
+
+type Exchange = {
+  year: number,
+  type: number,
+  started_month: number,
+  started_year: number,
+  ended_month: number,
+  ended_year: number,
+  org_name: string,
+  org_exch_ref: string,
+  org_exch_title: string,
+  exchange_place: string,
+  study_area: number,
+  study_title: string,
+  study_url: string,
+  province_name: string,
+}
+
+type NikkeiInfoObj = { 
+  jp_generation: number, 
+  jpFamilyMembers: string[], 
+  jpFamilyOrigins: {} 
+}

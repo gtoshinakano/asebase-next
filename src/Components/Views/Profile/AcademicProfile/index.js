@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import AcademicItem from './AcademicItem';
 import {
   useQuery,
@@ -6,23 +6,22 @@ import {
   useMutation,
   useIsMutating,
 } from 'react-query';
-import { getAcademicProfile } from '@Utils/defaultQueries/UserQueries';
 import Skeleton from 'react-loading-skeleton';
 import * as schemas from '@Utils/Schemas/User';
 import { Transition } from '@headlessui/react';
 import { updateAcademicProfile } from '@Utils/defaultQueries/Mutations';
 import { RoundButton } from '@Components/Styled/Button';
 import _ from 'lodash';
+import { AuthContext } from '@Components/Layouts/MemberOnly';
 
 const AcademicProfile = ({ visible }) => {
   const [form, setForm] = useState(_form);
   const [hasError, setHasError] = useState(false);
   const client = useQueryClient();
-  const handshake = client.getQueryData('handshake');
-  const queryKey = ['academic-profile', handshake?.data.auth_id];
-  const academic = useQuery(queryKey, getAcademicProfile, {
-    staleTime: Infinity,
-  });
+  const auth = useContext(AuthContext)
+  const auth_id = auth.data.auth_id
+  const queryKey = ['academic-profile', auth_id];
+  const academic = useQuery(queryKey);
   const mutation = useMutation(updateAcademicProfile, {
     onSuccess: () => {
       client.invalidateQueries(queryKey);
