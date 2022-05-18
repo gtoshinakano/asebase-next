@@ -16,6 +16,7 @@
       "lint": "next lint",
       "prettier": "npx prettier . -w"
    },
+   "cacheDirectories": [".next/cache"],
    "author": "Toshi Nakano <gtoshinakano@gmail.com>",
    "contributors": [
       "Hit Ideriha"
