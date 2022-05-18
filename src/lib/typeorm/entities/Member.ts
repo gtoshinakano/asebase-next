@@ -59,9 +59,6 @@ export class MemberEntity {
   @Column({ type: 'point', nullable: true })
   map_latlng!: string | null;
 
-  @Column({ type: 'tinyint', default: 0 })
-  is_admin!: number;
-
   @CreateDateColumn()
   created_at!: Date;
 

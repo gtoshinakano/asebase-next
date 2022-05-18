@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ExchangeItem from './ExchangeItem';
 import {
   useQuery,
@@ -6,23 +6,22 @@ import {
   useMutation,
   useIsMutating,
 } from 'react-query';
-import { getExchangeProfile } from '@Utils/defaultQueries/UserQueries';
 import Skeleton from 'react-loading-skeleton';
 import * as schemas from '@Utils/Schemas/User';
 import { Transition } from '@headlessui/react';
 import { updateExchangeProfile } from '@Utils/defaultQueries/Mutations';
 import { RoundButton } from '@Components/Styled/Button';
 import _ from 'lodash';
+import { AuthContext } from '@Components/Layouts/MemberOnly';
 
 const ExchangeInfo = () => {
   const [form, setForm] = useState(_form);
   const [hasError, setHasError] = useState(false);
   const client = useQueryClient();
-  const handshake = client.getQueryData('handshake');
-  const queryKey = ['exchange-profile', handshake?.data.id];
-  const exchange = useQuery(queryKey, getExchangeProfile, {
-    staleTime: Infinity,
-  });
+  const auth = useContext(AuthContext)
+  const auth_id = auth.data.auth_id
+  const queryKey = ['exchange-profile', auth_id];
+  const exchange = useQuery(queryKey);
   const mutation = useMutation(updateExchangeProfile, {
     onSuccess: (e) => {
       client.setQueryData(queryKey, e.data);

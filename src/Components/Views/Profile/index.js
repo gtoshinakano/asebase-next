@@ -11,11 +11,12 @@ import ProfessionalInfo from './ProfessionalProfile';
 
 const DashboardView = () => {
   const { status } = useSession();
+  console.log(status)
   const loading = status === 'loading';
   const isAuth = status === 'authenticated';
 
-  const nikkeiRef = useRef();
-  const nikkeiVisible = useOnScreen(nikkeiRef);
+  // const nikkeiRef = useRef();
+  // const nikkeiVisible = useOnScreen(nikkeiRef);
 
   return (
     <>
@@ -28,13 +29,7 @@ const DashboardView = () => {
         {isAuth && <PersonalInfo />}
       </div>
       <div className="w-full">
-        <div ref={nikkeiRef}>
-          {isAuth && !loading ? (
-            <NikkeiInfo open={nikkeiVisible} />
-          ) : (
-            <Skeleton className="w-full h-44" />
-          )}
-        </div>
+        <NikkeiInfo />
       </div>
       <div className="w-full sm:w-11/12 lg:w-4/5 xl:w-1/2 mx-auto pt-2 flex flex-col">
         {isAuth && !loading ? (

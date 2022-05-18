@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Checkbox from '@Components/Styled/Checkbox';
 import {
   useQuery,
-  useIsMutating,
   useMutation,
   useQueryClient,
 } from 'react-query';
@@ -11,7 +10,6 @@ import {
   updateIsNikkei,
   updateNikkeiProfile,
 } from '@Utils/defaultQueries/Mutations';
-import { getNikkeiProfile } from '@Utils/defaultQueries/UserQueries';
 import {
   newItemsBySelected,
   getOptsByGeneration,
@@ -24,23 +22,23 @@ import NikkeiOrigins from './NikkeiOrigins';
 import { Transition } from '@headlessui/react';
 import { RoundButton } from '@Components/Styled/Button';
 import _ from 'lodash';
+import { AuthContext } from '@Components/Layouts/MemberOnly';
 
 const NikkeiInfo = () => {
   const [form, setForm] = useState(_form);
   const client = useQueryClient();
-  const handshake = useQuery('handshake');
-  const uid = handshake.data?.data.uid || '';
-  const queryKey = ['personal-profile', uid];
-  const nikkeiQueryKey = ['nikkei-profile', uid];
+  const auth = useContext(AuthContext)
+  const auth_id = auth.data.auth_id
+  const queryKey = ['personal-profile', auth_id];
+  const nikkeiQueryKey = ['nikkei-profile', auth_id];
   const { data, isLoading, isFetching } = useQuery(queryKey, {
     staleTime: Infinity,
   });
 
   const { jpFamilyMembers, jp_generation } = form;
 
-  const nikkei = useQuery(nikkeiQueryKey, getNikkeiProfile, {
-    staleTime: Infinity,
-  });
+
+  const nikkei = useQuery(nikkeiQueryKey);
 
   useEffect(() => setForm(nikkei.data || _form), [nikkei.data]);
 
@@ -111,7 +109,7 @@ const NikkeiInfo = () => {
   const isAwaiting =
     isLoading || mutation.isLoading || mutation.isFetching || isFetching;
 
-  const { is_nikkei } = data;
+  const { is_nikkei } = data || {is_nikkei: 0};
 
   return (
     <>

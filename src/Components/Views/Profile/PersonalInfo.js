@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import InlineInput from '@Styled/InlineInput';
 import { useQuery } from 'react-query';
 import { getPersonalProfile } from '@Utils/defaultQueries';
@@ -15,22 +15,17 @@ import { maskDate } from '@Utils/Helpers/masks';
 import moment from 'moment';
 import _ from 'lodash';
 import br_states from '@Utils/StaticData/br_states.json';
+import { AuthContext } from '@Components/Layouts/MemberOnly';
 
 const PersonalInfo = () => {
-  const handshake = useQuery('handshake');
-  const uid = handshake.data?.data.uid || '';
-  const queryKey = ['personal-profile', uid];
-  const { data, isLoading, isFetched } = useQuery(
-    queryKey,
-    getPersonalProfile,
-    {
-      staleTime: Infinity,
-    }
-  );
+  const auth = useContext(AuthContext)
+  const auth_id = auth.data.auth_id
+  const queryKey = ['personal-profile', auth_id];
+  const { data, isLoading, isFetched } = useQuery( queryKey );
 
   let birthDate = moment(data?.birth_date) || '';
 
-  if (isLoading || !isFetched) return <PersonalProfileSkeleton />;
+  if (isLoading) return <PersonalProfileSkeleton />;
   else
     return (
       <>

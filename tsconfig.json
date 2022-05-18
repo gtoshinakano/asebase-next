@@ -28,7 +28,8 @@
       "@styles/*": ["src/styles/*"],
       "@typeorm/*": ["src/lib/typeorm/*"],
       "@entities/*": ["src/lib/typeorm/entities/*"],
-      "@Entities": ["src/lib/typeorm/entities"]
+      "@Entities": ["src/lib/typeorm/entities"],
+      "@Classes/*": ["src/Classes/*"]
     },
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,

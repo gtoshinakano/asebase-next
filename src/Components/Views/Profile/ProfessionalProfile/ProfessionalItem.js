@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import InlineInput from '@Components/Styled/InlineInput';
 import { maskOnlyNumbers } from '@Utils/Helpers/masks';
 import * as schemas from '@Utils/Schemas/User';
@@ -8,6 +8,7 @@ import _ from 'lodash';
 import Confirm from '@Components/Styled/Confirm';
 import { deleteProfessionalProfile } from '@Utils/defaultQueries/Delete';
 import Checkbox from '@Components/Styled/Checkbox';
+import { AuthContext } from '@Components/Layouts/MemberOnly';
 
 const ProfessionalItem = ({
   data,
@@ -21,9 +22,9 @@ const ProfessionalItem = ({
   const [form, setForm] = useState(_form);
   const [error, setError] = useState(schemas.ProfessionalItem.check(form));
   const client = useQueryClient();
-  const handshake = client.getQueryData('handshake');
-  const uid = handshake.data.id || '';
-  const queryKey = ['professional-profile', uid];
+  const auth = useContext(AuthContext)
+  const auth_id = auth.data.auth_id
+  const queryKey = ['professional-profile', auth_id];
   const mutation = useMutation(deleteProfessionalProfile, {
     mutationKey: 'professional',
     onSuccess: () => {

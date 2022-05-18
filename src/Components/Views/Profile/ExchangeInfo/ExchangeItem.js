@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import InlineInput from '@Components/Styled/InlineInput';
 import { maskOnlyNumbers } from '@Utils/Helpers/masks';
 import * as schemas from '@Utils/Schemas/User';
@@ -14,6 +14,7 @@ import {
   JAPAN_PROVINCES,
 } from '@Utils/StaticData/json-data';
 import { _item } from '.';
+import { AuthContext } from '@Components/Layouts/MemberOnly';
 
 const ExchangeItem = ({ data, onChange, onAdd, onRemove, index, item }) => {
   const _form = _item;
@@ -21,9 +22,9 @@ const ExchangeItem = ({ data, onChange, onAdd, onRemove, index, item }) => {
   const [form, setForm] = useState(_form);
   const [error, setError] = useState(schemas.ExchangeItem.check(form));
   const client = useQueryClient();
-  const handshake = client.getQueryData('handshake');
-  const uid = handshake.data.id || '';
-  const queryKey = ['personal-profile', uid];
+  const auth = useContext(AuthContext)
+  const auth_id = auth.data.auth_id
+  const queryKey = ['personal-profile', auth_id];
   const mutation = useMutation(deleteExchangeProfile, {
     mutationKey: 'exchange',
     onSuccess: () => {
