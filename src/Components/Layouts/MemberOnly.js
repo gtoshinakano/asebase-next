@@ -58,11 +58,11 @@ export default function Layout({ children, title, handshakeData }) {
       <Head>
         <title>Área de Membros - {title} - ASEBASE</title>
       </Head>
-      <ScreenLoader
+      {/* <ScreenLoader
         title="Um momento"
         message="Aguarde enquanto carregamos alguns dados"
         isLoading={false}
-      />
+      /> */}
       <Sidebar />
       <main className="pl-10 print:pl-0 tracking-wide">{children}</main>
     </AuthContext.Provider>

@@ -38,11 +38,11 @@ export async function getServerSideProps(context) {
         data: {
           uid: member.user_info.id, // users_info id (number)
           auth_id : member.auth_id, // users id (string)
-          nikkei_profile: member.nikkei_info ? superjson.stringify(member.nikkei_info) : [],
+          nikkei_profile: member.nikkei_info ? superjson.stringify(member.nikkei_info) : "{}",
           personal_profile: superjson.stringify(_.pick(member.user_info, personalProfileKeys)),
-          academic_profile: member.academic_info ? superjson.stringify(member.academic_info) : [],
-          professional_profile : member.professional_info ? superjson.stringify(member.professional_info) : [],
-          exchange_profile: member.exchange_info ? superjson.stringify(member.exchange_info) : [],
+          academic_profile: member.academic_info ? superjson.stringify(member.academic_info) : "{}",
+          professional_profile : member.professional_info ? superjson.stringify(member.professional_info) : "{}",
+          exchange_profile: member.exchange_info ? superjson.stringify(member.exchange_info) : "{}",
         }
       },
     },
@@ -62,3 +62,4 @@ const personalProfileKeys = [
   'jp_generation',
   'map_latlng',
 ]
+
