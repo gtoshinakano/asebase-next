@@ -25,7 +25,7 @@ export const prepareConnection = (sync?: boolean) => {
       const connection = await createConnection({
         type: 'mysql',
         host,
-        port,
+        //port,
         username,
         password,
         database,

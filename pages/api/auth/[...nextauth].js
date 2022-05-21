@@ -16,7 +16,7 @@ const db = {
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
   synchronize: true, // leave it always false
-  logging: true, 
+  logging: false, 
 };
 
 
