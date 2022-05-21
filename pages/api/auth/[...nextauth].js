@@ -2,20 +2,24 @@ import 'reflect-metadata';
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import EmailProvider from 'next-auth/providers/email';
-import { TypeORMLegacyAdapter } from '@next-auth/typeorm-legacy-adapter';
+import { TypeORMLegacyAdapter } from '@typeorm/adapter';
 import { sendVerificationRequest } from '@Utils/signin-email';
 import entities from '@Entities'
+
+const isDev = process.env.NODE_ENV === "development"
 
 const db = {
   type: process.env.DB_TYPE,
   host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
+  //port: process.env.DB_PORT,
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  synchronize: false, // leave it always false
-  logging: false, 
+  synchronize: true, // leave it always false
+  logging: true, 
 };
+
+
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
@@ -109,5 +113,5 @@ export default NextAuth({
   theme: 'light',
 
   // Enable debug messages in the console if you are having problems
-  debug: process.env.NODE_ENV === "development",
+  debug: isDev,
 });

@@ -41,3 +41,15 @@ export const entities = [
   OrganizationEntity,
   ExchangeEntity,
 ];
+
+// export {UserEntity}
+// export {SessionEntity}
+// export {VerificationTokenEntity}
+// export {AccountEntity}
+// export {MemberEntity}
+// export {NikkeiInfo}
+// export {ProvinceEntity}
+// export {AcademicInfo}
+// export {ProfessionalData}
+// export {OrganizationEntity}
+// export {ExchangeEntity}
